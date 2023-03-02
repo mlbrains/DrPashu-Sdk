@@ -4,7 +4,6 @@
     <string name="website_url" translatable="false">https://drpashu.com/</string>
     <string name="play_store_link" translatable="false">https://lnkj.in/t/drpashu</string>
     <string name="agora_app_id" translatable="false">bcff0c8af21848c9845e5b62692cc1c0</string>
-    <string name="razorpay_key_id" translatable="false">rzp_live_mPOjjzvzG08hts</string>
 
     <string name="google">Google</string>
     <string name="login_number">Login With Number</string>
@@ -292,7 +291,7 @@
     <string name="prescription">Prescription</string>
     <string name="update_prescription_note">Click on image to update prescription and text</string>
     <string name="edit">Edit</string>
-    <string name="description_optional">Description (Optional)</string>
+    <string name="description_optional">Treatment</string>
     <string name="no_recent_call_history">No Recent Call History</string>
     <string name="allow_permissions">Allow Permissions</string>
     <string name="prescription_1_img">Add photo of your Prescription</string>
@@ -306,7 +305,7 @@
     <string name="muted_call">muted this call</string>
     <string name="calling">Calling</string>
     <string name="call_connecting">Call Connecting</string>
-    <string name="upload_prescription_condition">Please update atleast one information to proceed further</string>
+    <string name="upload_prescription_condition">Please update treatment image or text to proceed further</string>
     <string name="add_more_photo">Add more photo</string>
     <string name="prescription_upload_success">Prescription Uploaded Successfully</string>
     <string name="user_unavailable_message">The User is currently unable to answer/receive the call. You are redirected to the Dashboard.</string>
@@ -591,6 +590,15 @@
     <string name="report_this_post">Report this post?</string>
     <string name="report_msg">Warning: If you misuse this feature, your account may be banned.\n\nAre you sure you want to report this post?</string>
     <string name="report">Report</string>
+    <string name="your_farms">Your Farms:</string>
+    <string name="disease_diagnosed">Provisional Diagnosis</string>
+    <string name="possible_symptoms_during_call">Symptoms</string>
+    <string name="prescriptionNoteText"><b>Important Note:</b> This diagnosis &amp; prescription is generated based on information provided by the Animal Owner during online consultation without any physical check-up. For any medical emergencies / bleeding etc, we recommend you to visit your nearby Veterinarian immediately.</string>
+    <string name="select_diagnosis">Please select Possible Diagnosis</string>
+    <string name="select_diagnose_disease">Select Diagnosis Disease</string>
+    <string name="money_back_guarantee_1">100% Money Back guarantee, If not satisfied.</string>
+    <string name="money_back_guarantee_2">If you are not happy with the consultation, we will refund your money.</string>
+    <string name="call_back">Call Back</string>
 
     <string-array name="gender_list">
         <item>Male</item>
@@ -627,9 +635,12 @@
         <item>English</item>
         <item>Assamese (অসমীয়া)</item>
         <item>Bengali (বাংলা)</item>
+        <item>Gujarati (ગુજરાતી)</item>
         <item>Hindi (हिंदी)</item>
         <item>Kannada (ಕನ್ನಡ)</item>
+        <item>Malayalam (മലയാളം)</item>
         <item>Marathi (मराठी)</item>
+        <item>Punjabi (ਪੰਜਾਬੀ)</item>
         <item>Tamil (தமிழ்)</item>
         <item>Telugu (తెలుగు)</item>
     </string-array>

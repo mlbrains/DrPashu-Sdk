@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.CallDetailFragment">
+    tools:context=".fragments.home.vet.CallDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainLayout"
@@ -329,6 +329,7 @@
             android:layout_marginStart="@dimen/extra_small_margin"
             android:layout_marginEnd="@dimen/small_margin"
             android:background="@android:color/transparent"
+            tools:listitem="@layout/symptom_list"
             android:fadeScrollbars="false"
             app:layout_constraintTop_toBottomOf="@id/symptomListText"/>
 
@@ -431,21 +432,74 @@
             app:layout_constraintDimensionRatio="1:1"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/descriptionLayout"
+            android:id="@+id/symptomVetLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginStart="@dimen/normal_margin"
             android:layout_marginEnd="@dimen/normal_margin"
-            android:hint="@string/description_optional"
+            android:hint="@string/possible_symptoms_during_call"
             app:layout_constraintTop_toBottomOf="@+id/prescription1Img">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/symptomVetInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/diseaseLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:hint="@string/disease_diagnosed"
+            app:layout_constraintTop_toBottomOf="@+id/symptomVetLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/diseaseInput"
+                android:inputType="none"
+                android:editable="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/descriptionLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:hint="@string/description_optional"
+            app:layout_constraintTop_toBottomOf="@+id/diseaseLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descriptionInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/noteText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="@string/prescriptionNoteText"
+            android:justificationMode="inter_word"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:textColor="@color/dark_base"
+            android:textSize="@dimen/extra_small_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionLayout" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/updateBtn"
@@ -463,7 +517,7 @@
             android:textSize="@dimen/small_text"
             android:visibility="gone"
             tools:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/descriptionLayout"
+            app:layout_constraintTop_toBottomOf="@id/noteText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />

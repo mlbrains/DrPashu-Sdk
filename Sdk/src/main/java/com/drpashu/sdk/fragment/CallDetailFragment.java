@@ -80,7 +80,11 @@ public class CallDetailFragment extends BaseFragment {
             utils.visibleView(binding.mainLayout);
 
             binding.descriptionInput.setEnabled(false);
+            binding.symptomVetInput.setEnabled(false);
+            binding.diseaseInput.setEnabled(false);
             binding.descriptionInput.setTextColor(getContext().getResources().getColor(R.color.black));
+            binding.diseaseInput.setTextColor(getContext().getResources().getColor(R.color.black));
+            binding.symptomVetInput.setTextColor(getContext().getResources().getColor(R.color.black));
 
             binding.symptomListText.setText(utils.getStringValue(R.string.symptom_list) + " :");
             binding.animalImgText.setText(utils.getStringValue(R.string.animal_image) + " :");
@@ -119,6 +123,8 @@ public class CallDetailFragment extends BaseFragment {
                 utils.hideView(binding.prescription1Img);
                 utils.hideView(binding.prescription2Img);
                 utils.hideView(binding.descriptionLayout);
+                utils.hideView(binding.diseaseLayout);
+                utils.hideView(binding.symptomVetLayout);
             }
 
             if (callDetailResponse.getPrescriptionImageFirst().length() != 0)
@@ -131,15 +137,25 @@ public class CallDetailFragment extends BaseFragment {
 
             if (callDetailResponse.getPrescriptionImageSecond().length() != 0)
                 Picasso.get().load(baseUrl + "/media/" + callDetailResponse.getPrescriptionImageSecond()).into(binding.prescription2Img);
-            else {
+            else
                 utils.hideView(binding.prescription2Img);
-            }
+
 
             if (callDetailResponse.getDetails() != null)
                 binding.descriptionInput.setText(callDetailResponse.getDetails() + "");
-            else {
+            else
                 utils.hideView(binding.descriptionLayout);
-            }
+
+            if (callDetailResponse.getDiagnosis() != null)
+                binding.diseaseInput.setText(callDetailResponse.getDiagnosis() + "");
+            else
+                utils.hideView(binding.diseaseLayout);
+
+
+            if (callDetailResponse.getSymptoms() != null)
+                binding.symptomVetInput.setText(callDetailResponse.getSymptoms() + "");
+            else
+                utils.hideView(binding.symptomVetLayout);
 
             if (callDetailResponse.getHealthVal()) {
                 if (callDetailResponse.getLotExists()) {

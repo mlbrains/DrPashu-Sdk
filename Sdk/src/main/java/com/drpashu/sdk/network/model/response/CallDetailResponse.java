@@ -60,6 +60,12 @@ public class CallDetailResponse {
         @SerializedName("details")
         @Expose
         private String details;
+        @SerializedName("diagnosis")
+        @Expose
+        private String diagnosis;
+        @SerializedName("symptoms")
+        @Expose
+        private String symptoms;
         @SerializedName("duration_of_call_of_farmer")
         @Expose
         private String durationOfCallOfFarmer;
@@ -360,6 +366,22 @@ public class CallDetailResponse {
 
         public void setCallDuration(String callDuration) {
             this.callDuration = callDuration;
+        }
+
+        public String getDiagnosis() {
+            return diagnosis;
+        }
+
+        public void setDiagnosis(String diagnosis) {
+            this.diagnosis = diagnosis;
+        }
+
+        public String getSymptoms() {
+            return symptoms;
+        }
+
+        public void setSymptoms(String symptoms) {
+            this.symptoms = symptoms;
         }
     }
 }
