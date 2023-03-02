@@ -1,15 +1,10 @@
 package com.drpashu.sdk.fragment;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.drpashu.sdk.adapter.SelectAnimalDetailAdapter.breedName;
 import static com.drpashu.sdk.adapter.SelectAnimalDetailAdapter.breedNameByLanguage;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -43,11 +37,8 @@ import com.drpashu.sdk.dialog.FreeCallDialog;
 import com.drpashu.sdk.dialog.PaymentFailedDialog;
 import com.drpashu.sdk.network.NetworkingInterface;
 import com.drpashu.sdk.network.model.response.AnimalListResponse;
-import com.drpashu.sdk.network.model.response.RazorpayOrderIdResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
-
-import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -459,13 +450,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
     public void freeCallDialogAction(int method, int paymentGatewayAmount) {
         if (method == 1)
             initiateCall();
-        else if (method == 2){
-            progressDialog.show();
-            freeCall = false;
-            addMoneyAmount = paymentGatewayAmount;
-            networking.getRazorpayOrderId(addMoneyAmount * 100 + "");
-
-            utils.updateErrorEvent("Payment Step 1", "Create Order Id: " + addMoneyAmount);
-        }
+        else
+            utils.shortToast("Unable to start free call");
     }
 }
