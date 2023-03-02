@@ -1,9 +1,6 @@
 package com.drpashu.sdk.network.model.request;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class DrPashuRequest implements Parcelable {
+public class DrPashuRequest {
     private String api_key;
     private String first_name;
     private String last_name;
@@ -15,36 +12,7 @@ public class DrPashuRequest implements Parcelable {
     private String country;
     private String district;
     private String pincode;
-
-    public DrPashuRequest(Parcel in) {
-        api_key = in.readString();
-        first_name = in.readString();
-        last_name = in.readString();
-        phone_number = in.readString();
-        device_id = in.readString();
-        gender = in.readString();
-        location = in.readString();
-        state = in.readString();
-        country = in.readString();
-        district = in.readString();
-        pincode = in.readString();
-    }
-
-    public static final Creator<DrPashuRequest> CREATOR = new Creator<DrPashuRequest>() {
-        @Override
-        public DrPashuRequest createFromParcel(Parcel in) {
-            return new DrPashuRequest(in);
-        }
-
-        @Override
-        public DrPashuRequest[] newArray(int size) {
-            return new DrPashuRequest[size];
-        }
-    };
-
-    public DrPashuRequest() {
-
-    }
+    private String language;
 
     public String getApi_key() {
         return api_key;
@@ -134,24 +102,11 @@ public class DrPashuRequest implements Parcelable {
         this.pincode = pincode;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getLanguage() {
+        return language;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(api_key);
-        dest.writeString(first_name);
-        dest.writeString(last_name);
-        dest.writeString(phone_number);
-        dest.writeString(device_id);
-        dest.writeString(gender);
-        dest.writeString(location);
-        dest.writeString(state);
-        dest.writeString(country);
-        dest.writeString(district);
-        dest.writeString(pincode);
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }
