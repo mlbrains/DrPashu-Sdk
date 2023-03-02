@@ -88,9 +88,15 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         progressDialog.setCancelable(false);
         view1 = view;
 
+        try {
+            activity.getSupportActionBar().setTitle(utils.getStringValue(R.string.consult_a_doctor));
+        } catch (Exception e){
+            Log.e("set screen error", e.getMessage()+"");
+        }
+
         animalType = preferenceUtils.getAnimal();
         animalTypeByLanguage = preferenceUtils.getAnimal();
-        showLoading();
+//        showLoading();
         networking.getVetList(animalType);
 
         binding.proceedBtn.setOnClickListener(v -> {
@@ -293,7 +299,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             binding.recyclerviewAnimals.setAdapter(selectAnimalAdapter);
         } else if (methodType == MethodType.getVetList && status) {
             dismissLoading();
-
+            activity.dismissLoader();
             binding.selectAnimalLayout.setVisibility(View.GONE);
             binding.mainLayout.setVisibility(View.VISIBLE);
             binding.selectionBtn.setVisibility(View.VISIBLE);
@@ -441,6 +447,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             utils.updateErrorEvent("Start Call Error Event", "Call Id - " + groupId + " Error Message - " + (String) o);
         } else if (methodType == MethodType.getRazorpayOrderId || methodType == MethodType.fetchBalance
                 || methodType == MethodType.getVetList || methodType == MethodType.dashboardInfo && !status) {
+            activity.dismissLoader();
             dismissLoading();
             progressDialog.dismiss();
         }

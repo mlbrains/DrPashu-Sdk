@@ -3,6 +3,7 @@ package com.drpashu.sdk.fragment;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,12 @@ public class CallDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        try {
+            activity.getSupportActionBar().setTitle(utils.getStringValue(R.string.call_history));
+        } catch (Exception e){
+            Log.e("set screen error", e.getMessage()+"");
+        }
 
         view1 = view;
         onClickListeners();

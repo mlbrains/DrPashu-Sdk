@@ -142,6 +142,12 @@ public class IncomingCallFragment extends BaseFragment {
 
         binding.videoBtn.setEnabled(false);
 
+        try {
+            activity.getSupportActionBar().hide();
+        } catch (Exception e){
+            Log.e("set screen error", e.getMessage()+"");
+        }
+
         if (callIncoming) {
             if (!checkCallTime()){
                 NotificationManagerCompat.from(activity).cancel(null, notificationId);

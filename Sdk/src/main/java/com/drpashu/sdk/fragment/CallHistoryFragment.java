@@ -1,6 +1,7 @@
 package com.drpashu.sdk.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +22,6 @@ import java.util.List;
 public class CallHistoryFragment extends BaseFragment implements CallHistoryInterface {
     private FragmentCallHistoryBinding binding;
     private View view1;
-    private String notificationCallId = "";
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-            notificationCallId = getArguments().getString("callId");
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,15 +34,14 @@ public class CallHistoryFragment extends BaseFragment implements CallHistoryInte
         super.onViewCreated(view, savedInstanceState);
         view1 = view;
 
-        if (notificationCallId.length() != 0) {
-            Bundle bundle = new Bundle();
-            bundle.putString("callId", notificationCallId + "");
-            notificationCallId = "";
-            Navigation.findNavController(view1).navigate(R.id.action_nav_history_to_callDetailFragment, bundle);
-        } else {
-            showLoading();
-            networking.getCallHistoryList();
+        try {
+            activity.getSupportActionBar().setTitle(utils.getStringValue(R.string.call_history));
+        } catch (Exception e){
+            Log.e("set screen error", e.getMessage()+"");
         }
+
+//        showLoading();
+        networking.getCallHistoryList();
 
         binding.consultDoctorBtn.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_call_history_to_nav_consult_doctor));
     }
@@ -57,6 +49,7 @@ public class CallHistoryFragment extends BaseFragment implements CallHistoryInte
     @Override
     public <T> void networkingRequest(@Nullable MethodType methodType, boolean status, @Nullable T error, Object o) {
         if (methodType == MethodType.getCallHistoryList && status) {
+            activity.dismissLoader();
             dismissLoading();
 
             List<CallHistoryListResponse.Data> callHistoryList = (List<CallHistoryListResponse.Data>) o;
@@ -74,8 +67,10 @@ public class CallHistoryFragment extends BaseFragment implements CallHistoryInte
             binding.historyRecyclerview.setItemViewCacheSize(callHistoryList.size());
             binding.historyRecyclerview.setAdapter(callHistoryListAdapter);
         }
-        else if (methodType == MethodType.getCallHistoryList && !status)
+        else if (methodType == MethodType.getCallHistoryList && !status) {
+            activity.dismissLoader();
             dismissLoading();
+        }
     }
 
     @Override

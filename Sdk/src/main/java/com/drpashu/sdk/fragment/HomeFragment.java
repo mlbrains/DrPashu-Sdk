@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +47,19 @@ public class HomeFragment extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
                 if (intent.getExtras().getString("screen").equalsIgnoreCase("consultDoctor")) {
+                    try {
+                        activity.getSupportActionBar().setTitle(utils.getStringValue(R.string.consult_a_doctor));
+                    } catch (Exception e){
+                        Log.e("set screen error", e.getMessage()+"");
+                    }
                     binding.consultDoctorBtn.performClick();
                 } else if (intent.getExtras().getString("screen").equalsIgnoreCase("callHistory")) {
+                    try {
+                        activity.getSupportActionBar().setTitle(utils.getStringValue(R.string.call_history));
+                    } catch (Exception e){
+                        Log.e("set screen error", e.getMessage()+"");
+                    }
+
                     binding.callHistoryBtn.performClick();
                 } else {
                     activity.onBackPressed();

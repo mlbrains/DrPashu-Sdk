@@ -15,6 +15,7 @@
         <activity
             android:name=".activity.HomeActivity"
             android:theme="@style/Theme.MlBrains.Data"
+            android:label="Dr Pashu"
             android:exported="false" />
         <meta-data
             android:name="preloaded_fonts"
