@@ -81,9 +81,6 @@ dependencies {
     // lottie integration
     implementation "com.airbnb.android:lottie:5.1.1"
 
-    //Razorpay Payment Gateway
-    implementation 'com.razorpay:checkout:1.6.26'
-
     //Imageview zoom Library
     implementation 'com.github.MikeOrtiz:TouchImageView:1.4.1'
 }

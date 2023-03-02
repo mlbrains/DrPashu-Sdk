@@ -73,6 +73,5 @@ public class HomeFragment extends BaseFragment {
     private void onClickListeners() {
         binding.consultDoctorBtn.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_consult_doctor));
         binding.callHistoryBtn.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_call_history));
-        binding.myWalletBtn.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_my_wallet));
     }
 }

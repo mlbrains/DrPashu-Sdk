@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.drpashu.sdk.databinding.ActivityHomeBinding;
-import com.razorpay.PaymentData;
-import com.razorpay.PaymentResultWithDataListener;
 
-public class HomeActivity extends BaseActivity implements PaymentResultWithDataListener{
+public class HomeActivity extends BaseActivity {
     private ActivityHomeBinding binding;
 
     @Override
@@ -39,21 +37,5 @@ public class HomeActivity extends BaseActivity implements PaymentResultWithDataL
             utils.shortToast("Error Loading DrPashu App");
             onBackPressed();
         }
-    }
-
-    @Override
-    public void onPaymentSuccess(String razorpayPaymentId, PaymentData paymentData) {
-        Intent intent = new Intent("payment_result");
-        intent.putExtra("paymentStatus", true);
-        intent.putExtra("paymentId", razorpayPaymentId);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
-
-    @Override
-    public void onPaymentError(int i, String s, PaymentData paymentData) {
-        Intent intent = new Intent("payment_result");
-        intent.putExtra("paymentStatus", false);
-        intent.putExtra("errorDetail", "Error Code - "+ i +"  Error Message - "+ paymentData.getData().toString());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

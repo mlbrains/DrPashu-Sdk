@@ -46,7 +46,6 @@ import com.drpashu.sdk.network.model.response.AnimalListResponse;
 import com.drpashu.sdk.network.model.response.RazorpayOrderIdResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
-import com.razorpay.Checkout;
 
 import org.json.JSONObject;
 
@@ -68,44 +67,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
     private static final String[] REQUESTED_PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
     private static final int PERMISSION_REQ_ID_AUDIO = 1;
     private static final int PERMISSION_REQ_ID_CAMERA = 2;
-    private Checkout checkout;
-    private LocalBroadcastManager localBroadcastManager;
     private VetListResponse.Data vetListResponse;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        localBroadcastManager = LocalBroadcastManager.getInstance(context);
-
-        IntentFilter paymentResultIntent = new IntentFilter();
-        paymentResultIntent.addAction("payment_result");
-        localBroadcastManager.registerReceiver(paymentResultBroadcastReceiver , paymentResultIntent);
-    }
-
-    private final BroadcastReceiver paymentResultBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                if (intent.getExtras().getBoolean("paymentStatus")) {
-                    paymentId = intent.getExtras().getString("paymentId");
-                    Toast.makeText(context, "Payment Successful. Adding coins to your wallet.", Toast.LENGTH_SHORT).show();
-
-                    utils.updateErrorEvent("Payment Step 6", "Amount- "+ addMoneyAmount + ", Payment Success - " + paymentId);
-
-                    progressDialog.show();
-                    networking.addCoinsToWallet(addMoneyAmount+"", paymentId);
-                } else {
-                    Toast.makeText(context, context.getResources().getString(R.string.payment_unsuccessful), Toast.LENGTH_SHORT).show();
-
-                    String errorMessage = intent.getExtras().getString("errorDetail");
-                    errorMessage = errorMessage.replace(",", " ");
-                    utils.updateErrorEvent("Payment Step 6 - Consult Doctor Payment Failed Event", "Amount- "+ addMoneyAmount + " " + errorMessage);
-
-                    showPaymentFailure();
-                }
-            }
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,16 +92,10 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         super.onViewCreated(view, savedInstanceState);
 //        activity.updateTooblar(ContextCompat.getDrawable(getActivity(), R.drawable.ic_consult_doctor), true);
 
-        Checkout.preload(activity.getApplicationContext());
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(getContext().getString(R.string.loading));
         progressDialog.setCancelable(false);
         view1 = view;
-
-        checkout = new Checkout();
-        checkout.setKeyID(getString(R.string.razorpay_key_id));
-
-//        networking.getAnimals();
 
         animalType = preferenceUtils.getAnimal();
         animalTypeByLanguage = preferenceUtils.getAnimal();
@@ -237,10 +193,8 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                         freeCall =  true;
                         showFreeCallDialog(mrpAmount, amount, 0);
                     }
-                    else {
-                        progressDialog.show();
-                        networking.fetchBalance();
-                    }
+                    else
+                        utils.shortToast("Unable to start free call");
                 }
             }
         });
@@ -297,25 +251,6 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         }
     }
 
-    private void initiatePayment(String orderId){
-        try {
-            JSONObject options = new JSONObject();
-
-            options.put("name", "DrPashu Technologies");
-            options.put("description", "24/7 Vet in your Smartphone");
-            options.put("order_id", orderId);//from response of step 3.
-            JSONObject retryObj = new JSONObject();
-            retryObj.put("enabled", false);
-            options.put("retry", retryObj);
-            checkout.open(activity, options);
-
-            utils.updateErrorEvent("Payment Step 5", "Initiate Payment Gateway Success");
-        } catch(Exception e) {
-            Log.e(TAG, "Error in starting Razorpay Checkout", e);
-            utils.updateErrorEvent("Payment Step 5", "Initiate Payment Gateway Failure- " +  e.getMessage());
-        }
-    }
-
     private void setFarmName(){
         if (farmName.length() != 0)
             binding.farmText.setText(farmName);
@@ -350,12 +285,6 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         groupId = dateFormat.format(calendar.getTime());
         Log.e("call_time", groupId);
         return groupId;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        localBroadcastManager.unregisterReceiver(paymentResultBroadcastReceiver);
     }
 
     @Override
@@ -492,13 +421,6 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             bundle.putBoolean("freeCall", freeCall);
 
             Navigation.findNavController(view1).navigate(R.id.action_nav_consult_doctor_to_incomingCallFragment, bundle);
-        } else if (methodType == MethodType.getRazorpayOrderId && status) {
-            progressDialog.dismiss();
-
-            RazorpayOrderIdResponse.Data razorpayOrderIdResponse = (RazorpayOrderIdResponse.Data) o;
-
-            utils.updateErrorEvent("Payment Step 4", "Receive Order Id: " + razorpayOrderIdResponse.getId());
-            initiatePayment(razorpayOrderIdResponse.getId());
         } else if (methodType == MethodType.fetchBalance && status) {
             progressDialog.dismiss();
 
