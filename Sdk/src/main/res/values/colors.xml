@@ -2,10 +2,14 @@
 <resources>
     <color name="normal_side_nav">#BB86FC</color>
     <color name="selected_side_nav">#6B00F6</color>
-    <color name="base">#6B00F6</color>
-    <color name="dark_base">#3D01BB</color>
-    <color name="light_base">#03DAC5</color>
-    <color name="light_card">#add8e6</color>
+    <color name="base">#ffff7800</color>
+    <color name="dark_base">#ffc54800</color>
+    <color name="light_base">#FBAC4D</color>
+    <color name="light_card">#ffffa942</color>
+<!--    <color name="base">#6B00F6</color>-->
+<!--    <color name="dark_base">#3D01BB</color>-->
+<!--    <color name="light_base">#03DAC5</color>-->
+<!--    <color name="light_card">#add8e6</color>-->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#3DDC84</color>

@@ -188,7 +188,8 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID_AUDIO) && checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID_CAMERA)) {
                     if (amount == 0) {
                         freeCall =  true;
-                        showFreeCallDialog(mrpAmount, amount, 0);
+                        initiateCall();
+//                        showFreeCallDialog(mrpAmount, amount, 0);
                     }
                     else
                         utils.shortToast("Unable to start free call");
