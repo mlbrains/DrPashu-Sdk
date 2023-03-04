@@ -1,2 +1,2 @@
 -keep class io.agora.**{*;}
-c
+-keep class com.drpashu.sdk.connection.**{*;}
