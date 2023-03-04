@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.drpashu.lite.databinding.ActivityMainBinding;
-import com.drpashu.sdk.DrPashuApp;
-import com.drpashu.sdk.DrPashuSdk;
+import com.drpashu.sdk.connection.DrPashuApp;
+import com.drpashu.sdk.connection.DrPashuSdk;
 
 import org.json.JSONException;
 import org.json.JSONObject;

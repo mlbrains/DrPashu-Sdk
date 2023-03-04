@@ -1,4 +1,4 @@
-package com.drpashu.sdk;
+package com.drpashu.sdk.connection;
 
 import android.app.Activity;
 import android.app.Application;
