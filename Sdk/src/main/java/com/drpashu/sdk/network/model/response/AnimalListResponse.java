@@ -1,12 +1,14 @@
 package com.drpashu.sdk.network.model.response;
 
+import androidx.annotation.Keep;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Keep
 public class AnimalListResponse {
-
     @SerializedName("Animal_class")
     @Expose
     private String animalClass;
@@ -30,8 +32,8 @@ public class AnimalListResponse {
         this.data = data;
     }
 
+    @Keep
     public class Data {
-
         @SerializedName("id")
         @Expose
         private Integer id;

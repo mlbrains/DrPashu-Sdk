@@ -1,10 +1,13 @@
 package com.drpashu.sdk.network.model.response;
 
+import androidx.annotation.Keep;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Keep
 public class VetListResponse {
     @SerializedName("status")
     @Expose
@@ -40,6 +43,7 @@ public class VetListResponse {
         this.data = data;
     }
 
+    @Keep
     public class Data {
         @SerializedName("categories_list")
         @Expose
@@ -75,6 +79,7 @@ public class VetListResponse {
             this.freeCallStatus = freeCallStatus;
         }
 
+        @Keep
         public class CategoriesList {
             @SerializedName("OPD_mrp")
             @Expose
@@ -210,6 +215,7 @@ public class VetListResponse {
             }
         }
 
+        @Keep
         public class Vet {
             @SerializedName("id")
             @Expose

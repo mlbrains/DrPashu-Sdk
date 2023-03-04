@@ -1,8 +1,11 @@
 package com.drpashu.sdk.network.model.response;
 
+import androidx.annotation.Keep;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Keep
 public class DeviceTokenUpdateResponse {
     @SerializedName("status")
     @Expose

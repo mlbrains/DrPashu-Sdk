@@ -1,10 +1,13 @@
 package com.drpashu.sdk.network.model.response;
 
+import androidx.annotation.Keep;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Keep
 public class CallDetailResponse {
     @SerializedName("status")
     @Expose
@@ -40,6 +43,7 @@ public class CallDetailResponse {
         this.data = data;
     }
 
+    @Keep
     public class Data {
 
         @SerializedName("id")
