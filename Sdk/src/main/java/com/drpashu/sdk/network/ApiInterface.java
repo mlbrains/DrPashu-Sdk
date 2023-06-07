@@ -1,6 +1,7 @@
 package com.drpashu.sdk.network;
 
 import com.drpashu.sdk.network.model.request.DrPashuRequest;
+import com.drpashu.sdk.network.model.response.AnimalListResponse;
 import com.drpashu.sdk.network.model.response.BaseResponse;
 import com.drpashu.sdk.network.model.response.CallDetailResponse;
 import com.drpashu.sdk.network.model.response.CallHistoryListResponse;
@@ -9,6 +10,8 @@ import com.drpashu.sdk.network.model.response.DrPashuResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
 import com.google.gson.JsonObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,6 +22,9 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface ApiInterface {
+    @GET("animals")
+    Call<List<AnimalListResponse>> getAnimalList(@Header("user-id") String user_id);
+
     @POST("vet_list")
     @FormUrlEncoded
     Call<VetListResponse> getVetList(@Header("user-id") String user_id,

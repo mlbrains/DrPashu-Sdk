@@ -27,15 +27,15 @@ public class MainActivity extends AppCompatActivity {
         binding.button.setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("api_key", "sdk_eFeed_key_0303");
-                jsonObject.put("first_name", "Sahil");
-                jsonObject.put("last_name", "Chugh");
-                jsonObject.put("phone_number", "+918929329112");
-                jsonObject.put("language", "en");
-                jsonObject.put("gender", "0");
+                    jsonObject.put("api_key", "test_3105");
+                    jsonObject.put("first_name", "Sahil");
+                    jsonObject.put("last_name", "Chugh");
+                    jsonObject.put("phone_number", "+918929329112");
+                    jsonObject.put("language", "en");
+                    jsonObject.put("gender", "0");
 
-                jsonObject.put("screen", "consultDoctor");
-                jsonObject.put("animal", "Cow");
+                    jsonObject.put("screen", "consultDoctor");
+                    jsonObject.put("animal", "Cow");
 
 //                jsonObject.put("device_id", "test");
 //                jsonObject.put("gender", "0");
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         binding.buttonC.setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("api_key", "sdk_eFeed_key_0303");
+                jsonObject.put("api_key", "test_3105");
                 jsonObject.put("first_name", "Sahil");
                 jsonObject.put("last_name", "Chugh");
                 jsonObject.put("phone_number", "+918929329112");

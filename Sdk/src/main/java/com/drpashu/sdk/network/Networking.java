@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.drpashu.sdk.R;
 import com.drpashu.sdk.network.model.request.DrPashuRequest;
+import com.drpashu.sdk.network.model.response.AnimalListResponse;
 import com.drpashu.sdk.network.model.response.BaseResponse;
 import com.drpashu.sdk.network.model.response.CallDetailResponse;
 import com.drpashu.sdk.network.model.response.CallHistoryListResponse;
@@ -23,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +49,49 @@ public class Networking {
         this.activity = activity;
         this.networkingInterface = networkingInterface;
         preferenceUtils = new PreferenceUtils(context);
+    }
+
+    public void getAnimals() {
+        Call<List<AnimalListResponse>> animalListResponse = apiInterface.getAnimalList(preferenceUtils.getUserId());
+        animalListResponse.enqueue(new Callback<List<AnimalListResponse>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<AnimalListResponse>> call, @NonNull Response<List<AnimalListResponse>> response) {
+
+                if (response.isSuccessful()) {
+                    List<AnimalListResponse> animalResponseList = response.body();
+                    for (int i = 0; i<animalResponseList.size();i++){
+                        for (int j =0; j< animalResponseList.get(i).getData().size(); j++){
+                            if (animalResponseList.get(i).getData().get(j).getName().equalsIgnoreCase("Chicken"))
+                                animalResponseList.get(i).getData().get(j).setLocalImage(R.drawable.animal_chicken);
+                            else if (animalResponseList.get(i).getData().get(j).getName().equalsIgnoreCase("Cow"))
+                                animalResponseList.get(i).getData().get(j).setLocalImage(R.drawable.animal_cow);
+                            else if (animalResponseList.get(i).getData().get(j).getName().equalsIgnoreCase("Buffalo"))
+                                animalResponseList.get(i).getData().get(j).setLocalImage(R.drawable.animal_buffalo);
+                            else if (animalResponseList.get(i).getData().get(j).getName().equalsIgnoreCase("Pig"))
+                                animalResponseList.get(i).getData().get(j).setLocalImage(R.drawable.animal_pig);
+                            else if (animalResponseList.get(i).getData().get(j).getName().equalsIgnoreCase("Goat"))
+                                animalResponseList.get(i).getData().get(j).setLocalImage(R.drawable.animal_goat);
+                            else if (animalResponseList.get(i).getData().get(j).getName().equalsIgnoreCase("Sheep"))
+                                animalResponseList.get(i).getData().get(j).setLocalImage(R.drawable.animal_sheep);
+                            else if (animalResponseList.get(i).getData().get(j).getName().equalsIgnoreCase("Dog"))
+                                animalResponseList.get(i).getData().get(j).setLocalImage(R.drawable.animal_dog);
+                            else if (animalResponseList.get(i).getData().get(j).getName().equalsIgnoreCase("Cat"))
+                                animalResponseList.get(i).getData().get(j).setLocalImage(R.drawable.animal_cat);
+                        }
+                    }
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.getAnimalList, true, null, animalResponseList);
+                } else {
+                    Toast.makeText(context, context.getString(R.string.error_animal_list), Toast.LENGTH_SHORT).show();
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.getAnimalList, false, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<AnimalListResponse>> call, @NonNull Throwable t) {
+                networkingInterface.networkingRequest(NetworkingInterface.MethodType.getAnimalList, false, null, null);
+                Toast.makeText(context, context.getString(R.string.error_animal_list), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void getVetList(String breedName) {
@@ -324,7 +369,10 @@ public class Networking {
             if (jsonObject.has("pincode"))
                 drPashuRequest.setPincode(jsonObject.getString("pincode"));
 
-            preferenceUtils.setAnimal(jsonObject.getString("animal"));
+            if (jsonObject.has("animal"))
+                preferenceUtils.setAnimal(jsonObject.getString("animal"));
+            else
+                preferenceUtils.setAnimal("");
         } catch (JSONException e) {
             e.printStackTrace();
             networkingInterface.networkingRequest(NetworkingInterface.MethodType.addUserFromSdk, false, null, null);

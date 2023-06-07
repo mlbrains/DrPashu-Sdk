@@ -94,10 +94,15 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             Log.e("set screen error", e.getMessage()+"");
         }
 
-        animalType = preferenceUtils.getAnimal();
-        animalTypeByLanguage = preferenceUtils.getAnimal();
-//        showLoading();
-        networking.getVetList(animalType);
+        if (preferenceUtils.getAnimal() != null) {
+            if (preferenceUtils.getAnimal().length() != 0) {
+                animalType = preferenceUtils.getAnimal();
+                animalTypeByLanguage = preferenceUtils.getAnimal();
+                networking.getVetList(animalType);
+            } else
+                networking.getAnimals();
+        } else
+            networking.getAnimals();
 
         binding.proceedBtn.setOnClickListener(v -> {
             if (breedName.length() == 0)
@@ -288,6 +293,8 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
     @Override
     public <T> void networkingRequest(@Nullable MethodType methodType, boolean status, @Nullable T error, Object o) {
         if (methodType == MethodType.getAnimalList && status) {
+            activity.dismissLoader();
+
             binding.mainLayout.setVisibility(View.GONE);
             binding.selectAnimalLayout.setVisibility(View.VISIBLE);
 
@@ -447,7 +454,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             }
             utils.updateErrorEvent("Start Call Error Event", "Call Id - " + groupId + " Error Message - " + (String) o);
         } else if (methodType == MethodType.getRazorpayOrderId || methodType == MethodType.fetchBalance
-                || methodType == MethodType.getVetList || methodType == MethodType.dashboardInfo && !status) {
+                || methodType == MethodType.getVetList || methodType == MethodType.dashboardInfo || methodType == MethodType.getAnimalList && !status) {
             activity.dismissLoader();
             dismissLoading();
             progressDialog.dismiss();
