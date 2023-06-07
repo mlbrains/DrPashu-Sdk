@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -59,6 +61,21 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
     private static final int PERMISSION_REQ_ID_AUDIO = 1;
     private static final int PERMISSION_REQ_ID_CAMERA = 2;
     private VetListResponse.Data vetListResponse;
+
+    private ActivityResultLauncher<String[]> activityResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+                if (isGranted.containsValue(false))
+                    utils.shortToast(utils.getStringValue(R.string.allow_permission_message));
+                else {
+                    Log.e("response", "permission granted");
+                    if (amount == 0) {
+                        freeCall = true;
+                        initiateCall();
+//                        showFreeCallDialog(mrpAmount, amount, 0);
+                    } else
+                        utils.shortToast("Unable to start free call");
+                }
+            });
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -186,20 +203,10 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         });
 
         binding.selectionBtn.setOnClickListener(v -> {
-//            activity.updateFirebaseEvents("button_click", "start_call_button");
             if (vetCategory.length() == 0)
                 Toast.makeText(getContext(), getContext().getResources().getString(R.string.please_select_vet_type), Toast.LENGTH_SHORT).show();
-            else {
-                if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID_AUDIO) && checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID_CAMERA)) {
-                    if (amount == 0) {
-                        freeCall =  true;
-                        initiateCall();
-//                        showFreeCallDialog(mrpAmount, amount, 0);
-                    }
-                    else
-                        utils.shortToast("Unable to start free call");
-                }
-            }
+            else
+                activityResultLauncher.launch(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA});
         });
     }
 
@@ -263,11 +270,17 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
 
     private boolean checkSelfPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), REQUESTED_PERMISSIONS, requestCode);
+//            ActivityCompat.requestPermissions(getActivity(), REQUESTED_PERMISSIONS, requestCode);
             Toast.makeText(getContext(), getContext().getResources().getString(R.string.allow_permission_message), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 
     private void initiateCall(){
