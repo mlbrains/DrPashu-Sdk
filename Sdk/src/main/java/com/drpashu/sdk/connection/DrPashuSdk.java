@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public interface DrPashuSdk {
-
     Intent openSdk(Activity activity, JSONObject jsonObject) throws JSONException;
+
+    void triggerNotification(String title, String description, JSONObject jsonObject);
 }

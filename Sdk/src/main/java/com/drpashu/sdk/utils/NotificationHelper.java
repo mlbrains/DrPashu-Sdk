@@ -13,6 +13,9 @@ import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -20,6 +23,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.drpashu.sdk.R;
 import com.drpashu.sdk.activity.HomeActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Random;
 
 public class NotificationHelper extends ContextWrapper {
 
@@ -101,7 +109,7 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getCallNotification(String title, String description, String callStatus, String callId, String notificationId, String channelId,
-                                                          String firstName, String lastName, String profileImg, String unixNotificationTime){
+                                                          String firstName, String lastName, String profileImg, String unixNotificationTime, String language, String animal){
         createCallNotificationChannel();
 
         // Create an explicit intent for an Activity in your app
@@ -114,6 +122,8 @@ public class NotificationHelper extends ContextWrapper {
         intent.putExtra("lastName", lastName);
         intent.putExtra("profile_picture", profileImg);
         intent.putExtra("unixNotificationTime", unixNotificationTime);
+        intent.putExtra("language", language);
+        intent.putExtra("animal", animal);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -142,37 +152,6 @@ public class NotificationHelper extends ContextWrapper {
 
         //Full screen intents allows us to show notification on the top of the screen
         //It will not remove until user's action
-    }
-
-    public NotificationCompat.Builder getCallOngoingNotification(String title, String description, String callStatus, String callId,
-                                                                 String notificationId, String channelId, String firstName, String lastName){
-        createCallOngoingNotificationChannel();
-
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("call", callStatus);
-        intent.putExtra("callId", callId);
-        intent.putExtra("notificationId", notificationId);
-        intent.putExtra("channelId", channelId);
-        intent.putExtra("firstName", firstName);
-        intent.putExtra("lastName", lastName);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);  // Make click action send data, replace with 0
-
-        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.register);
-
-        return new NotificationCompat.Builder(getApplicationContext(), CALL_ONGOING_CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(icon)
-                .setContentTitle(title)
-                .setContentText(description)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_CALL)
-                .setAutoCancel(false) // will not dismiss notification on click
-                .setOngoing(true) //notification will not be dismissed
-                .setContentIntent(pendingIntent);
     }
 
     public NotificationCompat.Builder getNotification(String title, String description, String callStatus, String screen, String callId) {
@@ -218,5 +197,100 @@ public class NotificationHelper extends ContextWrapper {
             notificationManager.notify(notificationId, notification.build());
         else
             notificationDeviceManager.notify(notificationId, notification.build());
+    }
+
+    public void triggerNotification(String title, String description, JSONObject jsonObject) {
+        try {
+            NotificationCompat.Builder notificationBuilder;
+
+            Log.e("notificationInfo", "title " + title + ", desc " + description + ", Data - " + jsonObject.toString());
+//        String title = jsonObject.getString()("title");
+//        String description = jsonObject.getString()("description");
+            String notificationId, callStatus;
+
+            if (jsonObject.has("notificationId"))
+                notificationId = jsonObject.getString("notificationId");
+            else
+                notificationId = "1";
+
+            if (jsonObject.has("call"))
+                callStatus = jsonObject.getString("call");
+            else
+                callStatus = "false";
+
+            String channelId = "", firstName = "", lastName = "", callId = "", profileImg = "",
+                    screen = "", unixTimeStamp = "", userLanguage = "", animal = "";
+            callStatus += "";
+            notificationId += "";
+
+            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK |
+                    PowerManager.ACQUIRE_CAUSES_WAKEUP |
+                    PowerManager.ON_AFTER_RELEASE, "drpashu::WakeLock");
+
+            if (callStatus.equalsIgnoreCase("true")) {
+                wakeLock.acquire(45 * 1000L /*45 Seconds*/);
+
+                callId = jsonObject.getString("callId");
+                channelId = jsonObject.getString("channelId");
+                firstName = jsonObject.getString("firstName");
+                lastName = jsonObject.getString("lastName");
+                userLanguage = jsonObject.getString("language");
+                animal = jsonObject.getString("animal");
+                unixTimeStamp = jsonObject.getString("unix_timestamp");
+
+                long currentTime = System.currentTimeMillis();
+                long notificationLongTime = Long.parseLong(unixTimeStamp);
+
+                long differece = (currentTime - notificationLongTime) / 1000;
+
+                Log.e("timeDifferenceLog", differece + "      " + unixTimeStamp);
+
+                if (differece > 45)
+                    return;
+
+                if (jsonObject.has("profile_picture"))
+                    profileImg = jsonObject.getString("profile_picture");
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("call", callStatus);
+                intent.putExtra("callId", callId);
+                intent.putExtra("notificationId", notificationId);
+                intent.putExtra("channelId", channelId);
+                intent.putExtra("firstName", firstName);
+                intent.putExtra("lastName", lastName);
+                intent.putExtra("profile_picture", profileImg);
+                intent.putExtra("unixNotificationTime", unixTimeStamp);
+                intent.putExtra("language", userLanguage);
+                intent.putExtra("animal", animal);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+                notificationBuilder = getCallNotification(title, description, callStatus,
+                        callId, notificationId, channelId, firstName, lastName, profileImg, unixTimeStamp, userLanguage, animal);
+            } else {
+                wakeLock.acquire(10 * 1000L /*10 Seconds*/);
+
+                screen = jsonObject.getString("screen");
+                screen += "";
+
+                if (screen.equalsIgnoreCase("vet_call_decline"))
+                    notificationBuilder = getSilentNotification(title, description);
+                else if (screen.equalsIgnoreCase("prescription")) {
+                    callId = jsonObject.getString("callId");
+
+                    notificationBuilder = getNotification(title, description, callStatus, screen, callId);
+                } else if (screen.equalsIgnoreCase("call_history")) {
+                    NotificationManagerCompat.from(getApplicationContext()).cancel(null, Integer.parseInt(notificationId));
+
+                    notificationId = (Integer.parseInt(notificationId) + 1) + "";
+                    notificationBuilder = getNotification(title, description, callStatus, screen, "");
+                } else
+                    notificationBuilder = getNotification(title, description, callStatus, screen, "");
+            }
+
+            notify(Integer.parseInt(notificationId), notificationBuilder);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 Toast.makeText(this, "Error Loading Sdk", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
+                drPashuSdk.triggerNotification("s", "d", new JSONObject());
             }
 
         });

@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Intent;
 
 import com.drpashu.sdk.activity.HomeActivity;
+import com.drpashu.sdk.utils.NotificationHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,16 +13,22 @@ import org.json.JSONObject;
 public class DrPashuApp implements DrPashuSdk{
     private static DrPashuApp drPashuApp;
     private Application application;
+    private NotificationHelper notificationHelper;
 
     public DrPashuApp(Application application) {
         this.application = application;
+        notificationHelper = new NotificationHelper(application.getApplicationContext());
     }
 
     public static DrPashuSdk getDrPashuApp(Application application) {
-        if (drPashuApp == null) {
+        if (drPashuApp == null)
             drPashuApp = new DrPashuApp(application);
-        }
         return drPashuApp;
+    }
+
+    @Override
+    public void triggerNotification(String title, String description, JSONObject jsonObject){
+        notificationHelper.triggerNotification(title, description, jsonObject);
     }
 
     @Override
