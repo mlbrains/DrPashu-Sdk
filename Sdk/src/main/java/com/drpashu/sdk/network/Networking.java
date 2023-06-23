@@ -34,7 +34,7 @@ import retrofit2.Retrofit;
 public class Networking {
     private final PreferenceUtils preferenceUtils;
     private final Context context;
-    private final Activity activity;
+    private Activity activity;
     Retrofit retrofit = ApiClient.getRetrofitInstance();
     Retrofit sdkRetrofit = ApiClient.getSdkRetrofitInstance();
     private static ProgressDialog progressdialog;
@@ -43,6 +43,11 @@ public class Networking {
     public static String lot_name_text = "";
     ApiInterface apiInterface = retrofit.create(ApiInterface.class);
     ApiInterface apiSdkInterface = sdkRetrofit.create(ApiInterface.class);
+
+    public Networking(Context context) {
+        this.context = context;
+        preferenceUtils = new PreferenceUtils(context);
+    }
 
     public Networking(Context context, Activity activity, NetworkingInterface networkingInterface) {
         this.context = context;
@@ -288,6 +293,24 @@ public class Networking {
             public void onFailure(@NonNull Call<BaseResponse> call, @NonNull Throwable t) {
                 Toast.makeText(context, context.getResources().getString(R.string.error_reject_call), Toast.LENGTH_SHORT).show();
                 networkingInterface.networkingRequest(NetworkingInterface.MethodType.rejectCall, false, null, null);
+            }
+        });
+    }
+
+    public void recordUser(String apiKey, String userId) {
+        Call<BaseResponse> baseResponseCall = apiInterface.recordUser(apiKey, userId);
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BaseResponse> call, @NonNull Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse baseResponse = response.body();
+                    preferenceUtils.setCountStatus(baseResponse.getStatus());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BaseResponse> call, @NonNull Throwable t) {
+//                networkingInterface.networkingRequest(NetworkingInterface.MethodType.recordUser, false, null, null);
             }
         });
     }

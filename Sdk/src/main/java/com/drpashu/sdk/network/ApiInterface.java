@@ -80,6 +80,11 @@ public interface ApiInterface {
                                       @Field("message") String message,
                                       @Field("details") String details);
 
+    @POST("record_user")
+    @FormUrlEncoded
+    Call<BaseResponse> recordUser(@Field("api_key") String api_key,
+                                  @Field("user_id") String user_id);
+
     @POST("sdk/add_user")
     Call<DrPashuResponse> addUserFromSdk(@Body DrPashuRequest drPashuRequest);
 }

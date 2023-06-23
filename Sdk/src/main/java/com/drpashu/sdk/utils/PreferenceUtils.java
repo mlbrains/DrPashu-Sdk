@@ -31,6 +31,14 @@ public class PreferenceUtils {
         getPrefrence().edit().putBoolean("back_press", navigationOption).apply();
     }
 
+    public Boolean getCountStatus(){
+        return getPrefrence().getBoolean("count", false);
+    }
+
+    public void setCountStatus(Boolean count){
+        getPrefrence().edit().putBoolean("count", count).apply();
+    }
+
     public String getFcmToken(){
         return getPrefrence().getString("fcm", "");
     }
