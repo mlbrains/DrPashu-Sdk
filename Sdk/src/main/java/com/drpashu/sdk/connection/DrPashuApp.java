@@ -18,20 +18,16 @@ public class DrPashuApp implements DrPashuSdk{
     private NotificationHelper notificationHelper;
     private PreferenceUtils preferenceUtils;
 
-    public DrPashuApp(Application application) {
+    public DrPashuApp(Application application, String apiKey, String userId) {
         this.application = application;
         notificationHelper = new NotificationHelper(application.getApplicationContext());
         preferenceUtils = new PreferenceUtils(application.getApplicationContext());
-
-        if(!preferenceUtils.getCountStatus()){
-            new Networking(application.getApplicationContext()).recordUser("test_3105", "1200");
-        }
-
+        if(!preferenceUtils.getCountStatus())
+            new Networking(application.getApplicationContext()).recordUser(apiKey, userId);
     }
 
-    public static DrPashuSdk getDrPashuApp(Application application) {
-        if (drPashuApp == null)
-            drPashuApp = new DrPashuApp(application);
+    public static DrPashuSdk getDrPashuApp(Application application, String apiKey, String userId) {
+        drPashuApp = new DrPashuApp(application, apiKey, userId);
         return drPashuApp;
     }
 

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        drPashuSdk = DrPashuApp.getDrPashuApp(this.getApplication());
+        drPashuSdk = DrPashuApp.getDrPashuApp(this.getApplication(), "test_3105", "123456aabb");
 
         binding.button.setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
