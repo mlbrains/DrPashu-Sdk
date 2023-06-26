@@ -342,6 +342,7 @@
     <string name="appointment_toolbar">\tAppointments</string>
     <string name="prescription_toolbar">\tPrescription</string>
     <string name="call_history_toolbar">\tCall History</string>
+    <string name="call_feedback_toolbar">\tCall Feedback</string>
     <string name="payment_toolbar">\tPayment</string>
     <string name="start_call_toolbar">\tCall</string>
     <string name="additional_details_toolbar">\tAdditional Details</string>
@@ -418,6 +419,9 @@
     <string name="error_post_action">Something went wrong- 69</string>
     <string name="error_search_adda_posts">Something went wrong- 70</string>
     <string name="error_add_user_from_sdk">Something went wrong- 71</string>
+    <string name="error_submit_feedback">Something went wrong- 72</string>
+    <string name="error_get_feedback_list">Something went wrong- 73</string>
+    <string name="error_get_referral_code">Something went wrong- 74</string>
     <string name="add_mortality_toolbar">\tAdd Mortality</string>
     <string name="mortality_description">This module tracks the animal mortality (death) which may occur because of illness or similar reasons. This data is used to identify frequent diseases and prevent repetitions.</string>
     <string name="upload_image_note">Click on the image to upload Profile Picture</string>
@@ -599,6 +603,22 @@
     <string name="money_back_guarantee_1">100% Money Back guarantee, If not satisfied.</string>
     <string name="money_back_guarantee_2">If you are not happy with the consultation, we will refund your money.</string>
     <string name="call_back">Call Back</string>
+    <string name="select_atleast_one_feedback">Select at least one option</string>
+    <string name="thanks_for_giving_feedback">Thanks for giving the feedback.</string>
+    <string name="give_us_your_ratings">Give us your Ratings...</string>
+    <string name="comments_for_the_call">Comments for the call</string>
+    <string name="rating_1">How can we improve?</string>
+    <string name="rating_2">How can we improve?</string>
+    <string name="rating_3">How can we improve?</string>
+    <string name="rating_4">What did you like?</string>
+    <string name="rating_5">What did you love?</string>
+    <string name="create_post_toolbar">\tCreate Post</string>
+    <string name="post_toolbar">\tPost</string>
+    <string name="rating_1_title">Poor</string>
+    <string name="rating_2_title">Average</string>
+    <string name="rating_3_title">Good</string>
+    <string name="rating_4_title">Very Good</string>
+    <string name="rating_5_title">Excellent</string>
 
     <string-array name="gender_list">
         <item>Male</item>

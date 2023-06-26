@@ -7,6 +7,7 @@ import com.drpashu.sdk.network.model.response.CallDetailResponse;
 import com.drpashu.sdk.network.model.response.CallHistoryListResponse;
 import com.drpashu.sdk.network.model.response.DeviceTokenUpdateResponse;
 import com.drpashu.sdk.network.model.response.DrPashuResponse;
+import com.drpashu.sdk.network.model.response.FeedbackListResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
 import com.google.gson.JsonObject;
@@ -87,4 +88,15 @@ public interface ApiInterface {
 
     @POST("sdk/add_user")
     Call<DrPashuResponse> addUserFromSdk(@Body DrPashuRequest drPashuRequest);
+
+    @POST("call_feedback")
+    @FormUrlEncoded
+    Call<BaseResponse> submitCallFeedback(@Header("user-id") String user_id,
+                                          @Field("call_id") String call_id,
+                                          @Field("rating") String rating,
+                                          @Field("review_id") String rating_id,
+                                          @Field("comment") String comment);
+
+    @GET("get_feedback_list")
+    Call<FeedbackListResponse> getFeedbackList(@Header("user-id") String user_id);
 }

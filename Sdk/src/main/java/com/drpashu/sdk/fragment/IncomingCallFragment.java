@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
@@ -171,7 +172,7 @@ public class IncomingCallFragment extends BaseFragment {
             initializeCall();
         }
 
-        binding.endCallBtn.setOnClickListener(v -> endCall());
+        binding.endCallBtn.setOnClickListener(this::endCall);
         binding.videoBtn.setOnClickListener(v -> onVideoMuteClicked());
         binding.audioBtn.setOnClickListener(v -> onAudioMuteClicked());
         binding.flipCameraBtn.setOnClickListener(v -> mRtcEngine.switchCamera());
@@ -225,12 +226,12 @@ public class IncomingCallFragment extends BaseFragment {
         initAgoraEngine();
     }
 
-    private void endCall() {
+    private void endCall(View view) {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setMessage(utils.getStringValue(R.string.end_call_message))
                 .setPositiveButton(utils.getStringValue(R.string.end_call), (dialog, which) -> {
                     if(callStarted) {
-                        finishCall();
+                        finishCall(view);
                     } else {
                         showLoading();
 
@@ -273,7 +274,7 @@ public class IncomingCallFragment extends BaseFragment {
         public void onUserOffline(int uid, int reason) {
             requireActivity().runOnUiThread(() -> {
                 binding.incomingVideoLayout.removeAllViews();
-                finishCall();
+                finishCall(view1);
             });
         }
 
@@ -408,7 +409,7 @@ public class IncomingCallFragment extends BaseFragment {
         localBroadcastManager.unregisterReceiver(notificationForFarmerCallDecline);
     }
 
-    private void finishCall() {
+    private void finishCall(View view) {
         preferenceUtils.setBlockNavigationStatus(false);
         binding.incomingVideoLayout.removeAllViews();
         binding.selfVideoLayout.removeAllViews();
@@ -416,9 +417,11 @@ public class IncomingCallFragment extends BaseFragment {
         if (callStarted) {
             utils.shortToast(utils.getStringValue(R.string.call_completed));
             networking.updateCallStatus(callId, "Ended");
-        }
-
-        activity.onBackPressed();
+            Bundle bundle = new Bundle();
+            bundle.putString("callId", callId);
+            Navigation.findNavController(view).navigate(R.id.action_incomingCallFragment_to_callFeedbackFragment, bundle);
+        } else
+            activity.onBackPressed();
     }
 
 
@@ -476,7 +479,7 @@ public class IncomingCallFragment extends BaseFragment {
 
             utils.updateErrorEvent("Start Call Error Event", "Call Id - " + groupId + " Error Message - " + (String) o);
 
-            finishCall();
+            finishCall(view1);
         }
     }
 }

@@ -15,6 +15,7 @@ import com.drpashu.sdk.network.model.response.CallDetailResponse;
 import com.drpashu.sdk.network.model.response.CallHistoryListResponse;
 import com.drpashu.sdk.network.model.response.DeviceTokenUpdateResponse;
 import com.drpashu.sdk.network.model.response.DrPashuResponse;
+import com.drpashu.sdk.network.model.response.FeedbackListResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
 import com.drpashu.sdk.utils.PreferenceUtils;
@@ -425,6 +426,60 @@ public class Networking {
             public void onFailure(@NonNull Call<DrPashuResponse> call, @NonNull Throwable t) {
                 Toast.makeText(context, context.getResources().getString(R.string.error_add_user_from_sdk), Toast.LENGTH_SHORT).show();
                 networkingInterface.networkingRequest(NetworkingInterface.MethodType.addUserFromSdk, false, null, null);
+            }
+        });
+    }
+
+    public void submitCallFeedback(String callId, String rating, String ratingId, String comments) {
+        Call<BaseResponse> baseResponseCall = apiInterface.submitCallFeedback(preferenceUtils.getUserId(), callId, rating, ratingId, comments);
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BaseResponse> call, @NonNull Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse baseResponse = response.body();
+                    if (baseResponse.getStatus())
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.submitFeedback, true, null, null);
+                    else {
+                        Toast.makeText(context, baseResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.submitFeedback, false, null, null);
+                    }
+                } else {
+                    Toast.makeText(context, context.getResources().getString(R.string.error_submit_feedback), Toast.LENGTH_SHORT).show();
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.submitFeedback, false, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BaseResponse> call, @NonNull Throwable t) {
+                Toast.makeText(context, context.getResources().getString(R.string.error_submit_feedback), Toast.LENGTH_SHORT).show();
+                networkingInterface.networkingRequest(NetworkingInterface.MethodType.submitFeedback, false, null, null);
+            }
+        });
+    }
+
+    public void getFeedbackList() {
+        Call<FeedbackListResponse> feedbackListResponseCall = apiInterface.getFeedbackList(preferenceUtils.getUserId());
+        feedbackListResponseCall.enqueue(new Callback<FeedbackListResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<FeedbackListResponse> call, @NonNull Response<FeedbackListResponse> response) {
+                if (response.isSuccessful()) {
+                    FeedbackListResponse feedbackListResponse = response.body();
+                    if (feedbackListResponse.getStatus())
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.getFeedbackList, true, null, feedbackListResponse.getData());
+                    else {
+                        Toast.makeText(context, feedbackListResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.getFeedbackList, false, null, null);
+                    }
+                } else {
+                    Toast.makeText(context, context.getResources().getString(R.string.error_get_feedback_list), Toast.LENGTH_SHORT).show();
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.getFeedbackList, false, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<FeedbackListResponse> call, @NonNull Throwable t) {
+                Toast.makeText(context, context.getResources().getString(R.string.error_get_feedback_list), Toast.LENGTH_SHORT).show();
+                networkingInterface.networkingRequest(NetworkingInterface.MethodType.getFeedbackList, false, null, null);
             }
         });
     }

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                     jsonObject.put("api_key", "test_3105");
                     jsonObject.put("first_name", "Sahil");
                     jsonObject.put("last_name", "Chugh");
-                    jsonObject.put("phone_number", "+918929329112");
+                    jsonObject.put("phone_number", "+918929329000");
                     jsonObject.put("language", "en");
                     jsonObject.put("gender", "0");
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 jsonObject.put("api_key", "test_3105");
                 jsonObject.put("first_name", "Sahil");
                 jsonObject.put("last_name", "Chugh");
-                jsonObject.put("phone_number", "+918929329112");
+                jsonObject.put("phone_number", "+918929329000");
                 jsonObject.put("language", "en");
                 jsonObject.put("gender", "0");
 
