@@ -22,6 +22,15 @@ import java.util.List;
 public class CallHistoryFragment extends BaseFragment implements CallHistoryInterface {
     private FragmentCallHistoryBinding binding;
     private View view1;
+    private String notificationCallId = "";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            notificationCallId = getArguments().getString("callId");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,8 +49,20 @@ public class CallHistoryFragment extends BaseFragment implements CallHistoryInte
             Log.e("set screen error", e.getMessage()+"");
         }
 
-//        showLoading();
-        networking.getCallHistoryList();
+        if (getArguments() != null) {
+            if (getArguments().getString("callId") != null) {
+                if (notificationCallId.length() != 0) {
+                    activity.dismissLoader();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("callId", notificationCallId + "");
+                    notificationCallId = "";
+                    Navigation.findNavController(view1).navigate(R.id.action_nav_history_to_callDetailFragment, bundle);
+                } else
+                    networking.getCallHistoryList();
+            } else
+                networking.getCallHistoryList();
+        } else
+            networking.getCallHistoryList();
 
         binding.consultDoctorBtn.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_call_history_to_nav_consult_doctor));
     }
