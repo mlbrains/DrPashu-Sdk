@@ -3,6 +3,7 @@ package com.drpashu.sdk.activity;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.content.Intent;
@@ -30,6 +31,10 @@ public class HomeActivity extends BaseActivity {
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.nav_home, true)
+                .build();
+
         preferenceUtils.setBlockNavigationStatus(false);
         if (getIntent() != null) {
             if (getIntent().getExtras().getString("sdk") != null) {
@@ -50,14 +55,14 @@ public class HomeActivity extends BaseActivity {
                 bundle.putString("unixNotificationTime", getIntent().getExtras().getString("unixNotificationTime") + "");
                 bundle.putString("language", getIntent().getExtras().getString("language"));
                 bundle.putString("animal", getIntent().getExtras().getString("animal"));
-                navController.navigate(R.id.incomingCallFragment, bundle);
+                navController.navigate(R.id.incomingCallFragment, bundle, navOptions);
             } else if (getIntent().getExtras().getString("call").equalsIgnoreCase("false")) {
                 if (getIntent().getExtras().getString("screen").equalsIgnoreCase("call_history"))
-                    navController.navigate(R.id.nav_call_history);
+                    navController.navigate(R.id.nav_call_history, null, navOptions);
                 else if (getIntent().getExtras().getString("screen").equalsIgnoreCase("prescription")) {
                     Bundle bundle = new Bundle();
                     bundle.putString("callId", getIntent().getExtras().getString("callId") + "");
-                    navController.navigate(R.id.nav_call_history, bundle);
+                    navController.navigate(R.id.nav_call_history, bundle, navOptions);
                 }
             }
         }

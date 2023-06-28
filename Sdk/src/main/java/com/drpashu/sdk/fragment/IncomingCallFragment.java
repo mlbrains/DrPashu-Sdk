@@ -159,8 +159,10 @@ public class IncomingCallFragment extends BaseFragment {
                 utils.hideView(binding.mainLayout);
                 utils.visibleView(binding.callLayout);
                 binding.userText.setText(firstName + " " + lastName);
-                if (profileImg.length() != 0)
-                    Picasso.get().load(ApiClient.BASE_URL_MEDIA + profileImg).into(binding.userImg);
+                if (profileImg.length() != 0) {
+                    if (!profileImg.equalsIgnoreCase("null"))
+                        Picasso.get().load(ApiClient.BASE_URL_MEDIA + profileImg).into(binding.userImg);
+                }
 
                 startCountDown();
             }

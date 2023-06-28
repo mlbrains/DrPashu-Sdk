@@ -18,8 +18,8 @@ public class ApiClient {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-//        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -35,8 +35,8 @@ public class ApiClient {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-//        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
 
         if (sdkRetrofit == null) {
             sdkRetrofit = new Retrofit.Builder()
