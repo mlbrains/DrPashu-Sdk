@@ -35,7 +35,6 @@
     <fragment
         android:id="@+id/incomingCallFragment"
         android:name="com.drpashu.sdk.fragment.IncomingCallFragment"
-        android:label="Incoming Call"
         tools:layout="@layout/fragment_incoming_call">
         <action
             android:id="@+id/action_incomingCallFragment_to_callFeedbackFragment"
@@ -57,7 +56,6 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.drpashu.sdk.fragment.HomeFragment"
-        android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_home_to_nav_call_history"

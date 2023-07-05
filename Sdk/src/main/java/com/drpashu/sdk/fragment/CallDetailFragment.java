@@ -134,16 +134,20 @@ public class CallDetailFragment extends BaseFragment {
                 utils.hideView(binding.symptomVetLayout);
             }
 
-            if (callDetailResponse.getPrescriptionImageFirst().length() != 0)
+            if (callDetailResponse.getPrescriptionImageFirst().length() != 0) {
                 Picasso.get().load(baseUrl + "/media/" + callDetailResponse.getPrescriptionImageFirst()).into(binding.prescription1Img);
+                binding.prescriptionImgText.setText(utils.getStringValue(R.string.prescription_detail) + " :");
+            }
             else {
                 utils.hideView(binding.prescriptionImgText);
                 utils.hideView(binding.prescription1Img);
                 utils.hideView(binding.prescription2Img);
             }
 
-            if (callDetailResponse.getPrescriptionImageSecond().length() != 0)
+            if (callDetailResponse.getPrescriptionImageSecond().length() != 0) {
                 Picasso.get().load(baseUrl + "/media/" + callDetailResponse.getPrescriptionImageSecond()).into(binding.prescription2Img);
+                binding.prescriptionImgText.setText(utils.getStringValue(R.string.prescription_detail) + " :");
+            }
             else
                 utils.hideView(binding.prescription2Img);
 

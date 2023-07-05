@@ -291,7 +291,6 @@
     <string name="prescription">Prescription</string>
     <string name="update_prescription_note">Click on image to update prescription and text</string>
     <string name="edit">Edit</string>
-    <string name="description_optional">Treatment</string>
     <string name="no_recent_call_history">No Recent Call History</string>
     <string name="allow_permissions">Allow Permissions</string>
     <string name="prescription_1_img">Add photo of your Prescription</string>
@@ -342,7 +341,6 @@
     <string name="appointment_toolbar">\tAppointments</string>
     <string name="prescription_toolbar">\tPrescription</string>
     <string name="call_history_toolbar">\tCall History</string>
-    <string name="call_feedback_toolbar">\tCall Feedback</string>
     <string name="payment_toolbar">\tPayment</string>
     <string name="start_call_toolbar">\tCall</string>
     <string name="additional_details_toolbar">\tAdditional Details</string>
@@ -422,6 +420,8 @@
     <string name="error_submit_feedback">Something went wrong- 72</string>
     <string name="error_get_feedback_list">Something went wrong- 73</string>
     <string name="error_get_referral_code">Something went wrong- 74</string>
+    <string name="error_get_message_list">Something went wrong- 75</string>
+    <string name="error_send_message">Something went wrong- 76</string>
     <string name="add_mortality_toolbar">\tAdd Mortality</string>
     <string name="mortality_description">This module tracks the animal mortality (death) which may occur because of illness or similar reasons. This data is used to identify frequent diseases and prevent repetitions.</string>
     <string name="upload_image_note">Click on the image to upload Profile Picture</string>
@@ -462,8 +462,8 @@
     <string name="onboarding_consultation_title_2">Click on “Consult a Doctor”</string>
     <string name="onboarding_consultation_description_2">We have the best doctors available with us.</string>
     <string name="onboarding_consultation_title_3">Select your animal</string>
-    <string name="onboarding_consultation_description_3">For example, Click on “Chicken”</string>
-    <string name="onboarding_consultation_title_4">Well done. You have selected Chicken</string>
+    <string name="onboarding_consultation_description_3">For example, Click on “Cow”</string>
+    <string name="onboarding_consultation_title_4">Well done. You have selected Cow</string>
     <string name="onboarding_consultation_description_4">Now, click on “Proceed” to see the available doctors.</string>
     <string name="onboarding_consultation_title_5">Best Doctor from OPD category is selected for you.</string>
     <string name="onboarding_consultation_description_5">Clicking on “Call a Doctor” will start the call. (In this demo, no call will be started).</string>
@@ -485,7 +485,7 @@
     <string name="missed_call">Missed Call</string>
     <string name="missed_a_call">You have a missed call from</string>
     <string name="payment_unsuccessful">Payment was not completed</string>
-    <string name="payment_success">Coins Added Successfully. Connecting you to the next available vet.</string>
+    <string name="payment_success">Amount Added Successfully. Connecting you to the next available vet.</string>
     <string name="pay">Pay</string>
     <string name="start_your_call">Start your call</string>
     <string name="and">and</string>
@@ -585,9 +585,9 @@
     <string name="search_for_the_user">Search for the user</string>
     <string name="search_for_the_post">Search for the Post</string>
     <string name="farms">Farms</string>
-    <string name="pashu_coins_in_wallet">Pashu Coins in wallet</string>
-    <string name="coins_used_to_call">Coins used to complete call</string>
-    <string name="add_coins_to_call">Add coins to complete call</string>
+    <string name="pashu_coins_in_wallet">Balance in wallet</string>
+    <string name="coins_used_to_call">Balance required to complete call</string>
+    <string name="add_coins_to_call">To complete call, add</string>
     <string name="no_posts_found">No Posts Found</string>
     <string name="post_reported">Post Reported Successfully. You will no longer see the post in your feed</string>
     <string name="report_post">Report</string>
@@ -597,7 +597,7 @@
     <string name="your_farms">Your Farms:</string>
     <string name="disease_diagnosed">Provisional Diagnosis</string>
     <string name="possible_symptoms_during_call">Symptoms</string>
-    <string name="prescriptionNoteText"><b>Important Note:</b> This diagnosis &amp; prescription is generated based on information provided by the Animal Owner during online consultation without any physical check-up. For any medical emergencies / bleeding etc, we recommend you to visit your nearby Veterinarian immediately.</string>
+    <string name="prescriptionNoteText">Important Note: This diagnosis and prescription is generated based on information provided by the Animal Owner during online consultation without any physical check-up. For any medical emergencies / bleeding etc, we recommend you to visit your nearby Veterinarian immediately.</string>
     <string name="select_diagnosis">Please select Possible Diagnosis</string>
     <string name="select_diagnose_disease">Select Diagnosis Disease</string>
     <string name="money_back_guarantee_1">100% Money Back guarantee, If not satisfied.</string>
@@ -614,11 +614,34 @@
     <string name="rating_5">What did you love?</string>
     <string name="create_post_toolbar">\tCreate Post</string>
     <string name="post_toolbar">\tPost</string>
+    <string name="call_feedback_toolbar">\tCall Feedback</string>
     <string name="rating_1_title">Poor</string>
     <string name="rating_2_title">Average</string>
     <string name="rating_3_title">Good</string>
     <string name="rating_4_title">Very Good</string>
     <string name="rating_5_title">Excellent</string>
+    <string name="others">Others</string>
+    <string name="share_and_earn">Share and Earn</string>
+    <string name="refer_a_friend">Refer A Friend</string>
+    <string name="refer_a_friend_toolbar">\tRefer A Friend</string>
+    <string name="refer_share">Hi! I use DrPashu app to instantly call expert Vets on video call from the comfort of my home. No need to leave my farm or home to keep my animals healthy! Use this invite from me and earn up to ₹50 worth PashuCoins. Enter my unique code on the sign up page to Earn rewards. Hurry Now!</string>
+    <string name="download_link">Download link</string>
+    <string name="refer_message">Hurray!! Now earn up to 50 Pashu coins while helping your friends. You and every friend who signs up with your code will earn up to 50 Pashu Coins!!</string>
+    <string name="referral_code_optional">Referral Code (Optional)</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="enter_amount">Enter Valid Amount</string>
+    <string name="adding_coins">Adding coins to wallet</string>
+    <string name="adding_coins_retry_1">Hang On.. Payment Successful.. Adding coins to wallet</string>
+    <string name="adding_coins_retry_2">Hang On.. Payment Successful.. Taking more time than usual to add coins to wallet</string>
+    <string name="adding_coins_retry_3">Hang On.. Payment Successful.. Trying one last time to add coins to wallet</string>
+    <string name="contact_us_title">Contact us</string>
+    <string name="contact_us_toolbar">\tContact us</string>
+    <string name="contact_message">Got stuck. We are here to help you out. Just message your issue.</string>
+    <string name="user_language">User Language</string>
+    <string name="message_us">Message Us</string>
+    <string name="refer_and_earn_coins">Refer and Earn Coins</string>
+    <string name="prescription_detail">Prescription (click image below)</string>
+    <string name="call_note_detail">Start the call &amp; hold. If the vet does not pick up, we will connect to the next vet automatically</string>
 
     <string-array name="gender_list">
         <item>Male</item>
