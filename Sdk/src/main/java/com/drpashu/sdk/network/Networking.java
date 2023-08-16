@@ -364,10 +364,13 @@ public class Networking {
 
     public void addUserFromSdk(String jsonData) {
         DrPashuRequest drPashuRequest = new DrPashuRequest();
+        String firstName = "", lastName = "";
 
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
 
+            firstName = jsonObject.getString("first_name");
+            lastName = jsonObject.getString("last_name");
             drPashuRequest.setApi_key(jsonObject.getString("api_key"));
             drPashuRequest.setFirst_name(jsonObject.getString("first_name"));
             drPashuRequest.setLast_name(jsonObject.getString("last_name"));
@@ -404,6 +407,8 @@ public class Networking {
         }
 
         Call<DrPashuResponse> drPashuResponseCall = apiSdkInterface.addUserFromSdk(drPashuRequest);
+        String finalFirstName = firstName;
+        String finalLastName = lastName;
         drPashuResponseCall.enqueue(new Callback<DrPashuResponse>() {
             @Override
             public void onResponse(@NonNull Call<DrPashuResponse> call, @NonNull Response<DrPashuResponse> response) {
@@ -411,6 +416,7 @@ public class Networking {
                     DrPashuResponse drPashuResponse = response.body();
                     if (drPashuResponse.getStatus()) {
                         preferenceUtils.setUserId(drPashuResponse.getData().getPhoneUserId());
+                        preferenceUtils.setUsername(finalFirstName + " " + finalLastName);
                         networkingInterface.networkingRequest(NetworkingInterface.MethodType.addUserFromSdk, true, null, null);
                     } else {
                         Toast.makeText(context, drPashuResponse.getMessage() + "", Toast.LENGTH_SHORT).show();

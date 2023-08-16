@@ -23,6 +23,14 @@ public class PreferenceUtils {
         getPrefrence().edit().putString("user-id", token).apply();
     }
 
+    public String getUsername(){
+        return getPrefrence().getString("username","");
+    }
+
+    public void setUsername(String username){
+        getPrefrence().edit().putString("username",username).apply();
+    }
+
     public Boolean getBlockNavigationStatus(){
         return getPrefrence().getBoolean("back_press", false);
     }

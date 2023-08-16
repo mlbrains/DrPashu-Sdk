@@ -35,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
+import io.agora.rtc.models.UserInfo;
 import io.agora.rtc.video.VideoCanvas;
 import io.agora.rtc.video.VideoEncoderConfiguration;
 
@@ -44,8 +45,9 @@ public class IncomingCallFragment extends BaseFragment {
     private Boolean callIncoming = false, callRedial = false, audioDisabled = false, videoDisabled = false,
             callStarted = false, doneAnalysis = false, companySelected = false, freeCall = false;
     private int notificationId = 0;
-    private String callId = "", channelId = "", firstName = "", lastName = "", profileImg ="", groupId = "", farmId = "",
-            animalType = "", vetCategory = "", companyName = "", callAmount = "", paymentId = "", unixNotificationTime = "", callInitiated = "";
+    private String callId = "", channelId = "", firstName = "", lastName = "", profileImg ="",
+            groupId = "", farmId = "", animalType = "", vetCategory = "", companyName = "",
+            callAmount = "", paymentId = "", unixNotificationTime = "", callInitiated = "", userName = "";
     private View view1;
     private CountDownTimer countDownTimer;
     private MediaPlayer mediaPlayer;
@@ -222,7 +224,7 @@ public class IncomingCallFragment extends BaseFragment {
     }
 
     private void initializeCall() {
-        binding.userNameText.setText(utils.getStringValue(R.string.calling) + " - " + firstName + " " + lastName);
+        binding.userNameText.setText(utils.getStringValue(R.string.calling));
         utils.hideView(binding.callLayout);
         utils.visibleView(binding.mainLayout);
         initAgoraEngine();
@@ -264,7 +266,6 @@ public class IncomingCallFragment extends BaseFragment {
 
                     countDownTimer.cancel();
 
-                    binding.userNameText.setText(utils.getStringValue(R.string.call_started) + " - " + firstName + " " + lastName);
                     setupRemoteVideoStream(uid);
                     networking.updateCallStatus(callId, "Started");
                 });
@@ -284,8 +285,15 @@ public class IncomingCallFragment extends BaseFragment {
         public void onUserMuteAudio(int uid, boolean muted) {
             requireActivity().runOnUiThread(() -> {
                 binding.userAudioImg.setVisibility(!muted ? View.GONE : View.VISIBLE);
-                binding.userAudioImg.setText(firstName+" "+utils.getStringValue(R.string.muted_call));
+                binding.userAudioImg.setText(userName+" "+utils.getStringValue(R.string.muted_call));
             });
+        }
+
+        @Override
+        public void onUserInfoUpdated(int uid, UserInfo userInfo) {
+            super.onUserInfoUpdated(uid, userInfo);
+            userName = userInfo.userAccount;
+            binding.userNameText.setText(utils.getStringValue(R.string.call_started) + " - " + userName);
         }
 
         // remote stream has been toggled
@@ -315,7 +323,7 @@ public class IncomingCallFragment extends BaseFragment {
                                                                               VideoEncoderConfiguration.STANDARD_BITRATE,
                                                                               VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT));
 
-        mRtcEngine.joinChannel(null, channelId, "Extra Optional Data", 0); // need to change the s1 variable for multiple channels
+        mRtcEngine.joinChannelWithUserAccount(null, channelId, preferenceUtils.getUsername());
         setupLocalVideoFeed();
     }
 
