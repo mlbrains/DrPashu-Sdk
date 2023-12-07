@@ -468,8 +468,6 @@ public class IncomingCallFragment extends BaseFragment {
             lastName = startCallDataResponse.getLast_name();
             notificationId = Integer.parseInt(startCallDataResponse.getNotificationId());
 
-            binding.userNameText.setText(utils.getStringValue(R.string.calling) + " - " + firstName + " " + lastName);
-
             if (!mediaPlayer.isPlaying())
                 mediaPlayer.start();
 
