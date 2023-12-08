@@ -27,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
         binding.button.setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
             try {
-                    jsonObject.put("api_key", "test_3105");
+                    jsonObject.put("api_key", "graamik_2111_test");
                     jsonObject.put("first_name", "Sahil");
                     jsonObject.put("last_name", "Chugh");
-                    jsonObject.put("phone_number", "+918929329000");
+                    jsonObject.put("phone_number", "+918929329999");
                     jsonObject.put("language", "en");
                     jsonObject.put("gender", "0");
 
@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         binding.buttonC.setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("api_key", "test_3105");
+                jsonObject.put("api_key", "graamik_2111_test");
                 jsonObject.put("first_name", "Sahil");
                 jsonObject.put("last_name", "Chugh");
-                jsonObject.put("phone_number", "+918929329000");
+                jsonObject.put("phone_number", "+918929329999");
                 jsonObject.put("language", "en");
                 jsonObject.put("gender", "0");
 

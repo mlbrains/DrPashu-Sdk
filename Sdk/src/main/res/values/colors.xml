@@ -2,10 +2,14 @@
 <resources>
     <color name="normal_side_nav">#BB86FC</color>
     <color name="selected_side_nav">#6B00F6</color>
-    <color name="base">#0F8040</color>
-    <color name="dark_base">#00662C</color>
-    <color name="light_base">#CCEFDB</color>
-    <color name="light_card">#EAFBF1</color>
+    <color name="base">#F68920</color>
+    <color name="dark_base">#402429</color>
+    <color name="light_base">#f9b675</color>
+    <color name="light_card">#fde7d1</color>
+<!--    <color name="base">#0F8040</color>-->
+<!--    <color name="dark_base">#00662C</color>-->
+<!--    <color name="light_base">#CCEFDB</color>-->
+<!--    <color name="light_card">#EAFBF1</color>-->
 <!--    <color name="base">#6B00F6</color>-->
 <!--    <color name="dark_base">#3D01BB</color>-->
 <!--    <color name="light_base">#03DAC5</color>-->
@@ -41,4 +45,16 @@
     <color name="dark_green">#379683</color>
     <color name="light_green">#8ee4af</color>
     <color name="light_card_green">#edf5e1</color>
+
+    <!--grey theme-->
+    <color name="grey_theme">#F68920</color>
+    <color name="dark_grey">#402429</color>
+    <color name="light_grey_theme">#f9b675</color>
+    <color name="light_card_grey">#fde7d1</color>
+
+<!--    &lt;!&ndash;grey theme&ndash;&gt;
+    <color name="grey_theme">#854b55</color>
+    <color name="dark_grey">#402429</color>
+    <color name="light_grey_theme">#cba3aa</color>
+    <color name="light_card_grey">#eee0e3</color>-->
 </resources>
