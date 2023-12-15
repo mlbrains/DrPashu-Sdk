@@ -323,7 +323,7 @@ public class IncomingCallFragment extends BaseFragment {
                                                                               VideoEncoderConfiguration.STANDARD_BITRATE,
                                                                               VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT));
 
-        mRtcEngine.joinChannelWithUserAccount(null, channelId, preferenceUtils.getUsername());
+        mRtcEngine.joinChannelWithUserAccount(null, channelId, preferenceUtils.getUserId());
         setupLocalVideoFeed();
     }
 
