@@ -12,13 +12,17 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.drpashu.sdk.R;
+import com.drpashu.sdk.adapter.ProductListAdapter;
 import com.drpashu.sdk.databinding.FragmentCallDetailBinding;
 import com.drpashu.sdk.network.ApiClient;
 import com.drpashu.sdk.network.model.response.CallDetailResponse;
 import com.ortiz.touchview.TouchImageView;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class CallDetailFragment extends BaseFragment {
     private FragmentCallDetailBinding binding;
@@ -26,6 +30,7 @@ public class CallDetailFragment extends BaseFragment {
     private byte[] prescription1Byte = null, prescription2Byte = null;
     private static final int RESULT_LOAD_PRESCRIPTION_1 = 1, RESULT_LOAD_PRESCRIPTION_2 = 2;
     private View view1;
+    private ProductListAdapter productListAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,6 +156,17 @@ public class CallDetailFragment extends BaseFragment {
             else
                 utils.hideView(binding.prescription2Img);
 
+            if (callDetailResponse.getProducts().size() == 0)
+                utils.hideView(binding.recommendProductText);
+            else {
+                binding.recommendProductText.setText(utils.getStringValue(R.string.products_recommended_by_vet));
+                utils.visibleView(binding.recommendProductText);
+            }
+
+            binding.productRecyclerview.setLayoutManager(new GridLayoutManager(context, 2));
+            productListAdapter = new ProductListAdapter(context, activity, callDetailResponse.getProducts(), false);
+            binding.productRecyclerview.setAdapter(productListAdapter);
+            binding.productRecyclerview.setItemViewCacheSize(callDetailResponse.getProducts().size());
 
             if (callDetailResponse.getDetails() != null)
                 binding.descriptionInput.setText(callDetailResponse.getDetails() + "");

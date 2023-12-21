@@ -642,7 +642,8 @@
     <string name="refer_and_earn_coins">Refer and Earn Coins</string>
     <string name="prescription_detail">Prescription (click image below)</string>
     <string name="call_note_detail">Start the call &amp; hold. If the vet does not pick up, we will connect to the next vet automatically</string>
-
+    <string name="recommend_products">Recommend Products</string>
+    <string name="products_recommended_by_vet">Products recommended by Vet</string>
     <string-array name="gender_list">
         <item>Male</item>
         <item>Female</item>
