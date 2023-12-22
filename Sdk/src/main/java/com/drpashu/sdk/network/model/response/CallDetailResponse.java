@@ -140,6 +140,14 @@ public class CallDetailResponse {
         @Expose
         private String callInitiated;
 
+        @SerializedName("products")
+        @Expose
+        private List<ProductListResponse.Data> products;
+
+        public List<ProductListResponse.Data> getProducts() {
+            return products;
+        }
+
         public String getCallInitiated() {
             return callInitiated;
         }

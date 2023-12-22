@@ -485,6 +485,31 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:id="@+id/recommend_product_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/recommend_products"
+            android:textColor="@color/black"
+            android:textSize="@dimen/normal_text"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionLayout"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/product_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/extra_small_margin"
+            android:nestedScrollingEnabled="false"
+            android:paddingStart="@dimen/extra_small_margin"
+            android:paddingEnd="@dimen/extra_small_margin"
+            app:layout_constraintTop_toBottomOf="@id/recommend_product_text" />
+
+        <TextView
             android:id="@+id/noteText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -499,7 +524,7 @@
             android:textColor="@color/dark_base"
             android:textSize="@dimen/extra_small_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionLayout" />
+            app:layout_constraintTop_toBottomOf="@id/product_recyclerview" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/updateBtn"
