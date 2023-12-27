@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.drpashu.sdk.R;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 
 public class CallDetailFragment extends BaseFragment {
     private FragmentCallDetailBinding binding;
-    private String callId = "", baseUrl = ApiClient.BASE_URL_MEDIA;
+    private String callId = "", baseUrl = ApiClient.BASE_URL_MEDIA,screen = "";
     private byte[] prescription1Byte = null, prescription2Byte = null;
     private static final int RESULT_LOAD_PRESCRIPTION_1 = 1, RESULT_LOAD_PRESCRIPTION_2 = 2;
     private View view1;
@@ -67,8 +68,18 @@ public class CallDetailFragment extends BaseFragment {
         binding.prescription2Img.setOnClickListener(v -> previewImg(binding.prescription2Img.getDrawable()));
         binding.animalImg1.setOnClickListener(v -> previewImg(binding.animalImg1.getDrawable()));
         binding.animalImg2.setOnClickListener(v -> previewImg(binding.animalImg2.getDrawable()));
+        binding.chatIcon.setOnClickListener(v -> {
+            navigateToChat(v);
+        });
     }
 
+    private void navigateToChat(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString("callId", callId);
+        bundle.putString("userName", binding.userText.getText().toString());
+        screen = "";
+        Navigation.findNavController(view).navigate(R.id.action_callDetailFragment_to_chatFragment, bundle);
+    }
     private void previewImg(Drawable drawable) {
         Dialog previewImgDialog = new Dialog(getContext());
         previewImgDialog.setCancelable(false);
@@ -127,6 +138,7 @@ public class CallDetailFragment extends BaseFragment {
                 binding.infoIcon.setImageResource(R.drawable.call_in_done);
 
             if (callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed")) {
+                utils.visibleView(binding.chatIcon);
                 if (callDetailResponse.getCallDuration() != null)
                     binding.dateText.setText(callDetailResponse.getDate() + " " + callDetailResponse.getTime() + " (" + callDetailResponse.getCallDuration() + ")");
             } else {
@@ -137,6 +149,7 @@ public class CallDetailFragment extends BaseFragment {
                 utils.hideView(binding.descriptionLayout);
                 utils.hideView(binding.diseaseLayout);
                 utils.hideView(binding.symptomVetLayout);
+                utils.hideView(binding.chatIcon);
             }
 
             if (callDetailResponse.getPrescriptionImageFirst().length() != 0) {

@@ -34,8 +34,8 @@ public class NotificationHelper extends ContextWrapper {
     private NotificationManagerCompat notificationManager;
     private NotificationManager notificationDeviceManager;
     long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-                      500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
-                      500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
+            500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+            500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
 
     private static final String APP_CHANNEL_ID = "APP_NOTIFICATION";
     private static final String CALL_CHANNEL_ID = "CALL_NOTIFICATION";
@@ -63,7 +63,7 @@ public class NotificationHelper extends ContextWrapper {
             else {
                 sounduri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             }
-            
+
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                     .build();
@@ -159,6 +159,9 @@ public class NotificationHelper extends ContextWrapper {
 
         if (screen.equalsIgnoreCase("call_history")){
             Intent intent = new Intent("missed_call");
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }else if (screen.equalsIgnoreCase("chat")){
+            Intent intent = new Intent("chat");
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
 

@@ -16,6 +16,7 @@ import com.drpashu.sdk.network.model.response.CallHistoryListResponse;
 import com.drpashu.sdk.network.model.response.DeviceTokenUpdateResponse;
 import com.drpashu.sdk.network.model.response.DrPashuResponse;
 import com.drpashu.sdk.network.model.response.FeedbackListResponse;
+import com.drpashu.sdk.network.model.response.MessageListResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
 import com.drpashu.sdk.utils.PreferenceUtils;
@@ -27,6 +28,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -486,6 +490,77 @@ public class Networking {
             public void onFailure(@NonNull Call<FeedbackListResponse> call, @NonNull Throwable t) {
                 Toast.makeText(context, context.getResources().getString(R.string.error_get_feedback_list), Toast.LENGTH_SHORT).show();
                 networkingInterface.networkingRequest(NetworkingInterface.MethodType.getFeedbackList, false, null, null);
+            }
+        });
+    }
+    public void getMessageList(String callId) {
+        Call<MessageListResponse> messageListResponseCall = apiInterface.getMessageList(preferenceUtils.getUserId(), callId);
+        messageListResponseCall.enqueue(new Callback<MessageListResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MessageListResponse> call, @NonNull Response<MessageListResponse> response) {
+                if (response.isSuccessful()) {
+                    MessageListResponse messageListResponse = response.body();
+                    if (messageListResponse.getStatus())
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.getMessageList, true, null, messageListResponse.getData());
+                    else {
+                        Toast.makeText(context,  messageListResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.getMessageList, false, null, null);
+                    }
+                } else {
+                    Toast.makeText(context, context.getResources().getString(R.string.error_get_message_list), Toast.LENGTH_SHORT).show();
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.getMessageList, false, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MessageListResponse> call, @NonNull Throwable t) {
+                Toast.makeText(context, context.getResources().getString(R.string.error_get_message_list), Toast.LENGTH_SHORT).show();
+                networkingInterface.networkingRequest(NetworkingInterface.MethodType.getMessageList, false, null, null);
+            }
+        });
+    }
+    public void sendMessage(String callId, String message) {
+        long fileName = System.currentTimeMillis();
+
+        MultipartBody.Part partImage = null;
+        MultipartBody.Part partVideo = null;
+
+        RequestBody requestCallId = RequestBody.create(callId, MediaType.parse("multipart/form-data"));
+        RequestBody requestMessage = RequestBody.create(message, MediaType.parse("multipart/form-data"));
+
+//        if (image != null) {
+//            RequestBody requestImage = RequestBody.create(image, MediaType.parse("multipart/form-data"));
+//            partImage = MultipartBody.Part.createFormData("image", fileName + ".png", requestImage);
+//        }
+//
+//        if (video != null) {
+//            RequestBody requestVideo = RequestBody.create(video, MediaType.parse("multipart/form-data"));
+//            partVideo = MultipartBody.Part.createFormData("video", fileName + ".mp4", requestVideo);
+//        }
+
+
+        Call<BaseResponse> baseResponseCall = apiInterface.sendMessage(preferenceUtils.getUserId(), requestCallId, requestMessage, partImage, partVideo);
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BaseResponse> call, @NonNull Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse baseResponse = response.body();
+                    if (baseResponse.getStatus())
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.sendMessage, true, null, null);
+                    else {
+                        Toast.makeText(context, baseResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.sendMessage, false, null, null);
+                    }
+                } else {
+                    Toast.makeText(context, context.getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.sendMessage, false, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BaseResponse> call, @NonNull Throwable t) {
+                Toast.makeText(context, context.getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
+                networkingInterface.networkingRequest(NetworkingInterface.MethodType.sendMessage, false, null, null);
             }
         });
     }
