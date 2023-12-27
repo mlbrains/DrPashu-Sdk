@@ -41,4 +41,17 @@
     <color name="dark_green">#379683</color>
     <color name="light_green">#8ee4af</color>
     <color name="light_card_green">#edf5e1</color>
+
+    <!--grey theme-->
+    <color name="grey">#CFCED2</color>
+    <color name="dark_grey">#62626D</color>
+    <color name="medium_grey">#F5F7FA</color>
+    <color name="semi_dark_grey">#8D8D94</color>
+    <color name="grey_300">#D0D5DD</color>
+    <color name="grey700">#393C3F</color>
+    <color name="grey500">#667085</color>
+    <color name="grey800">#1D2022</color>
+    <color name="grey900">#344054</color>
+    <color name="grey100">#F2F4F7</color>
+    <color name="grey200">#E0E1E4</color>
 </resources>
