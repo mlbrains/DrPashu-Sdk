@@ -8,19 +8,24 @@ import com.drpashu.sdk.network.model.response.CallHistoryListResponse;
 import com.drpashu.sdk.network.model.response.DeviceTokenUpdateResponse;
 import com.drpashu.sdk.network.model.response.DrPashuResponse;
 import com.drpashu.sdk.network.model.response.FeedbackListResponse;
+import com.drpashu.sdk.network.model.response.MessageListResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
 import com.google.gson.JsonObject;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiInterface {
     @GET("animals")
@@ -99,4 +104,15 @@ public interface ApiInterface {
 
     @GET("get_feedback_list")
     Call<FeedbackListResponse> getFeedbackList(@Header("user-id") String user_id);
+    @POST("view_messages")
+    @FormUrlEncoded
+    Call<MessageListResponse> getMessageList(@Header("user-id") String user_id,
+                                             @Field("call_id") String callId);
+    @Multipart
+    @POST("send_message")
+    Call<BaseResponse> sendMessage(@Header("user-id") String user_id,
+                                   @Part("call_id") RequestBody callId,
+                                   @Part("text") RequestBody text,
+                                   @Part MultipartBody.Part image,
+                                   @Part MultipartBody.Part video);
 }
