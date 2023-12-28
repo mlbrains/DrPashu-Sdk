@@ -3,6 +3,8 @@ package com.drpashu.sdk.fragment;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,8 +68,20 @@ public class CallDetailFragment extends BaseFragment {
     private void onClickListeners() {
         binding.prescription1Img.setOnClickListener(v -> previewImg(binding.prescription1Img.getDrawable()));
         binding.prescription2Img.setOnClickListener(v -> previewImg(binding.prescription2Img.getDrawable()));
-        binding.animalImg1.setOnClickListener(v -> previewImg(binding.animalImg1.getDrawable()));
-        binding.animalImg2.setOnClickListener(v -> previewImg(binding.animalImg2.getDrawable()));
+//        binding.animalImg1.setOnClickListener(v -> previewImg(binding.animalImg1.getDrawable()));
+//        binding.animalImg2.setOnClickListener(v -> previewImg(binding.animalImg2.getDrawable()));
+        binding.imageButtonDown.setOnClickListener(view -> {
+            if(binding.importantNoteText.getVisibility() == View.VISIBLE){
+                TransitionManager.beginDelayedTransition(binding.cardImportantNoteCallDetails,new AutoTransition());
+                utils.hideView(binding.groupCallDetails);
+                binding.imageButtonDown.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
+            }
+            else{
+                TransitionManager.beginDelayedTransition(binding.cardImportantNoteCallDetails,new AutoTransition());
+                utils.visibleView(binding.groupCallDetails);
+                binding.imageButtonDown.setImageResource(R.drawable.icon_arrow_up);
+            }
+        });
         binding.chatIcon.setOnClickListener(v -> {
             navigateToChat(v);
         });
@@ -109,8 +123,8 @@ public class CallDetailFragment extends BaseFragment {
             binding.diseaseInput.setTextColor(getContext().getResources().getColor(R.color.black));
             binding.symptomVetInput.setTextColor(getContext().getResources().getColor(R.color.black));
 
-            binding.symptomListText.setText(utils.getStringValue(R.string.symptom_list) + " :");
-            binding.animalImgText.setText(utils.getStringValue(R.string.animal_image) + " :");
+//            binding.symptomListText.setText(utils.getStringValue(R.string.symptom_list) + " :");
+//            binding.animalImgText.setText(utils.getStringValue(R.string.animal_image) + " :");
             binding.prescriptionImgText.setText(utils.getStringValue(R.string.prescription) + " :");
 
             CallDetailResponse.Data callDetailResponse = (CallDetailResponse.Data) o;
@@ -124,23 +138,31 @@ public class CallDetailFragment extends BaseFragment {
                     Picasso.get().load(ApiClient.BASE_URL_MEDIA + callDetailResponse.getProfilePicture()).into(binding.userImg);
             }
 
-            if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Farmer") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
-                binding.infoIcon.setImageResource(R.drawable.call_out_miss);
-            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Farmer") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
-                binding.infoIcon.setImageResource(R.drawable.call_out_done);
-            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Vet") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
-                binding.infoIcon.setImageResource(R.drawable.call_in_miss);
-            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Vet") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
-                binding.infoIcon.setImageResource(R.drawable.call_in_done);
-            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Admin") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
-                binding.infoIcon.setImageResource(R.drawable.call_in_miss);
-            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Admin") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
-                binding.infoIcon.setImageResource(R.drawable.call_in_done);
+//            if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Farmer") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
+//                binding.infoIcon.setImageResource(R.drawable.call_out_miss);
+//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Farmer") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
+//                binding.infoIcon.setImageResource(R.drawable.call_out_done);
+//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Vet") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
+//                binding.infoIcon.setImageResource(R.drawable.call_in_miss);
+//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Vet") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
+//                binding.infoIcon.setImageResource(R.drawable.call_in_done);
+//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Admin") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
+//                binding.infoIcon.setImageResource(R.drawable.call_in_miss);
+//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Admin") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
+//                binding.infoIcon.setImageResource(R.drawable.call_in_done);
 
             if (callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed")) {
                 utils.visibleView(binding.chatIcon);
+                utils.visibleView(binding.constraintCallback);
                 if (callDetailResponse.getCallDuration() != null)
                     binding.dateText.setText(callDetailResponse.getDate() + " " + callDetailResponse.getTime() + " (" + callDetailResponse.getCallDuration() + ")");
+                binding.cardCallStatus.setStrokeColor(getResources().getColor(R.color.green600));
+                binding.cardCallStatus.getBackground().setTint(getResources().getColor(R.color.green_success));
+                binding.cardCallStatusInfo.getBackground().setTint(getResources().getColor(R.color.call_success_green));
+                binding.callStatusInfo.setText(R.string.success);
+                binding.callStatusText.setText(R.string.you_have_completed_your_call);
+                binding.callStatusText.setTextColor(getResources().getColor(R.color.call_success_green_text));
+                binding.relativeLayoutCallGif.setBackgroundColor(getResources().getColor(R.color.green300));
             } else {
                 utils.hideView(binding.updateText);
                 utils.hideView(binding.prescriptionImgText);
@@ -150,6 +172,15 @@ public class CallDetailFragment extends BaseFragment {
                 utils.hideView(binding.diseaseLayout);
                 utils.hideView(binding.symptomVetLayout);
                 utils.hideView(binding.chatIcon);
+                utils.hideView(binding.constraintCallback);
+
+                binding.cardCallStatus.setStrokeColor(getResources().getColor(R.color.red_600));
+                binding.cardCallStatus.getBackground().setTint(getResources().getColor(R.color.red_300));
+                binding.cardCallStatusInfo.getBackground().setTint(getResources().getColor(R.color.red_call_error));
+                binding.callStatusInfo.setText(R.string.failed);
+                binding.callStatusText.setText(R.string.call_unable_to_connect);
+                binding.callStatusText.setTextColor(getResources().getColor(R.color.call_failed_red_text));
+                binding.relativeLayoutCallGif.setBackgroundColor(getResources().getColor(R.color.red_300));
             }
 
             if (callDetailResponse.getPrescriptionImageFirst().length() != 0) {
@@ -183,65 +214,71 @@ public class CallDetailFragment extends BaseFragment {
 
             if (callDetailResponse.getDetails() != null)
                 binding.descriptionInput.setText(callDetailResponse.getDetails() + "");
-            else
+            else {
                 utils.hideView(binding.descriptionLayout);
+                utils.hideView(binding.textviewTreatment);
+            }
 
             if (callDetailResponse.getDiagnosis() != null)
                 binding.diseaseInput.setText(callDetailResponse.getDiagnosis() + "");
-            else
+            else {
                 utils.hideView(binding.diseaseLayout);
+                utils.hideView(binding.textviewDiagnosis);
+            }
 
 
             if (callDetailResponse.getSymptoms() != null)
                 binding.symptomVetInput.setText(callDetailResponse.getSymptoms() + "");
-            else
+            else {
                 utils.hideView(binding.symptomVetLayout);
+                utils.hideView(binding.textviewSymptoms);
+            }
 
             if (callDetailResponse.getHealthVal()) {
                 if (callDetailResponse.getLotExists()) {
-                    utils.visibleView(binding.farmDetailLayout);
-                    utils.hideView(binding.animalTypeTitleText);
+//                    utils.visibleView(binding.farmDetailLayout);
+//                    utils.hideView(binding.animalTypeTitleText);
                     utils.hideView(binding.animalTypeText);
 
-                    binding.animalText.setText(callDetailResponse.getAnimal() + "");
-                    binding.typeText.setText(callDetailResponse.getBreed() + "");
-                    binding.quantityText.setText(callDetailResponse.getQuantity() + "");
-                    binding.dobText.setText(callDetailResponse.getDOB() + "");
+//                    binding.animalText.setText(callDetailResponse.getAnimal() + "");
+//                    binding.typeText.setText(callDetailResponse.getBreed() + "");
+//                    binding.quantityText.setText(callDetailResponse.getQuantity() + "");
+//                    binding.dobText.setText(callDetailResponse.getDOB() + "");
                 } else {
-                    utils.visibleView(binding.animalTypeTitleText);
+//                    utils.visibleView(binding.animalTypeTitleText);
                     utils.visibleView(binding.animalTypeText);
-                    utils.hideView(binding.farmDetailLayout);
+//                    utils.hideView(binding.farmDetailLayout);
 
                     binding.animalTypeText.setText(callDetailResponse.getAnimal() + "");
                 }
 
-                binding.symptomListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.symptom_list, R.id.symptom, callDetailResponse.getSymptomsList()));
-                binding.symptomListView.setDivider(null);
+//                binding.symptomListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.symptom_list, R.id.symptom, callDetailResponse.getSymptomsList()));
+//                binding.symptomListView.setDivider(null);
 
-                if (callDetailResponse.getAnalysisImage() != null)
-                    Picasso.get().load(baseUrl + callDetailResponse.getAnalysisImage()).into(binding.animalImg1);
-                else {
-                    utils.hideView(binding.animalImgText);
-                    utils.hideView(binding.animalImg1);
-                    utils.hideView(binding.animalImg2);
-                }
+//                if (callDetailResponse.getAnalysisImage() != null)
+//                    Picasso.get().load(baseUrl + callDetailResponse.getAnalysisImage()).into(binding.animalImg1);
+//                else {
+//                    utils.hideView(binding.animalImgText);
+//                    utils.hideView(binding.animalImg1);
+//                    utils.hideView(binding.animalImg2);
+//                }
 
-                if (callDetailResponse.getPostmortemImage() != null) {
-                    utils.visibleView(binding.animalImg2);
-                    Picasso.get().load(baseUrl + callDetailResponse.getPostmortemImage()).into(binding.animalImg2);
-                } else
-                    utils.hideView(binding.animalImg2);
+//                if (callDetailResponse.getPostmortemImage() != null) {
+//                    utils.visibleView(binding.animalImg2);
+//                    Picasso.get().load(baseUrl + callDetailResponse.getPostmortemImage()).into(binding.animalImg2);
+//                } else
+//                    utils.hideView(binding.animalImg2);
 
             } else {
-                utils.hideView(binding.symptomListText);
-                utils.hideView(binding.symptomListView);
-                utils.hideView(binding.animalImgText);
-                utils.hideView(binding.animalImg1);
-                utils.hideView(binding.animalImg2);
+//                utils.hideView(binding.symptomListText);
+//                utils.hideView(binding.symptomListView);
+//                utils.hideView(binding.animalImgText);
+//                utils.hideView(binding.animalImg1);
+//                utils.hideView(binding.animalImg2);
 
-                utils.visibleView(binding.animalTypeTitleText);
+//                utils.visibleView(binding.animalTypeTitleText);
                 utils.visibleView(binding.animalTypeText);
-                utils.hideView(binding.farmDetailLayout);
+//                utils.hideView(binding.farmDetailLayout);
                 binding.animalTypeText.setText(callDetailResponse.getAnimal() + "");
             }
         } else if (methodType == MethodType.getCallDetail && !status)

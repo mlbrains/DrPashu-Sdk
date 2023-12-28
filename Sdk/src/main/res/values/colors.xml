@@ -23,12 +23,24 @@
     <color name="transaction_green">#06C03A</color>
     <color name="health">#F60067</color>
     <color name="light_grey">#EDEDED</color>
+    <color name="background_white">#F5F7FA</color>
 
     <!--purple theme-->
     <color name="purple">#6B00F6</color>
     <color name="dark_purple">#3D01BB</color>
     <color name="light_purple">#03DAC5</color>
     <color name="light_card_purple">#add8e6</color>
+    <color name="purple200">#DBB2FF</color>
+
+    <!--blue theme-->
+    <color name="dark_blue">#3700B3</color>
+
+    <!--red theme-->
+    <color name="red_600">#FF3D3D</color>
+    <color name="red_error">#FEF3F2</color>
+    <color name="red_call_error">#D92D20</color>
+    <color name="call_failed_red_text">#B42318</color>
+    <color name="red_300">#FBEFEF</color>
 
     <!--orange theme-->
     <color name="orange">#ff914c</color>
@@ -41,6 +53,11 @@
     <color name="dark_green">#379683</color>
     <color name="light_green">#8ee4af</color>
     <color name="light_card_green">#edf5e1</color>
+    <color name="green300">#E7F8EF</color>
+    <color name="green_success">#ECFDF3</color>
+    <color name="green600">#0C8344</color>
+    <color name="call_success_green">#039855</color>
+    <color name="call_success_green_text">#027A48</color>
 
     <!--grey theme-->
     <color name="grey">#CFCED2</color>
