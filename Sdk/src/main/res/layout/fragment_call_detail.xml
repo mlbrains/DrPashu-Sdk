@@ -1,565 +1,744 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.home.vet.CallDetailFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mainLayout"
+    tools:context=".fragments.CallDetailFragment">
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:background="@color/background_white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:visibility = "visible"
-        android:paddingBottom="@dimen/standard_margin">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/normal_margin"
+        >
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/userDetialCardview"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginTop="@dimen/standard_margin"
-            android:layout_marginEnd="@dimen/standard_margin"
-            app:cardCornerRadius="@dimen/small_margin"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintTop_toTopOf="parent">
+            android:visibility="visible"
+            android:background="@color/background_white"
+            android:paddingBottom="@dimen/standard_margin">
+
+            <RelativeLayout
+                android:id="@+id/relative_layout_call_gif"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/normal_margin"
+                android:paddingBottom="@dimen/normal_margin"
+                android:paddingStart="@dimen/big_margin"
+                android:paddingEnd="@dimen/big_margin"
+                android:background="@color/green300"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_call_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:strokeWidth="1dp"
+                    android:layout_centerInParent="true"
+                    android:backgroundTint="@color/green_success"
+                    app:strokeColor="@color/green600"
+                    app:cardCornerRadius="@dimen/normal_margin">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_call_status_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/call_success_green"
+                            app:cardCornerRadius="@dimen/normal_margin"
+                            android:layout_marginTop="@dimen/extra_small_margin"
+                            android:layout_marginBottom="@dimen/extra_small_margin"
+                            android:layout_marginStart="@dimen/extra_small_margin"
+                            app:cardElevation="0dp">
+                            <TextView
+                                android:id="@+id/call_status_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="@dimen/small_margin"
+                                android:paddingEnd="@dimen/small_margin"
+                                android:paddingTop="2dp"
+                                android:paddingBottom="2dp"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/extra_small_text"
+                                android:fontFamily="@font/poppins_medium"/>
+                        </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:id="@+id/call_status_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textColor="@color/call_success_green_text"
+                            android:textSize="@dimen/extra_small_text"
+                            android:layout_marginStart="@dimen/small_margin"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/margin_10"
+                            android:layout_marginTop="@dimen/extra_small_margin"
+                            android:layout_marginBottom="@dimen/extra_small_margin"
+                            />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/normal_margin">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/userImg"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="@dimen/normal_margin"
-                    android:layout_marginTop="@dimen/standard_margin"
-                    android:layout_marginBottom="@dimen/standard_margin"
-                    android:src="@mipmap/ic_launcher"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="wrap_content"
+                android:id="@+id/constraint_call_info"
+                app:layout_constraintTop_toBottomOf="@+id/relative_layout_call_gif"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/white"
+                android:padding="@dimen/normal_margin">
 
                 <TextView
-                    android:id="@+id/userText"
+                    android:id="@+id/call_info_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/normal_margin"
-                    android:layout_marginEnd="@dimen/extra_small_margin"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textColor="@color/dark_base"
-                    android:textSize="@dimen/large_text"
-                    app:layout_constraintBottom_toTopOf="@id/dateText"
-                    app:layout_constraintEnd_toStartOf="@id/infoIcon"
-                    app:layout_constraintStart_toEndOf="@+id/userImg"
-                    app:layout_constraintTop_toTopOf="@+id/userImg"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-                <TextView
-                    android:id="@+id/dateText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/normal_margin"
-                    android:layout_marginTop="@dimen/extra_small_margin"
-                    android:layout_marginEnd="@dimen/extra_small_margin"
-                    android:alpha="0.5"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/extra_small_text"
-                    app:layout_constraintBottom_toBottomOf="@id/userImg"
-                    app:layout_constraintEnd_toStartOf="@id/infoIcon"
-                    app:layout_constraintStart_toEndOf="@+id/userImg"
-                    app:layout_constraintTop_toBottomOf="@+id/userText"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-                <ImageView
-                    android:id="@+id/infoIcon"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginEnd="@dimen/standard_margin"
-                    android:src="@drawable/ic_missed_call"
-                    app:layout_constraintBottom_toBottomOf="@id/userImg"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/userImg" />
-
-                <ImageView
-                    android:id="@+id/chatIcon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_chat_icon"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:layout_marginEnd="@dimen/standard_margin"
-                    android:layout_marginTop="@dimen/standard_margin"
-                    app:layout_constraintTop_toBottomOf="@+id/infoIcon"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:tint="@color/dark_base" />
-
-                <TextView
-                    android:id="@+id/animalTypeTitleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:text="@string/call_information"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/animal"
-                    android:textColor="@color/dark_base"
                     android:textSize="@dimen/small_text"
-                    android:layout_marginEnd="@dimen/small_margin"
-                    app:layout_constraintTop_toTopOf="@id/animalTypeText"
-                    app:layout_constraintBottom_toBottomOf="@id/animalTypeText"
-                    app:layout_constraintEnd_toStartOf="@id/animalTypeText"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:textColor="@color/grey800"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/animalTypeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:background="@drawable/dashboard_card_bg"
+                    android:background="@drawable/call_detail_card_bg"
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="center"
-                    android:minWidth="125dp"
-                    android:layout_marginStart="@dimen/small_margin"
-                    android:minHeight="32dp"
+                    android:text=""
+                    android:minWidth="43dp"
+                    android:paddingStart="@dimen/extra_small_margin"
+                    android:paddingEnd="@dimen/extra_small_margin"
+                    android:minHeight="22dp"
                     app:layout_constraintHorizontal_chainStyle="packed"
+                    android:textColor="#30009C"
+                    android:textSize="@dimen/extra_small_text"
+                    app:layout_constraintTop_toTopOf="@id/call_info_text"
+                    app:layout_constraintBottom_toBottomOf="@id/call_info_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/userDetialCardview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    app:cardCornerRadius="@dimen/normal_margin"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E0E1E4"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@+id/call_info_text">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/standard_margin">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_userImg"
+                            android:layout_width="80dp"
+                            android:layout_height="92dp"
+                            app:cardCornerRadius="@dimen/normal_margin"
+                            app:cardElevation="0dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            >
+
+                            <ImageView
+                                android:id="@+id/userImg"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@mipmap/ic_launcher"
+                                android:scaleType="centerCrop"
+                                android:adjustViewBounds="true"
+                                />
+
+                        </androidx.cardview.widget.CardView>
+
+
+                        <TextView
+                            android:id="@+id/userText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/standard_margin"
+                            android:layout_marginEnd="@dimen/extra_small_margin"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textColor="@color/grey800"
+                            android:text=""
+                            android:textSize="@dimen/normal_text"
+                            app:layout_constraintStart_toEndOf="@+id/card_userImg"
+                            app:layout_constraintTop_toTopOf="@+id/card_userImg"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintVertical_chainStyle="packed" />
+
+                        <View
+                            android:id="@+id/divider_line"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:background="#F5F7FA"
+                            app:layout_constraintTop_toBottomOf="@+id/userText"
+                            app:layout_constraintStart_toEndOf="@+id/card_userImg"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="@dimen/normal_margin"
+                            android:layout_marginEnd="@dimen/extra_small_margin"
+                            android:layout_marginTop="@dimen/small_margin"/>
+
+                        <TextView
+                            android:id="@+id/dateText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/standard_margin"
+                            android:layout_marginEnd="@dimen/small_margin"
+                            android:fontFamily="@font/poppins_semi_medium"
+                            android:textColor="@color/semi_dark_grey"
+                            android:text=""
+                            android:layout_marginTop="@dimen/small_margin"
+                            android:textSize="@dimen/extra_small_text"
+                            app:layout_constraintStart_toEndOf="@+id/card_userImg"
+                            app:layout_constraintTop_toBottomOf="@id/divider_line"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/text_call_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/standard_margin"
+                            android:layout_marginEnd="@dimen/small_margin"
+                            android:fontFamily="@font/poppins_semi_medium"
+                            android:textColor="@color/semi_dark_grey"
+                            android:text=""
+                            android:textSize="@dimen/extra_small_text"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toEndOf="@+id/card_userImg"
+                            app:layout_constraintTop_toBottomOf="@id/dateText"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/constraint_callback"
+                app:layout_constraintTop_toBottomOf="@id/constraint_call_info"
+                android:paddingTop="@dimen/big_margin"
+                android:paddingBottom="@dimen/big_margin"
+                android:paddingStart="@dimen/normal_margin"
+                android:paddingEnd="@dimen/normal_margin"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:background="@color/white">
+                <TextView
+                    android:id="@+id/textview_callback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/missed_something_to_convey"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/grey800"
+                    android:textSize="@dimen/small_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/chatIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#F9F5FF"
+                    app:cardCornerRadius="@dimen/small_margin"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    app:layout_constraintEnd_toStartOf="@+id/callBackBtn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_callback"
+                    app:strokeColor="@color/purple200"
+                    app:strokeWidth="2dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        android:drawablePadding="@dimen/small_margin"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/small_margin"
+                        android:paddingBottom="@dimen/small_margin"
+                        android:paddingStart="@dimen/standard_margin"
+                        android:paddingEnd="@dimen/standard_margin"
+                        android:text="@string/chat"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="@dimen/small_text"
+                        app:drawableStartCompat="@drawable/icon_chat" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/callBackBtn"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_base"
+                    app:cardCornerRadius="@dimen/small_margin"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    app:layout_constraintTop_toBottomOf="@id/textview_callback"
+                    app:layout_constraintStart_toEndOf="@id/chatIcon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:strokeColor="@color/purple200"
+                    app:strokeWidth="2dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        android:drawablePadding="@dimen/standard_margin"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/small_margin"
+                        android:paddingBottom="@dimen/small_margin"
+                        android:text="@string/call_back"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text"
+                        app:drawableStartCompat="@drawable/icon_callback" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:id="@+id/constraint_prescription_update"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/standard_margin"
+                app:layout_constraintTop_toBottomOf="@id/constraint_callback">
+
+                <TextView
+                    android:id="@+id/prescriptionImgText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/large_margin"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginStart="@dimen/normal_margin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/normal_text"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/animalTypeTitleText"
-                    app:layout_constraintTop_toBottomOf="@id/dateText" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
+                <TextView
+                    android:id="@+id/prescriptionNoteText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/update_prescription_note"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:textColor="@color/black"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:textSize="@dimen/small_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/prescriptionImgText"/>
+
+                <TextView
+                    android:id="@+id/updateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/edit"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:textColor="@color/dark_base"
+                    android:textSize="@dimen/normal_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/prescriptionImgText"
+                    app:layout_constraintBottom_toBottomOf="@id/prescriptionImgText"/>
+
+                <ImageView
+                    android:id="@+id/prescription1Img"
+                    android:layout_width="90dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/add_photo_data_icon"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/prescriptionNoteText"
+                    app:layout_constraintDimensionRatio="1:1"/>
+
+                <ImageView
+                    android:id="@+id/prescription2Img"
+                    android:layout_width="90dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/add_photo_data_icon"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    app:layout_constraintStart_toEndOf="@id/prescription1Img"
+                    app:layout_constraintTop_toBottomOf="@id/prescriptionNoteText"
+                    app:layout_constraintDimensionRatio="1:1"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_prescription_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/standard_margin"
+                app:layout_constraintTop_toBottomOf="@id/constraint_prescription_update"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/textview_symptoms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/symptoms"
+                    android:textColor="@color/grey900"
+                    android:textSize="@dimen/small_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginStart="@dimen/normal_margin"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/symptomVetLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    android:layout_marginTop="6dp"
+                    app:boxCornerRadiusTopStart="@dimen/small_margin"
+                    app:boxCornerRadiusTopEnd="@dimen/small_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/small_margin"
+                    app:boxCornerRadiusBottomEnd="@dimen/small_margin"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeColor="@color/grey_300"
+                    app:layout_constraintTop_toBottomOf="@id/textview_symptoms"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/symptomVetInput"
+                        android:hint="@string/possible_symptoms_during_call"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:textColor="@color/grey700"
+                        android:textSize="@dimen/small_text"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingBottom="@dimen/margin_10"
+                        android:paddingStart="@dimen/small_text"
+                        android:paddingEnd="@dimen/small_text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/textview_diagnosis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disease_diagnosed"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="@dimen/small_text"
+                    android:textColor="@color/grey900"
+                    app:layout_constraintTop_toBottomOf="@id/symptomVetLayout"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/diseaseLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    android:layout_marginTop="6dp"
+                    app:boxCornerRadiusTopStart="@dimen/small_margin"
+                    app:boxCornerRadiusTopEnd="@dimen/small_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/small_margin"
+                    app:boxCornerRadiusBottomEnd="@dimen/small_margin"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeColor="@color/grey_300"
+                    app:layout_constraintTop_toBottomOf="@id/textview_diagnosis"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/diseaseInput"
+                        android:inputType="none"
+                        android:editable="false"
+                        android:hint="@string/disease_diagnosed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:textColor="@color/grey700"
+                        android:textSize="@dimen/small_text"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingBottom="@dimen/margin_10"
+                        android:paddingStart="@dimen/small_text"
+                        android:paddingEnd="@dimen/small_text"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/textview_treatment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/treatment"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="@dimen/small_text"
+                    android:textColor="@color/grey900"
+                    app:layout_constraintTop_toBottomOf="@id/diseaseLayout"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/descriptionLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    android:layout_marginTop="6dp"
+                    app:boxCornerRadiusTopStart="@dimen/small_margin"
+                    app:boxCornerRadiusTopEnd="@dimen/small_margin"
+                    app:boxCornerRadiusBottomStart="@dimen/small_margin"
+                    app:boxCornerRadiusBottomEnd="@dimen/small_margin"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeColor="@color/grey_300"
+                    app:layout_constraintTop_toBottomOf="@id/textview_treatment"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/descriptionInput"
+                        android:hint="@string/treatment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:textColor="@color/grey700"
+                        android:textSize="@dimen/small_text"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingBottom="@dimen/margin_10"
+                        android:paddingStart="@dimen/small_text"
+                        android:paddingEnd="@dimen/small_text"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/recommend_product_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/recommend_products"
+                android:textColor="@color/black"
+                android:textSize="@dimen/normal_text"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/constraint_prescription_details"
+                tools:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/product_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/extra_small_margin"
+                android:nestedScrollingEnabled="false"
+                android:paddingStart="@dimen/extra_small_margin"
+                android:paddingEnd="@dimen/extra_small_margin"
+                app:layout_constraintTop_toBottomOf="@id/recommend_product_text" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_important_note_call_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/normal_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/product_recyclerview"
+                android:minHeight="35dp"
+                android:visibility="visible"
+                app:cardCornerRadius="@dimen/extra_small_margin"
+                android:backgroundTint="@color/white">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/farmDetailLayout"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/normal_margin"
-                    app:layout_constraintTop_toBottomOf="@id/dateText">
+                    >
 
-                    <TextView
-                        android:id="@+id/animalTitleText"
+                    <ImageView
+                        android:id="@+id/frame_important_note"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins"
-                        android:text="@string/animal"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textColor="@color/dark_base"
-                        android:textSize="@dimen/extra_small_text"
-                        app:layout_constraintEnd_toEndOf="@id/firstGuideline"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/animalText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/extra_small_margin"
-                        android:background="@drawable/dashboard_card_bg"
-                        android:fontFamily="@font/poppins_medium"
-                        android:gravity="center"
-                        android:minWidth="125dp"
-                        android:minHeight="32dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/normal_text"
-                        app:layout_constraintEnd_toEndOf="@id/firstGuideline"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/frame_blue_large"
+                        android:scaleType="fitXY"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/animalTitleText" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/typeTitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins"
-                        android:text="@string/type"
-                        android:textColor="@color/dark_base"
-                        android:textSize="@dimen/extra_small_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/firstGuideline"
-                        app:layout_constraintTop_toTopOf="@id/animalTitleText" />
-
-                    <TextView
-                        android:id="@+id/typeText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/extra_small_margin"
-                        android:background="@drawable/dashboard_card_bg"
-                        android:fontFamily="@font/poppins_medium"
-                        android:gravity="center"
-                        android:minWidth="125dp"
-                        android:minHeight="32dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/normal_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/firstGuideline"
-                        app:layout_constraintTop_toBottomOf="@+id/typeTitleText" />
-
-                    <TextView
-                        android:id="@+id/quantityTitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/create_post_info"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="@dimen/small_margin"
                         android:layout_marginTop="@dimen/small_margin"
-                        android:fontFamily="@font/poppins"
-                        android:text="@string/quantity"
-                        android:textColor="@color/dark_base"
-                        android:textSize="@dimen/extra_small_text"
-                        app:layout_constraintEnd_toEndOf="@id/firstGuideline"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view2" />
+                        android:src="@drawable/info_create_post"
+                        app:layout_constraintStart_toEndOf="@id/frame_important_note"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/quantityText"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/textview_important_note"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/extra_small_margin"
-                        android:background="@drawable/dashboard_card_bg"
-                        android:fontFamily="@font/poppins_medium"
-                        android:gravity="center"
-                        android:minWidth="125dp"
-                        android:minHeight="32dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/normal_text"
-                        app:layout_constraintEnd_toEndOf="@id/firstGuideline"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/quantityTitleText" />
-
-                    <TextView
-                        android:id="@+id/dobTitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/small_margin"
                         android:layout_marginTop="@dimen/small_margin"
-                        android:fontFamily="@font/poppins"
-                        android:text="@string/date_of_birth_farm"
-                        android:textColor="@color/dark_base"
+                        android:layout_marginBottom="@dimen/small_margin"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/important_note"
+                        android:textColor="@color/grey700"
                         android:textSize="@dimen/extra_small_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/firstGuideline"
-                        app:layout_constraintTop_toBottomOf="@+id/view2" />
+                        android:layout_marginEnd="@dimen/margin_10"
+                        app:layout_constraintEnd_toStartOf="@+id/image_button_down"
+                        app:layout_constraintStart_toEndOf="@id/create_post_info"
+                        app:layout_constraintTop_toTopOf="@id/create_post_info"
+                        app:layout_constraintBottom_toBottomOf="@id/create_post_info"/>
 
+                    <ImageView
+                        android:id="@+id/image_button_down"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:layout_marginEnd="@dimen/small_margin"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_arrow_up"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/dobText"
+                        android:id="@+id/important_note_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/small_margin"
+                        android:fontFamily="@font/poppins_semi_medium"
+                        android:text="@string/prescriptionNoteText"
+                        android:textColor="@color/grey700"
+                        android:textSize="@dimen/extra_small_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/frame_important_note"
+                        app:layout_constraintTop_toBottomOf="@id/textview_important_note" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group_call_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/extra_small_margin"
-                        android:background="@drawable/dashboard_card_bg"
-                        android:fontFamily="@font/poppins_medium"
-                        android:gravity="center"
-                        android:minWidth="125dp"
-                        android:minHeight="32dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/normal_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/firstGuideline"
-                        app:layout_constraintTop_toBottomOf="@+id/dobTitleText" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="0dp"
-                        android:background="#C4C4C459"
-                        app:layout_constraintBottom_toBottomOf="@id/quantityText"
-                        app:layout_constraintEnd_toEndOf="@id/firstGuideline"
-                        app:layout_constraintStart_toStartOf="@id/firstGuideline"
-                        app:layout_constraintTop_toTopOf="@id/animalTitleText" />
-
-                    <View
-                        android:id="@+id/view2"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="@dimen/normal_margin"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="@dimen/normal_margin"
-                        android:alpha="0.35"
-                        android:background="#C4C4C459"
-                        app:layout_constraintEnd_toEndOf="@id/firstGuideline"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/animalText" />
-
-                    <View
-                        android:id="@+id/view3"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="@dimen/normal_margin"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="@dimen/normal_margin"
-                        android:alpha="0.35"
-                        android:background="#C4C4C459"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/firstGuideline"
-                        app:layout_constraintTop_toBottomOf="@id/animalText" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/firstGuideline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.50" />
+                        app:constraint_referenced_ids="frame_important_note,important_note_text" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/callBackBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_marginBottom="@dimen/normal_margin"
-            android:background="@drawable/button_bg"
-            android:drawableEnd="@drawable/ic_call_doctor_result"
-            android:drawablePadding="@dimen/small_margin"
-            android:fontFamily="@font/poppins_semibold"
-            android:paddingStart="@dimen/large_margin"
-            android:paddingEnd="@dimen/large_margin"
-            android:text="@string/call_back"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:layout_marginTop="@dimen/small_margin"
-            android:textSize="@dimen/small_text"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/userDetialCardview"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:backgroundTint="@color/background_white"
+                android:layout_margin="@dimen/normal_margin"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_important_note_call_details">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:paddingStart="@dimen/large_text"
+                    android:paddingEnd="@dimen/large_text"
+                    android:gravity="center"
+                    android:background="@drawable/button_bg_signup">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icon_chat"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_chat_with_vet"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="@dimen/small_margin"
+                        android:textSize="@dimen/normal_text"/>
 
-        <TextView
-            android:id="@+id/symptomListText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/large_margin"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:textColor="@color/black"
-            android:textSize="@dimen/normal_text"
-            app:layout_constraintTop_toBottomOf="@+id/callBackBtn" />
+                </LinearLayout>
 
-        <ListView
-            android:id="@+id/symptomListView"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:overScrollMode="never"
-            android:listSelector="@android:color/transparent"
-            android:nestedScrollingEnabled="true"
-            android:layout_marginStart="@dimen/extra_small_margin"
-            android:layout_marginEnd="@dimen/small_margin"
-            android:background="@android:color/transparent"
-            tools:listitem="@layout/symptom_list"
-            android:fadeScrollbars="false"
-            app:layout_constraintTop_toBottomOf="@id/symptomListText"/>
+            </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/animalImgText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/large_margin"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:textColor="@color/black"
-            android:textSize="@dimen/normal_text"
-            app:layout_constraintTop_toBottomOf="@+id/symptomListView" />
-
-        <ImageView
-            android:id="@+id/animalImg1"
-            android:layout_width="90dp"
-            android:layout_height="0dp"
-            android:src="@drawable/add_photo_data_icon"
-            android:layout_marginTop="@dimen/small_margin"
-            app:layout_constraintStart_toStartOf="@id/animalImgText"
-            app:layout_constraintTop_toBottomOf="@id/animalImgText"
-            app:layout_constraintDimensionRatio="1:1"/>
-
-        <ImageView
-            android:id="@+id/animalImg2"
-            android:layout_width="90dp"
-            android:layout_height="0dp"
-            android:src="@drawable/add_photo_data_icon"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginStart="@dimen/normal_margin"
-            app:layout_constraintStart_toEndOf="@id/animalImg1"
-            app:layout_constraintTop_toBottomOf="@id/animalImgText"
-            app:layout_constraintDimensionRatio="1:1"/>
-
-        <TextView
-            android:id="@+id/prescriptionImgText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/large_margin"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:textColor="@color/black"
-            android:textSize="@dimen/normal_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/animalImg1" />
-
-        <TextView
-            android:id="@+id/prescriptionNoteText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            android:fontFamily="@font/poppins"
-            android:text="@string/update_prescription_note"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:textColor="@color/black"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:textSize="@dimen/small_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/prescriptionImgText" />
-
-        <TextView
-            android:id="@+id/updateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/edit"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:textColor="@color/dark_base"
-            android:textSize="@dimen/normal_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/prescriptionImgText"
-            app:layout_constraintBottom_toBottomOf="@id/prescriptionImgText" />
-
-        <ImageView
-            android:id="@+id/prescription1Img"
-            android:layout_width="90dp"
-            android:layout_height="0dp"
-            android:src="@drawable/add_photo_data_icon"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginStart="@dimen/normal_margin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/prescriptionNoteText"
-            app:layout_constraintDimensionRatio="1:1"/>
-
-        <ImageView
-            android:id="@+id/prescription2Img"
-            android:layout_width="90dp"
-            android:layout_height="0dp"
-            android:src="@drawable/add_photo_data_icon"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginStart="@dimen/normal_margin"
-            app:layout_constraintStart_toEndOf="@id/prescription1Img"
-            app:layout_constraintTop_toBottomOf="@id/prescriptionNoteText"
-            app:layout_constraintDimensionRatio="1:1"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/symptomVetLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/large_margin"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:hint="@string/possible_symptoms_during_call"
-            app:layout_constraintTop_toBottomOf="@+id/prescription1Img">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/symptomVetInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/diseaseLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:hint="@string/disease_diagnosed"
-            app:layout_constraintTop_toBottomOf="@+id/symptomVetLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/diseaseInput"
-                android:inputType="none"
-                android:editable="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/descriptionLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:hint="@string/treatment"
-            app:layout_constraintTop_toBottomOf="@+id/diseaseLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/descriptionInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/recommend_product_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/recommend_products"
-            android:textColor="@color/black"
-            android:textSize="@dimen/normal_text"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionLayout"
-            tools:visibility="visible" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/product_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/extra_small_margin"
-            android:nestedScrollingEnabled="false"
-            android:paddingStart="@dimen/extra_small_margin"
-            android:paddingEnd="@dimen/extra_small_margin"
-            app:layout_constraintTop_toBottomOf="@id/recommend_product_text" />
-
-        <TextView
-            android:id="@+id/noteText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:text="@string/prescriptionNoteText"
-            android:justificationMode="inter_word"
-            android:visibility="visible"
-            tools:visibility="visible"
-            android:layout_marginTop="@dimen/small_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:textColor="@color/dark_base"
-            android:textSize="@dimen/extra_small_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/product_recyclerview" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/normal_margin">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/updateBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_marginTop="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/small_margin"
-            android:layout_marginBottom="@dimen/normal_margin"
-            android:background="@drawable/button_bg"
-            android:fontFamily="@font/poppins_semibold"
-            android:minWidth="160dp"
-            android:text="@string/update"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:visibility="gone"
+            android:background="@drawable/button_bg_signup"
+            android:layout_margin="@dimen/normal_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/update_information"
+            android:fontFamily="@font/poppins_medium"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/small_text"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/noteText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="@dimen/normal_text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

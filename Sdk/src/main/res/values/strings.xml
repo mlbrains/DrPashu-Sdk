@@ -646,6 +646,15 @@
     <string name="products_recommended_by_vet">Products recommended by Vet</string>
     <string name="message">Message</string>
     <string name="chat">Chat</string>
+    <string name="call_information">Call Information</string>
+    <string name="missed_something_to_convey">Missed Something to convey?</string>
+    <string name="important_note">Important Note</string>
+    <string name="start_chat_with_vet">Start Chat with Vet</string>
+    <string name="update_information">Update Information</string>
+    <string name="success">Success</string>
+    <string name="you_have_completed_your_call">You have completed your call</string>
+    <string name="failed">Failed</string>
+    <string name="call_unable_to_connect">You were unable to connect</string>
     <string-array name="gender_list">
         <item>Male</item>
         <item>Female</item>
