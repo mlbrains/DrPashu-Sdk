@@ -17,6 +17,7 @@ import com.drpashu.sdk.network.model.response.DeviceTokenUpdateResponse;
 import com.drpashu.sdk.network.model.response.DrPashuResponse;
 import com.drpashu.sdk.network.model.response.FeedbackListResponse;
 import com.drpashu.sdk.network.model.response.MessageListResponse;
+import com.drpashu.sdk.network.model.response.ServiceListResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
 import com.drpashu.sdk.utils.PreferenceUtils;
@@ -104,8 +105,18 @@ public class Networking {
         });
     }
 
-    public void getVetList(String breedName) {
-        Call<VetListResponse> vetListResponseCall = apiInterface.getVetList(preferenceUtils.getUserId(), null, breedName);
+    public void getVetList(String lotId, String farmName, String breedName, int serviceId) {
+        Call<VetListResponse> vetListResponseCall;
+
+        if (serviceId > 0) {
+            vetListResponseCall = apiInterface.getParavetList(preferenceUtils.getUserId(), serviceId+"", breedName);
+        } else {
+            if (farmName.length() == 0)
+                vetListResponseCall = apiInterface.getVetList(preferenceUtils.getUserId(), null, breedName);
+            else
+                vetListResponseCall = apiInterface.getVetList(preferenceUtils.getUserId(), lotId, null);
+        }
+
         vetListResponseCall.enqueue(new Callback<VetListResponse>() {
             @Override
             public void onResponse(@NonNull Call<VetListResponse> call, @NonNull Response<VetListResponse> response) {
@@ -561,6 +572,33 @@ public class Networking {
             public void onFailure(@NonNull Call<BaseResponse> call, @NonNull Throwable t) {
                 Toast.makeText(context, context.getResources().getString(R.string.error_send_message), Toast.LENGTH_SHORT).show();
                 networkingInterface.networkingRequest(NetworkingInterface.MethodType.sendMessage, false, null, null);
+            }
+        });
+    }
+    public void getServiceList(String animalType, String latitude, String longitude) {
+        Call<ServiceListResponse> serviceListResponseCall = apiInterface.getServiceList(preferenceUtils.getUserId(), animalType, latitude, longitude);
+        serviceListResponseCall.enqueue(new Callback<ServiceListResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ServiceListResponse> call, @NonNull Response<ServiceListResponse> response) {
+                if (response.isSuccessful()) {
+                    ServiceListResponse serviceListResponse = response.body();
+
+                    if (serviceListResponse.getStatus())
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.getServiceList, true, null, serviceListResponse.getData());
+                    else {
+                        Toast.makeText(context, serviceListResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.getServiceList, false, null, null);
+                    }
+                } else {
+                    Toast.makeText(context, context.getResources().getString(R.string.error_get_service_list), Toast.LENGTH_SHORT).show();
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.getServiceList, false, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ServiceListResponse> call, @NonNull Throwable t) {
+                Toast.makeText(context, context.getResources().getString(R.string.error_get_service_list), Toast.LENGTH_SHORT).show();
+                networkingInterface.networkingRequest(NetworkingInterface.MethodType.getServiceList, false, null, null);
             }
         });
     }

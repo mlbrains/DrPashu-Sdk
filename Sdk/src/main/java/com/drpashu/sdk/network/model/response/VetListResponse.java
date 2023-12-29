@@ -118,6 +118,29 @@ public class VetListResponse {
             @Expose
             private Integer supportOfferPrice;
 
+            @SerializedName("mrp")
+            @Expose
+            private Integer mrp;
+            @SerializedName("offer_price")
+            @Expose
+            private Integer offerPrice;
+
+            public Integer getMrp() {
+                return mrp;
+            }
+
+            public void setMrp(Integer mrp) {
+                this.mrp = mrp;
+            }
+
+            public Integer getOfferPrice() {
+                return offerPrice;
+            }
+
+            public void setOfferPrice(Integer offerPrice) {
+                this.offerPrice = offerPrice;
+            }
+
             public Integer getOPDMrp() {
                 return oPDMrp;
             }

@@ -31,6 +31,9 @@ public class Utils {
             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE};
 
+    public static final String PERMISSION_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    public static final String PERMISSION_ACCESS_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+
     public Utils(Context context, Activity activity) {
         this.context = context;
         this.activity = activity;

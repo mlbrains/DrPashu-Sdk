@@ -2,13 +2,19 @@ package com.drpashu.sdk.fragment;
 
 import static com.drpashu.sdk.adapter.SelectAnimalDetailAdapter.breedName;
 import static com.drpashu.sdk.adapter.SelectAnimalDetailAdapter.breedNameByLanguage;
+import static com.drpashu.sdk.utils.Utils.PERMISSION_ACCESS_LOCATION;
+import static com.drpashu.sdk.utils.Utils.PERMISSION_COARSE_LOCATION;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -27,10 +33,13 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.drpashu.sdk.R;
 import com.drpashu.sdk.adapter.SelectAnimalAdapter;
+import com.drpashu.sdk.adapter.ServiceListAdapter;
+import com.drpashu.sdk.adapter.ServiceListInterface;
 import com.drpashu.sdk.adapter.VetListAdapter;
 import com.drpashu.sdk.databinding.FragmentConsultDoctorBinding;
 import com.drpashu.sdk.dialog.CallConnectFailedDialog;
@@ -39,18 +48,22 @@ import com.drpashu.sdk.dialog.FreeCallDialog;
 import com.drpashu.sdk.dialog.PaymentFailedDialog;
 import com.drpashu.sdk.network.NetworkingInterface;
 import com.drpashu.sdk.network.model.response.AnimalListResponse;
+import com.drpashu.sdk.network.model.response.ServiceListResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ConsultDoctorFragment extends BaseFragment implements NetworkingInterface, FreeCallActionInterface {
+public class ConsultDoctorFragment extends BaseFragment implements NetworkingInterface, FreeCallActionInterface, ServiceListInterface {
     private Boolean doneAnalysis = false, companySelected = false, freeCall = false;
     private FragmentConsultDoctorBinding binding;
     private String farmId = "", animalType = "", animalTypeByLanguage= "", farmName="", vetCategory = "", companyName = "", groupId = "", paymentId = "";
@@ -61,21 +74,36 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
     private static final int PERMISSION_REQ_ID_AUDIO = 1;
     private static final int PERMISSION_REQ_ID_CAMERA = 2;
     private VetListResponse.Data vetListResponse;
+    protected Location mLastLocation;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private final int PERMISSION_REQ_LOCATION = 2;
+    private static final int PERMISSION_REQ_VOICE_VIDEO = 1;
+    private double latitude = 0, longitude = 0;
+    int selectedListPosition = 0, serviceId = 0;
+    private ServiceListAdapter serviceListAdapter;
 
-    private ActivityResultLauncher<String[]> activityResultLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
-                if (isGranted.containsValue(false))
-                    utils.shortToast(utils.getStringValue(R.string.allow_permission_message));
-                else {
-                    Log.e("response", "permission granted");
-                    if (amount == 0) {
-                        freeCall = true;
-                        initiateCall();
-//                        showFreeCallDialog(mrpAmount, amount, 0);
-                    } else
-                        utils.shortToast("Unable to start free call");
+    @Override
+    public void requestMultiplePermissionResult(Boolean isGranted, String[] deniedPermissions, String[] requestedPermissionList, int action) {
+        Log.e("Permission", "ConsultDoctorFragment: Requested Permission List- " + Arrays.toString(requestedPermissionList) + ", IsGranted- " + isGranted + ", action- " + action);
+        if (action == PERMISSION_REQ_VOICE_VIDEO) {
+            if (isGranted) {
+                if (amount == 0) {
+                    freeCall = true;
+                    initiateCall();
+                } else {
+                    utils.shortToast("Unable to start free call");
                 }
-            });
+            } else
+                utils.shortToast(utils.getStringValue(R.string.allow_permission_message));
+        } else if (action == PERMISSION_REQ_LOCATION){
+            if (isGranted)
+                getUserLocation();
+            else {
+                showLoading();
+                networking.getVetList(farmId, farmName, breedName, serviceId);
+            }
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +133,9 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         progressDialog.setCancelable(false);
         view1 = view;
 
+        requestMultiplePermission(new String[]{PERMISSION_ACCESS_LOCATION, PERMISSION_COARSE_LOCATION}, PERMISSION_REQ_LOCATION);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+
         try {
             activity.getSupportActionBar().setTitle(utils.getStringValue(R.string.consult_a_doctor));
         } catch (Exception e){
@@ -115,7 +146,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             if (preferenceUtils.getAnimal().length() != 0) {
                 animalType = preferenceUtils.getAnimal();
                 animalTypeByLanguage = preferenceUtils.getAnimal();
-                networking.getVetList(animalType);
+                networking.getVetList(farmId,farmName,animalType,serviceId);
             } else
                 networking.getAnimals();
         } else
@@ -128,7 +159,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 animalType = breedName;
                 animalTypeByLanguage = breedNameByLanguage;
                 showLoading();
-                networking.getVetList(breedName);
+                networking.getVetList(farmId,farmName,breedName,serviceId);
             }
         });
 
@@ -202,11 +233,38 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
 //            setValueText();
         });
 
+        binding.paravetView.setOnClickListener(v -> {
+            vetCategory = serviceId+"";
+
+            companySelected = false;
+            binding.paravetRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
+            binding.companyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            binding.recyclerviewSpecialist.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            mrpAmount = vetListResponse.getCategoriesList().getMrp();
+            amount = vetListResponse.getCategoriesList().getOfferPrice();
+
+        });
+
         binding.selectionBtn.setOnClickListener(v -> {
             if (vetCategory.length() == 0)
                 Toast.makeText(getContext(), getContext().getResources().getString(R.string.please_select_vet_type), Toast.LENGTH_SHORT).show();
-            else
-                activityResultLauncher.launch(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA});
+            else {
+//                activityResultLauncher.launch(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA});
+                requestMultiplePermission(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA}, PERMISSION_REQ_VOICE_VIDEO);
+            }
+        });
+        binding.serviceButton.setOnClickListener(v -> {
+            if (serviceId >= 0) {
+                showLoading();
+                networking.getVetList(farmId, farmName, breedName, serviceId);
+                utils.visibleView(binding.mainLayout);
+                utils.hideView(binding.serviceLayout);
+                utils.visibleView(binding.selectionBtn);
+            } else
+                utils.shortToast("Please select a service to continue");
         });
     }
 
@@ -322,8 +380,8 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             dismissLoading();
             activity.dismissLoader();
             binding.selectAnimalLayout.setVisibility(View.GONE);
-            binding.mainLayout.setVisibility(View.VISIBLE);
-            binding.selectionBtn.setVisibility(View.VISIBLE);
+            binding.serviceLayout.setVisibility(View.VISIBLE);
+            binding.selectionBtn.setVisibility(View.GONE);
 
             setFarmName();
 
@@ -332,6 +390,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             List<VetListResponse.Data.Vet> companyList = new ArrayList<>();
             List<VetListResponse.Data.Vet> governmentList = new ArrayList<>();
             List<VetListResponse.Data.Vet> familyList = new ArrayList<>();
+            List<VetListResponse.Data.Vet> paravetList = new ArrayList<>();
 
             vetListResponse = (VetListResponse.Data) o;
 
@@ -346,6 +405,14 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                     governmentList.add(vetListResponse.getVetList().get(i));
                 else if (vetListResponse.getVetList().get(i).getVetType().equalsIgnoreCase("family"))
                     familyList.add(vetListResponse.getVetList().get(i));
+                else if (vetListResponse.getVetList().get(i).getVetType().equalsIgnoreCase("Artificial Insemination"))
+                    paravetList.add(vetListResponse.getVetList().get(i));
+                else if (vetListResponse.getVetList().get(i).getVetType().equalsIgnoreCase("Vaccinations"))
+                    paravetList.add(vetListResponse.getVetList().get(i));
+                else if (vetListResponse.getVetList().get(i).getVetType().equalsIgnoreCase("First Aid"))
+                    paravetList.add(vetListResponse.getVetList().get(i));
+                else if (vetListResponse.getVetList().get(i).getVetType().equalsIgnoreCase("Others"))
+                    paravetList.add(vetListResponse.getVetList().get(i));
             }
 
             if (opdList.size() != 0) {
@@ -387,8 +454,28 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 binding.familyRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.familyRecyclerview.setAdapter(familyListAdapter);
             }
+            if (paravetList.size() != 0) {
+                binding.paravetCardview.setVisibility(View.VISIBLE);
 
-            if (opdList.size() == 0 && specialistList.size() == 0 && companyList.size() == 0 && governmentList.size() == 0 && familyList.size() == 0) {
+                if (paravetList.get(0).getVetType().equalsIgnoreCase("Artificial Insemination"))
+                    binding.paravetText.setText(utils.getStringValue(R.string.artificial_insemination));
+                else if (paravetList.get(0).getVetType().equalsIgnoreCase("Vaccinations"))
+                    binding.paravetText.setText(utils.getStringValue(R.string.vaccinations));
+                else if (paravetList.get(0).getVetType().equalsIgnoreCase("First Aid"))
+                    binding.paravetText.setText(utils.getStringValue(R.string.first_aid));
+                else if (paravetList.get(0).getVetType().equalsIgnoreCase("Others"))
+                    binding.paravetText.setText(utils.getStringValue(R.string.others));
+                else
+                    binding.paravetText.setText(paravetList.get(0).getVetType());
+
+                VetListAdapter paravetListAdapter = new VetListAdapter(getContext(), getActivity(), paravetList);
+                binding.paravetRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.paravetRecyclerview.setAdapter(paravetListAdapter);
+
+                binding.paravetView.performClick();
+            }
+
+            if (opdList.size() == 0 && specialistList.size() == 0 && companyList.size() == 0 && governmentList.size() == 0 && familyList.size() == 0 && paravetList.size() == 0) {
                 binding.selectionBtn.setVisibility(View.GONE);
                 binding.noDoctorAvailableText.setVisibility(View.VISIBLE);
             }
@@ -412,6 +499,20 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             binding.familyPriceText.setText(vetListResponse.getCategoriesList().getFamilyOfferPrice() + " Coins");
             binding.familyMrpText.setText(String.valueOf(vetListResponse.getCategoriesList().getFamilyMrp()));
             binding.familyMrpText.setPaintFlags(binding.familyMrpText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            binding.paravetPriceText.setText("₹ " + vetListResponse.getCategoriesList().getOfferPrice());
+            binding.paravetMrpText.setText("₹ " + vetListResponse.getCategoriesList().getMrp());
+            binding.paravetMrpText.setPaintFlags(binding.familyMrpText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        }else if (methodType == MethodType.getServiceList && status) {
+            dismissLoading();
+
+            List<ServiceListResponse.Data> serviceList = (List<ServiceListResponse.Data>) o;
+            serviceListAdapter = new ServiceListAdapter(context, activity, serviceList, (ServiceListInterface) this);
+            binding.serviceRecyclerview.setLayoutManager(new GridLayoutManager(context, 2));
+            binding.serviceRecyclerview.setAdapter(serviceListAdapter);
+
+            utils.visibleView(binding.serviceLayout);
         }
         else if (methodType == MethodType.startCall && status) {
             progressDialog.dismiss();
@@ -467,7 +568,8 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             }
             utils.updateErrorEvent("Start Call Error Event", "Call Id - " + groupId + " Error Message - " + (String) o);
         } else if (methodType == MethodType.getRazorpayOrderId || methodType == MethodType.fetchBalance
-                || methodType == MethodType.getVetList || methodType == MethodType.dashboardInfo || methodType == MethodType.getAnimalList && !status) {
+                || methodType == MethodType.getVetList || methodType == MethodType.dashboardInfo || methodType == MethodType.getAnimalList ||
+                methodType == MethodType.getServiceList && !status) {
             activity.dismissLoader();
             dismissLoading();
             progressDialog.dismiss();
@@ -480,5 +582,39 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             initiateCall();
         else
             utils.shortToast("Unable to start free call");
+    }
+
+    private boolean isGPSEnabled() {
+        LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+    @SuppressLint("MissingPermission")
+    private void getUserLocation() {
+        if (isGPSEnabled()) {
+            showLoading();
+            mFusedLocationClient.getLastLocation()
+                    .addOnCompleteListener(activity, task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            mLastLocation = task.getResult();
+
+                            latitude = mLastLocation.getLatitude();
+                            longitude = mLastLocation.getLongitude();
+                        } else
+                            Log.e("Error_location", "getLastLocation:exception" + task.getResult());
+
+                        networking.getServiceList(animalType, latitude + "", longitude + "");
+                    });
+        } else {
+            showLoading();
+            networking.getVetList(farmId, farmName, breedName, serviceId);
+        }
+    }
+    @Override
+    public void selectedServicePosition(int position, int id) {
+        if (selectedListPosition != -1 && selectedListPosition != position) {
+            serviceListAdapter.notifyItemChanged(selectedListPosition);
+        }
+        selectedListPosition = position;
+        serviceId = id;
     }
 }

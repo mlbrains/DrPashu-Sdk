@@ -646,6 +646,11 @@
     <string name="products_recommended_by_vet">Products recommended by Vet</string>
     <string name="message">Message</string>
     <string name="chat">Chat</string>
+    <string name="select_service">Select Service</string>
+    <string name="error_get_service_list">Something went wrong- 82</string>
+    <string name="vet">Vet</string>
+    <string name="artificial_insemination">Artificial Insemination</string>
+    <string name="first_aid">First Aid</string>
     <string-array name="gender_list">
         <item>Male</item>
         <item>Female</item>

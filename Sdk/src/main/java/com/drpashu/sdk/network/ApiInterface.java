@@ -9,6 +9,7 @@ import com.drpashu.sdk.network.model.response.DeviceTokenUpdateResponse;
 import com.drpashu.sdk.network.model.response.DrPashuResponse;
 import com.drpashu.sdk.network.model.response.FeedbackListResponse;
 import com.drpashu.sdk.network.model.response.MessageListResponse;
+import com.drpashu.sdk.network.model.response.ServiceListResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
 import com.google.gson.JsonObject;
@@ -115,4 +116,15 @@ public interface ApiInterface {
                                    @Part("text") RequestBody text,
                                    @Part MultipartBody.Part image,
                                    @Part MultipartBody.Part video);
+    @POST("service_list")
+    @FormUrlEncoded
+    Call<ServiceListResponse> getServiceList(@Header("user-id") String user_id,
+                                             @Field("animal_type") String animalType,
+                                             @Field("latitude") String latitude,
+                                             @Field("longitude") String longitude);
+    @POST("paravet_list")
+    @FormUrlEncoded
+    Call<VetListResponse> getParavetList(@Header("user-id") String user_id,
+                                         @Field("service_id") String serviceId,
+                                         @Field("animal_type") String animalType);
 }

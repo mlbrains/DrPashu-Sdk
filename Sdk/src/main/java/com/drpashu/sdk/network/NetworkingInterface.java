@@ -19,6 +19,6 @@ public interface NetworkingInterface {
         addCoinsToWallet, updateVetSchedule, getUserList, getUserDetail, getTransactionTypeList,
         makeTransaction, callUserById, createPost, fetchAddaPosts, fetchPostReplies, createReply,
         postAction, searchAddaPosts, addUserFromSdk, recordUser, submitFeedback, getFeedbackList,
-        getFarmList,getMessageList,sendMessage
+        getFarmList,getMessageList,sendMessage,getServiceList
     }
 }

@@ -83,4 +83,7 @@ dependencies {
 
     //Imageview zoom Library
     implementation 'com.github.MikeOrtiz:TouchImageView:1.4.1'
+
+    //location library
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 }

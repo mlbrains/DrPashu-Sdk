@@ -7,10 +7,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 //    private static final String BASE_URL = "https://mlbrains.com/api/";
-    private static final String BASE_URL = "https://api.drpashu.com/api/";
+//    private static final String BASE_URL = "https://api.drpashu.com/api/";
+    private static final String BASE_URL = "https://api.lmschamp.com/api/";
 
 //    public static final String BASE_URL_MEDIA = "https://mlbrains.com";
-    public static final String BASE_URL_MEDIA = "https://api.drpashu.com";
+//    public static final String BASE_URL_MEDIA = "https://api.drpashu.com";
+
+    public static final String BASE_URL_MEDIA = "https://api.lmschamp.com";
 
     private static Retrofit retrofit, sdkRetrofit;
 
@@ -18,8 +21,8 @@ public class ApiClient {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-//        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -35,8 +38,8 @@ public class ApiClient {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-//        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
 
         if (sdkRetrofit == null) {
             sdkRetrofit = new Retrofit.Builder()
