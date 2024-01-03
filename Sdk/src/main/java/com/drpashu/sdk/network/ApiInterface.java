@@ -99,4 +99,9 @@ public interface ApiInterface {
 
     @GET("get_feedback_list")
     Call<FeedbackListResponse> getFeedbackList(@Header("user-id") String user_id);
+
+    @POST("vet_pick_up")
+    @FormUrlEncoded
+    Call<BaseResponse> checkCallPickAllowed(@Header("user-id") String user_id,
+                                            @Field("call_id") String callId);
 }

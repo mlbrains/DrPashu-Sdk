@@ -489,4 +489,30 @@ public class Networking {
             }
         });
     }
+    public void checkCallPickAllowed(String callId) {
+        Call<BaseResponse> baseResponseCall = apiInterface.checkCallPickAllowed(preferenceUtils.getUserId(), callId);
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<BaseResponse> call, @NonNull Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse baseResponse = response.body();
+                    if (baseResponse.getStatus())
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.checkCallPickAllowed, true, null, null);
+                    else {
+                        Toast.makeText(context,  baseResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.checkCallPickAllowed, false, null, null);
+                    }
+                } else {
+                    Toast.makeText(context, context.getResources().getString(R.string.error_check_call_pick_allowed), Toast.LENGTH_SHORT).show();
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.checkCallPickAllowed, false, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<BaseResponse> call, @NonNull Throwable t) {
+                Toast.makeText(context, context.getResources().getString(R.string.error_check_call_pick_allowed), Toast.LENGTH_SHORT).show();
+                networkingInterface.networkingRequest(NetworkingInterface.MethodType.checkCallPickAllowed, false, null, null);
+            }
+        });
+    }
 }

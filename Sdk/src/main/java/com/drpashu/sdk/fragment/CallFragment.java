@@ -166,6 +166,7 @@ public class CallFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        activity.updateTooblar(ContextCompat.getDrawable(activity, R.drawable.ic_consult_doctor), false);
+        activity.getSupportActionBar().hide();
 
         view1 = view;
         preferenceUtils.setBlockNavigationStatus(true);
@@ -369,18 +370,17 @@ public class CallFragment extends BaseFragment {
             dismissLoading();
             preferenceUtils.setBlockNavigationStatus(false);
             activity.onBackPressed();
+        } else if (methodType == MethodType.checkCallPickAllowed && status) {
+            dismissLoading();
+            acceptCall();
+        } else if (methodType == MethodType.checkCallPickAllowed && !status) {
+            dismissLoading();
+            NotificationManagerCompat.from(activity).cancel(null, notificationId);
+            if (countDownTimer != null)
+                countDownTimer.cancel();
+            preferenceUtils.setBlockNavigationStatus(false);
+            activity.onBackPressed();
         }
-//        else if (methodType == MethodType.checkCallPickAllowed && status) {
-//            dismissLoading();
-//            acceptCall();
-//        } else if (methodType == MethodType.checkCallPickAllowed && !status) {
-//            dismissLoading();
-//            NotificationManagerCompat.from(activity).cancel(null, notificationId);
-//            if (countDownTimer != null)
-//                countDownTimer.cancel();
-//            preferenceUtils.setBlockNavigationStatus(false);
-//            activity.onBackPressed();
-//        }
     }
 
     @Override

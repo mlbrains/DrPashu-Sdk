@@ -643,6 +643,7 @@
     <string name="prescription_detail">Prescription (click image below)</string>
     <string name="call_note_detail">Start the call &amp; hold. If the vet does not pick up, we will connect to the next vet automatically</string>
     <string name="permission_voice_video_allow">Allow Camera and microphone permission to use this feature</string>
+    <string name="error_check_call_pick_allowed">Something went wrong- 77</string>
 
     <string-array name="gender_list">
         <item>Male</item>
