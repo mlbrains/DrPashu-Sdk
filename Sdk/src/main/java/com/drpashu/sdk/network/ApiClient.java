@@ -11,7 +11,8 @@ public class ApiClient {
 
 //    public static final String BASE_URL_MEDIA = "https://mlbrains.com";
     public static final String BASE_URL_MEDIA = "https://api.drpashu.com";
-
+//    public static final String BASE_URL_CALL = "https://call-web.api.lmschamp.com/?";
+    public static final String BASE_URL_CALL = "https://call-web.api.drpashu.com/?";
     private static Retrofit retrofit, sdkRetrofit;
 
     public static Retrofit getRetrofitInstance(){

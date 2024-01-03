@@ -32,27 +32,35 @@ import com.drpashu.sdk.network.ApiClient;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.squareup.picasso.Picasso;
 
-import io.agora.rtc.Constants;
-import io.agora.rtc.IRtcEngineEventHandler;
-import io.agora.rtc.RtcEngine;
-import io.agora.rtc.models.UserInfo;
-import io.agora.rtc.video.VideoCanvas;
-import io.agora.rtc.video.VideoEncoderConfiguration;
+//import io.agora.rtc.Constants;
+//import io.agora.rtc.IRtcEngineEventHandler;
+//import io.agora.rtc.RtcEngine;
+//import io.agora.rtc.models.UserInfo;
+//import io.agora.rtc.video.VideoCanvas;
+//import io.agora.rtc.video.VideoEncoderConfiguration;
 
 public class IncomingCallFragment extends BaseFragment {
     private FragmentIncomingCallBinding binding;
-    private RtcEngine mRtcEngine;
+    //    private RtcEngine mRtcEngine;
     private Boolean callIncoming = false, callRedial = false, audioDisabled = false, videoDisabled = false,
             callStarted = false, doneAnalysis = false, companySelected = false, freeCall = false;
     private int notificationId = 0;
-    private String callId = "", channelId = "", firstName = "", lastName = "", profileImg ="",
-            groupId = "", farmId = "", animalType = "", vetCategory = "", companyName = "",
-            callAmount = "", paymentId = "", unixNotificationTime = "", callInitiated = "", userName = "";
+    private String callId = "", channelId = "", firstName = "", lastName = "", profileImg ="", groupId = "",
+            farmId = "", animalType = "", vetCategory = "", companyName = "", callAmount = "", paymentId = "",
+            unixNotificationTime = "", callInitiated = "", language = "", animal = "", userName = "";
     private View view1;
     private CountDownTimer countDownTimer;
     private MediaPlayer mediaPlayer;
     private LocalBroadcastManager localBroadcastManager;
     private long countDownTimerValue = 45;
+    private static final int PERMISSION_REQ_VOICE_VIDEO = 1;
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentIncomingCallBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+/*
 
     @Override
     public void onAttach(Context context) {
@@ -113,6 +121,8 @@ public class IncomingCallFragment extends BaseFragment {
 
             profileImg = getArguments().getString("profile_picture");
             unixNotificationTime = getArguments().getString("unixNotificationTime");
+            language = getArguments().getString("language");
+            animal = getArguments().getString("animal");
 
             groupId = getArguments().getString("groupId");
             farmId = getArguments().getString("farmId");
@@ -128,14 +138,10 @@ public class IncomingCallFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentIncomingCallBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        activity.updateTooblar(ContextCompat.getDrawable(activity, R.drawable.ic_consult_doctor), false);
+        activity.updateFirebaseEvents("navigation", "calling_screen");
 
         mediaPlayer = MediaPlayer.create(context, R.raw.calling_sound);
 
@@ -144,12 +150,6 @@ public class IncomingCallFragment extends BaseFragment {
         Glide.with(context).load(R.raw.phone_ringing).into(new DrawableImageViewTarget(binding.animationView));
 
         binding.videoBtn.setEnabled(false);
-
-        try {
-            activity.getSupportActionBar().hide();
-        } catch (Exception e){
-            Log.e("set screen error", e.getMessage()+"");
-        }
 
         if (callIncoming) {
             if (!checkCallTime()){
@@ -161,9 +161,45 @@ public class IncomingCallFragment extends BaseFragment {
                 utils.hideView(binding.mainLayout);
                 utils.visibleView(binding.callLayout);
                 binding.userText.setText(firstName + " " + lastName);
-                if (profileImg.length() != 0) {
-                    if (!profileImg.equalsIgnoreCase("null"))
-                        Picasso.get().load(ApiClient.BASE_URL_MEDIA + profileImg).into(binding.userImg);
+
+                if (profileImg.length() != 0)
+                    Picasso.get().load(ApiClient.BASE_URL_MEDIA + profileImg).into(binding.userImg);
+                if (animal != null) {
+                    if (animal.length() != 0) {
+                        utils.visibleView(binding.animalText);
+                        binding.animalText.setText(utils.getStringValue(R.string.animal) + " : " + animal);
+                    }
+                }
+                if (language != null) {
+                    if (language.length() != 0) {
+                        String[] languageList = utils.getArrayValue(R.array.language_list);
+                        String languageValue = "";
+                        if (language.equalsIgnoreCase("en"))
+                            languageValue = languageList[0];
+                        else if (language.equalsIgnoreCase("as"))
+                            languageValue = languageList[1];
+                        else if (language.equalsIgnoreCase("bn"))
+                            languageValue = languageList[2];
+                        else if (language.equalsIgnoreCase("gu"))
+                            languageValue = languageList[3];
+                        else if (language.equalsIgnoreCase("hi"))
+                            languageValue = languageList[4];
+                        else if (language.equalsIgnoreCase("kn"))
+                            languageValue = languageList[5];
+                        else if (language.equalsIgnoreCase("ml"))
+                            languageValue = languageList[6];
+                        else if (language.equalsIgnoreCase("mr"))
+                            languageValue = languageList[7];
+                        else if (language.equalsIgnoreCase("pa"))
+                            languageValue = languageList[8];
+                        else if (language.equalsIgnoreCase("ta"))
+                            languageValue = languageList[9];
+                        else if (language.equalsIgnoreCase("te"))
+                            languageValue = languageList[10];
+
+                        utils.visibleView(binding.languageText);
+                        binding.languageText.setText(utils.getStringValue(R.string.user_language) + " : " + languageValue);
+                    }
                 }
 
                 startCountDown();
@@ -171,37 +207,29 @@ public class IncomingCallFragment extends BaseFragment {
         } else {
             binding.animationLayout.setVisibility(View.VISIBLE);
             mediaPlayer.start();
-            binding.statusText.setText(utils.getStringValue(R.string.vet_will_be_there));
+
+            if (preferenceUtils.getUserRole() == 2)
+                binding.statusText.setText(utils.getStringValue(R.string.animal_owner_will_be_there));
+            else
+                binding.statusText.setText(utils.getStringValue(R.string.vet_will_be_there));
 
             initializeCall();
         }
 
-        binding.endCallBtn.setOnClickListener(this::endCall);
+        binding.endCallBtn.setOnClickListener(v -> endCall(v));
         binding.videoBtn.setOnClickListener(v -> onVideoMuteClicked());
         binding.audioBtn.setOnClickListener(v -> onAudioMuteClicked());
         binding.flipCameraBtn.setOnClickListener(v -> mRtcEngine.switchCamera());
         binding.callAcceptText.setOnClickListener(v -> binding.callAcceptImg.performClick());
         binding.callDeclineText.setOnClickListener(v -> binding.callDeclineText.performClick());
-
-        binding.callAcceptImg.setOnClickListener(v -> {
-            NotificationManagerCompat.from(activity).cancel(null, notificationId);
-            countDownTimer.cancel();
-
-            if (checkCallTime()) {
-                initializeCall();
-            } else {
-                utils.shortToast(utils.getStringValue(R.string.call_already_completed));
-                preferenceUtils.setBlockNavigationStatus(false);
-                activity.onBackPressed();
-            }
-
-        });
+        binding.callAcceptImg.setOnClickListener(v -> requestMultiplePermission(new String[]{PERMISSION_CAMERA, PERMISSION_RECORD_AUDIO}, PERMISSION_REQ_VOICE_VIDEO));
 
         binding.callDeclineImg.setOnClickListener(v -> {
             NotificationManagerCompat.from(activity).cancel(null, notificationId);
             countDownTimer.cancel();
 
             if (checkCallTime()) {
+                activity.updateFirebaseEvents("button_click", "doctor_reject_call");
                 showLoading();
                 networking.rejectCall(callId, notificationId + "", callInitiated);
             } else {
@@ -210,6 +238,20 @@ public class IncomingCallFragment extends BaseFragment {
                 activity.onBackPressed();
             }
         });
+    }
+
+    private void acceptCall() {
+        NotificationManagerCompat.from(activity).cancel(null, notificationId);
+        countDownTimer.cancel();
+
+        if (checkCallTime()) {
+            activity.updateFirebaseEvents("button_click", "doctor_accept_call");
+            initializeCall();
+        } else {
+            utils.shortToast(utils.getStringValue(R.string.call_already_completed));
+            preferenceUtils.setBlockNavigationStatus(false);
+            activity.onBackPressed();
+        }
     }
 
     private boolean checkCallTime(){
@@ -268,8 +310,16 @@ public class IncomingCallFragment extends BaseFragment {
 
                     setupRemoteVideoStream(uid);
                     networking.updateCallStatus(callId, "Started");
+                    activity.updateFirebaseEvents("call_status", "call_started");
                 });
             }
+        }
+
+        @Override
+        public void onUserInfoUpdated(int uid, UserInfo userInfo) {
+            super.onUserInfoUpdated(uid, userInfo);
+            userName = userInfo.userAccount;
+            binding.userNameText.setText(utils.getStringValue(R.string.call_started) + " - " + userName);
         }
 
         // remote user has left channel
@@ -289,19 +339,13 @@ public class IncomingCallFragment extends BaseFragment {
             });
         }
 
-        @Override
-        public void onUserInfoUpdated(int uid, UserInfo userInfo) {
-            super.onUserInfoUpdated(uid, userInfo);
-            userName = userInfo.userAccount;
-            binding.userNameText.setText(utils.getStringValue(R.string.call_started) + " - " + userName);
-        }
-
         // remote stream has been toggled
         @Override
         public void onUserMuteVideo(final int uid, final boolean toggle) { // Tutorial Step 10
             requireActivity().runOnUiThread(() -> {
                 binding.incomingVideoLayout.setVisibility(toggle ? View.GONE : View.VISIBLE);
                 binding.videoOffImg.setVisibility(toggle ? View.VISIBLE : View.GONE);
+                binding.videoOffIconImg.setVisibility(toggle ? View.VISIBLE : View.GONE);
             });
         }
     };
@@ -323,7 +367,7 @@ public class IncomingCallFragment extends BaseFragment {
                                                                               VideoEncoderConfiguration.STANDARD_BITRATE,
                                                                               VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT));
 
-        mRtcEngine.joinChannelWithUserAccount(null, channelId, preferenceUtils.getUserId());
+        mRtcEngine.joinChannelWithUserAccount(null, channelId, preferenceUtils.getUsername()); // need to change the s1 variable for multiple channels
         setupLocalVideoFeed();
     }
 
@@ -359,7 +403,7 @@ public class IncomingCallFragment extends BaseFragment {
                         mRtcEngine.leaveChannel();
                         mRtcEngine.destroy();
 
-                        showLoading();
+                        binding.endCallBtn.setEnabled(false);
                         if (companySelected)
                             networking.startCall(farmId, animalType, vetCategory, doneAnalysis, companyName, true, groupId, freeCall, callAmount, paymentId);
                         else
@@ -378,7 +422,7 @@ public class IncomingCallFragment extends BaseFragment {
         SurfaceView videoSurface = RtcEngine.CreateRendererView(activity.getBaseContext());
         binding.incomingVideoLayout.addView(videoSurface);
         mRtcEngine.setupRemoteVideo(new VideoCanvas(videoSurface, VideoCanvas.RENDER_MODE_FIT, uid));
-        mRtcEngine.setRemoteSubscribeFallbackOption(Constants.STREAM_FALLBACK_OPTION_AUDIO_ONLY);
+        mRtcEngine.setRemoteSubscribeFallbackOption(io.agora.rtc.Constants.STREAM_FALLBACK_OPTION_AUDIO_ONLY);
     }
 
     public void onAudioMuteClicked() {
@@ -427,9 +471,17 @@ public class IncomingCallFragment extends BaseFragment {
         if (callStarted) {
             utils.shortToast(utils.getStringValue(R.string.call_completed));
             networking.updateCallStatus(callId, "Ended");
-            Bundle bundle = new Bundle();
-            bundle.putString("callId", callId);
-            Navigation.findNavController(view).navigate(R.id.action_incomingCallFragment_to_callFeedbackFragment, bundle);
+            activity.updateFirebaseEvents("call_status", "call_ended");
+            if (preferenceUtils.getUserRole() == 2) {
+                Bundle bundle = new Bundle();
+                bundle.putString("callId", callId);
+                Navigation.findNavController(view).navigate(R.id.action_incomingCallFragment_to_prescriptionFragment, bundle);
+            } else if (preferenceUtils.getUserRole() == 0 || preferenceUtils.getUserRole() == 1){
+                Bundle bundle = new Bundle();
+                bundle.putString("callId", callId);
+                Navigation.findNavController(view).navigate(R.id.action_incomingCallFragment_to_callFeedbackFragment, bundle);
+            } else
+                activity.onBackPressed();
         } else
             activity.onBackPressed();
     }
@@ -438,6 +490,9 @@ public class IncomingCallFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (preferenceUtils.getUserRole() == 2)
+            networking.updateVetStatus("Online");
+
         if (countDownTimer != null)
             countDownTimer.cancel();
 
@@ -459,7 +514,7 @@ public class IncomingCallFragment extends BaseFragment {
     @Override
     public <T> void networkingRequest(@Nullable MethodType methodType, boolean status, @Nullable T error, Object o) {
         if (methodType == MethodType.startCall && status) {
-            dismissLoading();
+            binding.endCallBtn.setEnabled(true);
             StartCallResponse.Data startCallDataResponse = (StartCallResponse.Data) o;
 
             callId = startCallDataResponse.getCallId()+"";
@@ -467,8 +522,6 @@ public class IncomingCallFragment extends BaseFragment {
             firstName = startCallDataResponse.getFirst_name();
             lastName = startCallDataResponse.getLast_name();
             notificationId = Integer.parseInt(startCallDataResponse.getNotificationId());
-
-            binding.userNameText.setText(utils.getStringValue(R.string.calling) + " - " + firstName + " " + lastName);
 
             if (!mediaPlayer.isPlaying())
                 mediaPlayer.start();
@@ -479,8 +532,17 @@ public class IncomingCallFragment extends BaseFragment {
             dismissLoading();
             preferenceUtils.setBlockNavigationStatus(false);
             activity.onBackPressed();
-        } else if (methodType == MethodType.startCall && !status) {
+        } else if (methodType == MethodType.checkCallPickAllowed && status) {
             dismissLoading();
+            acceptCall();
+        } else if (methodType == MethodType.checkCallPickAllowed && !status) {
+            dismissLoading();
+            NotificationManagerCompat.from(activity).cancel(null, notificationId);
+            countDownTimer.cancel();
+            preferenceUtils.setBlockNavigationStatus(false);
+            activity.onBackPressed();
+        } else if (methodType == MethodType.startCall && !status) {
+            binding.endCallBtn.setEnabled(true);
 
             if (error != null) {
                 if ((Boolean) error)
@@ -492,4 +554,20 @@ public class IncomingCallFragment extends BaseFragment {
             finishCall(view1);
         }
     }
+
+    @Override
+    public void requestMultiplePermissionResult(Boolean isGranted, String[] deniedPermissions, String[] requestedPermissionList, int action) {
+        Log.e("Permission", "ConsultDoctorFragment: Requested Permission List- " + Arrays.toString(requestedPermissionList) + ", IsGranted- " + isGranted + ", action- " + action);
+        if (action == PERMISSION_REQ_VOICE_VIDEO) {
+            if (isGranted) {
+                if (preferenceUtils.getUserRole() == 2) {
+                    showLoading();
+                    networking.checkCallPickAllowed(callId);
+                } else
+                    acceptCall();
+            }else
+                utils.shortToast(utils.getStringValue(R.string.permission_voice_video_allow));
+        }
+    }
+*/
 }

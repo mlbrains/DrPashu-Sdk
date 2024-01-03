@@ -284,12 +284,27 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
     }
 
     private void initiateCall(){
-        progressDialog.show();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("callIncoming", false);
+        bundle.putBoolean("callRedial", true);
+        bundle.putString("callInitiated", "Farmer");
 
-        if (companySelected)
-            networking.startCall(farmId, animalType, vetCategory, doneAnalysis, companyName, false, getCurrentTime(), freeCall, amount+"", paymentId);
-        else
-            networking.startCall(farmId, animalType, vetCategory, doneAnalysis, "", false, getCurrentTime(), freeCall, amount +"", paymentId);
+        bundle.putString("farmId", farmId);
+        bundle.putString("animalType", animalType);
+        bundle.putString("animalTypeByLanguage", animalTypeByLanguage);
+        bundle.putString("vetCategory", vetCategory);
+        bundle.putBoolean("doneAnalysis", doneAnalysis);
+        bundle.putString("companyName", companyName);
+        bundle.putString("callAmount", amount + "");
+        bundle.putString("paymentId", paymentId);
+        bundle.putBoolean("freeCall", freeCall);
+        Navigation.findNavController(view1).navigate(R.id.action_nav_consult_doctor_to_callFragment, bundle);
+//        progressDialog.show();
+
+//        if (companySelected)
+//            networking.startCall(farmId, animalType, vetCategory, doneAnalysis, companyName, false, getCurrentTime(), freeCall, amount+"", paymentId);
+//        else
+//            networking.startCall(farmId, animalType, vetCategory, doneAnalysis, "", false, getCurrentTime(), freeCall, amount +"", paymentId);
     }
 
     private String getCurrentTime() {
