@@ -67,7 +67,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     //Agora Audio-Video Call Library
-    implementation 'io.agora.rtc:full-rtc-basic:3.6.2'
+    //implementation 'io.agora.rtc:full-rtc-basic:3.6.2'
 
     //Retrofit Rest Api Library
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
