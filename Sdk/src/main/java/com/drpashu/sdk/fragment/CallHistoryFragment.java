@@ -22,13 +22,14 @@ import java.util.List;
 public class CallHistoryFragment extends BaseFragment implements CallHistoryInterface {
     private FragmentCallHistoryBinding binding;
     private View view1;
-    private String notificationCallId = "";
+    private String notificationCallId = "",screen="";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             notificationCallId = getArguments().getString("callId");
+            screen = getArguments().getString("screen");
         }
     }
 
@@ -55,6 +56,7 @@ public class CallHistoryFragment extends BaseFragment implements CallHistoryInte
                     activity.dismissLoader();
                     Bundle bundle = new Bundle();
                     bundle.putString("callId", notificationCallId + "");
+                    bundle.putString("screen", screen + "");
                     notificationCallId = "";
                     Navigation.findNavController(view1).navigate(R.id.action_nav_history_to_callDetailFragment, bundle);
                 } else

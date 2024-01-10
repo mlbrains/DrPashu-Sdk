@@ -19,7 +19,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     private Activity activity;
     private int TYPE_SENT = 1;
     private int TYPE_RECEIVED = 2;
-     List<MessageListResponse.Data> messageResponseList;
+    List<MessageListResponse.Data> messageResponseList;
 
     public MessageListAdapter(Context context, Activity activity, List<MessageListResponse.Data> messageResponseList) {
         this.context = context;

@@ -38,8 +38,10 @@ public class CallDetailFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
+        if (getArguments() != null) {
             callId = getArguments().getString("callId");
+            screen = getArguments().getString("screen") + "";
+        }
     }
 
     @Override
@@ -72,7 +74,6 @@ public class CallDetailFragment extends BaseFragment {
 //        binding.animalImg2.setOnClickListener(v -> previewImg(binding.animalImg2.getDrawable()));
         binding.imageButtonDown.setOnClickListener(view -> {
             if(binding.importantNoteText.getVisibility() == View.VISIBLE){
-                TransitionManager.beginDelayedTransition(binding.cardImportantNoteCallDetails,new AutoTransition());
                 utils.hideView(binding.groupCallDetails);
                 binding.imageButtonDown.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
             }
@@ -281,6 +282,9 @@ public class CallDetailFragment extends BaseFragment {
 //                utils.hideView(binding.farmDetailLayout);
                 binding.animalTypeText.setText(callDetailResponse.getAnimal() + "");
             }
+            if (screen.equalsIgnoreCase("chat"))
+                navigateToChat(view1);
+
         } else if (methodType == MethodType.getCallDetail && !status)
             dismissLoading();
     }

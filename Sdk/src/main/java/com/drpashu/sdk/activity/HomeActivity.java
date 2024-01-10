@@ -45,6 +45,7 @@ public class HomeActivity extends BaseActivity {
                 bundle.putBoolean("callIncoming", true);
                 bundle.putBoolean("callRedial", false);
                 bundle.putString("callInitiated", "Vet");
+                bundle.putString("screen", "is_caller=");
                 bundle.putString("callId", getIntent().getExtras().getString("callId") + "");
                 bundle.putString("channelId", getIntent().getExtras().getString("channelId") + "");
                 bundle.putString("firstName", getIntent().getExtras().getString("firstName") + "");
@@ -55,13 +56,15 @@ public class HomeActivity extends BaseActivity {
                 bundle.putString("unixNotificationTime", getIntent().getExtras().getString("unixNotificationTime") + "");
                 bundle.putString("language", getIntent().getExtras().getString("language"));
                 bundle.putString("animal", getIntent().getExtras().getString("animal"));
-                navController.navigate(R.id.incomingCallFragment, bundle, navOptions);
+                navController.navigate(R.id.callFragment, bundle, navOptions);
             } else if (getIntent().getExtras().getString("call").equalsIgnoreCase("false")) {
                 if (getIntent().getExtras().getString("screen").equalsIgnoreCase("call_history"))
                     navController.navigate(R.id.nav_call_history, null, navOptions);
-                else if (getIntent().getExtras().getString("screen").equalsIgnoreCase("prescription")) {
+                else if (getIntent().getExtras().getString("screen").equalsIgnoreCase("prescription")
+                        || getIntent().getExtras().getString("screen").equalsIgnoreCase("chat")) {
                     Bundle bundle = new Bundle();
                     bundle.putString("callId", getIntent().getExtras().getString("callId") + "");
+                    bundle.putString("screen", getIntent().getExtras().getString("screen") + "");
                     navController.navigate(R.id.nav_call_history, bundle, navOptions);
                 }
             }

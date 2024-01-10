@@ -36,8 +36,7 @@ public class PaymentFailedDialog extends Dialog {
             try {
                 String text = "Hi DrPashu Team, I am facing a payment issue. Please call me.";// Replace with your message.
 
-                String toNumber = "919902059730"; // Replace with mobile phone number without +Sign or leading zeros, but with country code
-                //Suppose your country is India and your phone number is “xxxxxxxxxx”, then you need to send “91xxxxxxxxxx”.
+                String toNumber = "919902059730";
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://api.whatsapp.com/send?phone="+toNumber +"&text="+text));

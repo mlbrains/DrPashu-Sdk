@@ -18,7 +18,7 @@
             android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             android:background="@color/background_white"
             android:paddingBottom="@dimen/standard_margin">
 

@@ -30,7 +30,6 @@ public class ChatFragment extends BaseFragment {
     private String callId = "", userName = "";
     private View view1;
     private LocalBroadcastManager localBroadcastManager;
-    private FirebaseService firebaseService;
 
     @Override
     public void onAttach(Context context) {
@@ -94,7 +93,6 @@ public class ChatFragment extends BaseFragment {
             else {
                 showLoading();
                 networking.sendMessage(callId, binding.messageInput.getText().toString());
-                firebaseService.onMessageReceived(requireContext(),userName,binding.messageInput.getText().toString());
             }
         });
     }
