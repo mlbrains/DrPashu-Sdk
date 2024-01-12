@@ -31,9 +31,11 @@
     <color name="light_purple">#03DAC5</color>
     <color name="light_card_purple">#add8e6</color>
     <color name="purple200">#DBB2FF</color>
+    <color name="purple400">#985EFF</color>
 
     <!--blue theme-->
     <color name="dark_blue">#3700B3</color>
+    <color name="extra_dark_blue">#5600E8</color>
 
     <!--red theme-->
     <color name="red_600">#FF3D3D</color>

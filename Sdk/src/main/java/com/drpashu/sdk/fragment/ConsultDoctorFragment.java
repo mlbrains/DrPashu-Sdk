@@ -14,6 +14,8 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,10 +39,12 @@ import com.drpashu.sdk.dialog.CallConnectFailedDialog;
 import com.drpashu.sdk.dialog.FreeCallActionInterface;
 import com.drpashu.sdk.dialog.FreeCallDialog;
 import com.drpashu.sdk.dialog.PaymentFailedDialog;
+import com.drpashu.sdk.network.ApiClient;
 import com.drpashu.sdk.network.NetworkingInterface;
 import com.drpashu.sdk.network.model.response.AnimalListResponse;
 import com.drpashu.sdk.network.model.response.StartCallResponse;
 import com.drpashu.sdk.network.model.response.VetListResponse;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -132,6 +136,18 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             }
         });
 
+        binding.imageButtonDown.setOnClickListener(v -> {
+            if(binding.importantNoteText.getVisibility() == View.VISIBLE){
+                utils.hideView(binding.groupCallDetails);
+                binding.imageButtonDown.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
+            }
+            else{
+                TransitionManager.beginDelayedTransition(binding.statusCardview,new AutoTransition());
+                utils.visibleView(binding.groupCallDetails);
+                binding.imageButtonDown.setImageResource(R.drawable.icon_arrow_up);
+            }
+        });
+
         binding.companyView.setOnClickListener(v -> {
             vetCategory = "company";
             companySelected = true;
@@ -149,7 +165,11 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.opdView.setOnClickListener(v -> {
             vetCategory= "OPD";
             companySelected = false;
-            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
+            binding.opdCardview.setStrokeColor(getResources().getColor(R.color.base));
+            binding.opdCardview.setStrokeWidth(3);
+            binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.specialistCardview.setStrokeWidth(1);
+//            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
             binding.companyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             binding.recyclerviewSpecialist.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
@@ -163,9 +183,12 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.specialistView.setOnClickListener(v -> {
             vetCategory = "specialist";
             companySelected = false;
-            binding.recyclerviewSpecialist.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
+            binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.base));
+            binding.specialistCardview.setStrokeWidth(3);
+            binding.opdCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.opdCardview.setStrokeWidth(1);
             binding.companyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+//            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
 
@@ -207,6 +230,28 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 Toast.makeText(getContext(), getContext().getResources().getString(R.string.please_select_vet_type), Toast.LENGTH_SHORT).show();
             else
                 activityResultLauncher.launch(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA});
+        });
+        binding.opdCheckAllCard.setOnClickListener(v -> {
+            binding.mainLayout.setVisibility(View.GONE);
+            binding.vetDetailList.setVisibility(View.VISIBLE);
+            binding.vetDetailText.setText(R.string.opd_consultation);
+            binding.recyclerviewOpd.setVisibility(View.VISIBLE);
+            binding.recyclerviewSpecialist.setVisibility(View.GONE);
+        });
+        binding.specialistCheckAllCard.setOnClickListener(v -> {
+            binding.mainLayout.setVisibility(View.GONE);
+            binding.vetDetailList.setVisibility(View.VISIBLE);
+            binding.recyclerviewSpecialist.setVisibility(View.VISIBLE);
+            binding.recyclerviewOpd.setVisibility(View.GONE);
+            binding.vetDetailText.setText(R.string.specialists_available);
+        });
+        binding.opdBackButton.setOnClickListener(v -> {
+            binding.mainLayout.setVisibility(View.VISIBLE);
+            binding.vetDetailList.setVisibility(View.GONE);
+        });
+        binding.vetDetailText.setOnClickListener(v -> {
+            binding.mainLayout.setVisibility(View.VISIBLE);
+            binding.vetDetailList.setVisibility(View.GONE);
         });
     }
 
@@ -322,8 +367,6 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
     @Override
     public <T> void networkingRequest(@Nullable MethodType methodType, boolean status, @Nullable T error, Object o) {
         if (methodType == MethodType.getAnimalList && status) {
-            activity.dismissLoader();
-
             binding.mainLayout.setVisibility(View.GONE);
             binding.selectAnimalLayout.setVisibility(View.VISIBLE);
 
@@ -366,6 +409,20 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
 
             if (opdList.size() != 0) {
                 binding.opdCardview.setVisibility(View.VISIBLE);
+                int i=1;
+                int j=0;
+                while(j<opdList.size() && i<=3){
+                    if(opdList.get(j).getVetProfileImage() != null) {
+                        if(i==1)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA+opdList.get(j).getVetProfileImage()).into(binding.opdLeftImage);
+                        if(i==2)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA+opdList.get(j).getVetProfileImage()).into(binding.opdCenterImage);
+                        if(i==3)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA+opdList.get(j).getVetProfileImage()).into(binding.opdRightImage);
+                        i++;
+                    }
+                    j++;
+                }
                 VetListAdapter opdListAdapter = new VetListAdapter(getContext(), getActivity(), opdList);
                 binding.recyclerviewOpd.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.recyclerviewOpd.setAdapter(opdListAdapter);
@@ -375,6 +432,20 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
 
             if (specialistList.size() != 0) {
                 binding.specialistCardview.setVisibility(View.VISIBLE);
+                int i=1;
+                int j=0;
+                while(j<specialistList.size() && i<=3){
+                    if(specialistList.get(j).getVetProfileImage() != null) {
+                        if(i==1)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA+specialistList.get(j).getVetProfileImage()).into(binding.specialistLeftImage);
+                        if(i==2)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA+specialistList.get(j).getVetProfileImage()).into(binding.specialistCenterImage);
+                        if(i==3)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA+specialistList.get(j).getVetProfileImage()).into(binding.specialistRightImage);
+                        i++;
+                    }
+                    j++;
+                }
                 VetListAdapter specialistListAdapter = new VetListAdapter(getContext(), getActivity(), specialistList);
                 binding.recyclerviewSpecialist.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.recyclerviewSpecialist.setAdapter(specialistListAdapter);
@@ -406,6 +477,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
 
             if (opdList.size() == 0 && specialistList.size() == 0 && companyList.size() == 0 && governmentList.size() == 0 && familyList.size() == 0) {
                 binding.selectionBtn.setVisibility(View.GONE);
+                binding.linearLayoutCategory.setVisibility(View.GONE);
                 binding.noDoctorAvailableText.setVisibility(View.VISIBLE);
             }
 

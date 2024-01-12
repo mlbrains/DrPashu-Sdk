@@ -658,6 +658,11 @@
     <string name="you_have_completed_your_call">You have completed your call</string>
     <string name="failed">Failed</string>
     <string name="call_unable_to_connect">You were unable to connect</string>
+    <string name="you_will_be_connected_to_one_of_the_vets">You will be connected to one of the staffs from the below list and if the staff does not pick up the call, we will connect you to the next staff automatically.</string>
+    <string name="select_category">Select Category</string>
+    <string name="opd_consultation">OPD Consultation</string>
+    <string name="check_all">Check all</string>
+    <string name="starting_at">Starting at</string>
     <string-array name="gender_list">
         <item>Male</item>
         <item>Female</item>
