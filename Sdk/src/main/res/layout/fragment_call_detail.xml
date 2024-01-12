@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            tools:visibility="visible"
             android:background="@color/background_white"
             android:paddingBottom="@dimen/standard_margin">
 
@@ -251,7 +252,7 @@
                     android:id="@+id/textview_callback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/missed_something_to_convey"
+                    android:text="@string/have_more_questions"
                     android:gravity="center"
                     android:fontFamily="@font/poppins_medium"
                     android:textColor="@color/grey800"

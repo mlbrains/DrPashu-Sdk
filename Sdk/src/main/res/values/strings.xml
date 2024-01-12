@@ -597,7 +597,6 @@
     <string name="your_farms">Your Farms:</string>
     <string name="disease_diagnosed">Provisional Diagnosis</string>
     <string name="possible_symptoms_during_call">Symptoms</string>
-    <string name="prescriptionNoteText">Important Note: This diagnosis and prescription is generated based on information provided by the Animal Owner during online consultation without any physical check-up. For any medical emergencies / bleeding etc, we recommend you to visit your nearby Veterinarian immediately.</string>
     <string name="select_diagnosis">Please select Possible Diagnosis</string>
     <string name="select_diagnose_disease">Select Diagnosis Disease</string>
     <string name="money_back_guarantee_1">100% Money Back guarantee, If not satisfied.</string>
@@ -663,6 +662,8 @@
     <string name="opd_consultation">OPD Consultation</string>
     <string name="check_all">Check all</string>
     <string name="starting_at">Starting at</string>
+    <string name="have_more_questions">Have more questions?</string>
+    <string name="prescriptionNoteText">This diagnosis and prescription is generated based on information provided by the Animal Owner during online consultation without any physical check-up. For any medical emergencies / bleeding etc, we recommend you to visit your nearby Veterinarian immediately.</string>
     <string-array name="gender_list">
         <item>Male</item>
         <item>Female</item>
