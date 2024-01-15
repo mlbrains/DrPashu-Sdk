@@ -73,4 +73,16 @@
     <color name="grey900">#344054</color>
     <color name="grey100">#F2F4F7</color>
     <color name="grey200">#E0E1E4</color>
+
+<!--    &lt;!&ndash;grey theme&ndash;&gt;
+    <color name="grey_theme">#F68920</color>
+    <color name="dark_grey">#402429</color>
+    <color name="light_grey_theme">#f9b675</color>
+    <color name="light_card_grey">#fde7d1</color>-->
+
+    <!--gramik grey theme-->
+    <color name="gramik_grey_theme">#854b55</color>
+    <color name="gramik_dark_grey">#402429</color>
+    <color name="gramik_light_grey_theme">#cba3aa</color>
+    <color name="gramik_light_card_grey">#eee0e3</color>
 </resources>
