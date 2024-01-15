@@ -425,6 +425,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 }
                 VetListAdapter opdListAdapter = new VetListAdapter(getContext(), getActivity(), opdList);
                 binding.recyclerviewOpd.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.recyclerviewOpd.setItemViewCacheSize(opdList.size());
                 binding.recyclerviewOpd.setAdapter(opdListAdapter);
 
                 binding.opdView.performClick();
@@ -448,6 +449,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 }
                 VetListAdapter specialistListAdapter = new VetListAdapter(getContext(), getActivity(), specialistList);
                 binding.recyclerviewSpecialist.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.recyclerviewSpecialist.setItemViewCacheSize(specialistList.size());
                 binding.recyclerviewSpecialist.setAdapter(specialistListAdapter);
             }
 
@@ -456,6 +458,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 companyName = companyList.get(0).getCompanyName();
                 VetListAdapter companyListAdapter = new VetListAdapter(getContext(), getActivity(), companyList);
                 binding.companyRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.companyRecyclerview.setItemViewCacheSize(companyList.size());
                 binding.companyRecyclerview.setAdapter(companyListAdapter);
 
                 binding.companyView.performClick();
@@ -465,6 +468,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 binding.governmentCardview.setVisibility(View.VISIBLE);
                 VetListAdapter governmentListAdapter = new VetListAdapter(getContext(), getActivity(), governmentList);
                 binding.governmentRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.governmentRecyclerview.setItemViewCacheSize(governmentList.size());
                 binding.governmentRecyclerview.setAdapter(governmentListAdapter);
             }
 
@@ -472,6 +476,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
                 binding.familyCardview.setVisibility(View.VISIBLE);
                 VetListAdapter familyListAdapter = new VetListAdapter(getContext(), getActivity(), familyList);
                 binding.familyRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.familyRecyclerview.setItemViewCacheSize(familyList.size());
                 binding.familyRecyclerview.setAdapter(familyListAdapter);
             }
 
