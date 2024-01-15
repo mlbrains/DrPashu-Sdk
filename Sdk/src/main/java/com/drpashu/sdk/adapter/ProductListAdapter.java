@@ -2,6 +2,8 @@ package com.drpashu.sdk.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +52,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.binding.productNameText.setText(productList.get(position).getTitle());
         holder.binding.descriptionText.setText(productList.get(position).getBenefit());
         holder.binding.productCheckbox.setChecked(productList.get(position).getChecked());
+
+        holder.binding.productNameText.setOnClickListener(v -> {
+            Intent urlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(productList.get(position).getDeep_link()));
+            activity.startActivity(urlIntent);
+        });
     }
 
     @Override

@@ -40,6 +40,8 @@
             android:layout_marginStart="@dimen/small_margin"
             android:layout_marginEnd="@dimen/small_margin"
             android:layout_marginTop="@dimen/small_margin"
+            android:drawablePadding="@dimen/small_margin"
+            android:drawableEnd="@drawable/info_create_post"
             android:maxLines="3"
             android:fontFamily="@font/poppins_medium"
             android:textColor="@color/dark_base"

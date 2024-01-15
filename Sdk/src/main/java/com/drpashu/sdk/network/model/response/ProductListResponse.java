@@ -71,6 +71,9 @@ public class ProductListResponse {
         @SerializedName("recommended")
         @Expose
         private Boolean isChecked;
+        @SerializedName("deep_link")
+        @Expose
+        private String deep_link;
 
         public Integer getId() {
             return id;
@@ -114,6 +117,14 @@ public class ProductListResponse {
 
         public void setChecked(Boolean checked) {
             isChecked = checked;
+        }
+
+        public String getDeep_link() {
+            return deep_link;
+        }
+
+        public void setDeep_link(String deep_link) {
+            this.deep_link = deep_link;
         }
     }
 }
