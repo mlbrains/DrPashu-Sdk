@@ -367,6 +367,8 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
     @Override
     public <T> void networkingRequest(@Nullable MethodType methodType, boolean status, @Nullable T error, Object o) {
         if (methodType == MethodType.getAnimalList && status) {
+            dismissLoading();
+            activity.dismissLoader();
             binding.mainLayout.setVisibility(View.GONE);
             binding.selectAnimalLayout.setVisibility(View.VISIBLE);
 
