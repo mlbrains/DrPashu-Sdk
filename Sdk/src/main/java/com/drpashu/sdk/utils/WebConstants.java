@@ -2,6 +2,9 @@ package com.drpashu.sdk.utils;
 
 public class WebConstants {
     public static final String STR_NAME = "name";
+    public static final String STR_REQUEST = "request";
+    public static final String ACTION_CALL_INITIATED = "call_initiated";
+    public static final String ACTION_CALL_RECEIVED = "call_received";
     public static final String ACTION_START_CALL = "start_call";
     public static final String ACTION_JOIN_CALL = "join_call";
     public static final String ACTION_CALL_COMPLETE = "call_complete";

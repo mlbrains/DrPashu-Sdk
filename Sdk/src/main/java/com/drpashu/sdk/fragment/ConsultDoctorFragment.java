@@ -333,7 +333,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         bundle.putBoolean("callIncoming", false);
         bundle.putBoolean("callRedial", true);
         bundle.putString("callInitiated", "Farmer");
-        bundle.putString("screen", "is_caller=");
+        bundle.putString("screen", "start_call");
 
         bundle.putString("farmId", farmId);
         bundle.putString("animalType", animalType);

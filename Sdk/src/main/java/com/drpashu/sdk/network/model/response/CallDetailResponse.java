@@ -139,6 +139,9 @@ public class CallDetailResponse {
         @SerializedName("call_initiated")
         @Expose
         private String callInitiated;
+        @SerializedName("follow_up")
+        @Expose
+        private Boolean follow_up;
 
         @SerializedName("products")
         @Expose
@@ -146,6 +149,14 @@ public class CallDetailResponse {
 
         public List<ProductListResponse.Data> getProducts() {
             return products;
+        }
+
+        public Boolean getFollow_up() {
+            return follow_up;
+        }
+
+        public void setFollow_up(Boolean follow_up) {
+            this.follow_up = follow_up;
         }
 
         public String getCallInitiated() {
