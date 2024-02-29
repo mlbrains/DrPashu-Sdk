@@ -151,9 +151,12 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.companyView.setOnClickListener(v -> {
             vetCategory = "company";
             companySelected = true;
-            binding.companyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
-            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            binding.recyclerviewSpecialist.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            binding.companyCardview.setStrokeColor(getResources().getColor(R.color.base));
+            binding.companyCardview.setStrokeWidth(3);
+            binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.specialistCardview.setStrokeWidth(1);
+            binding.opdCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.opdCardview.setStrokeWidth(1);
             binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
 
@@ -169,9 +172,8 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             binding.opdCardview.setStrokeWidth(3);
             binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
             binding.specialistCardview.setStrokeWidth(1);
-//            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
-            binding.companyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            binding.recyclerviewSpecialist.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            binding.companyCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.companyCardview.setStrokeWidth(1);
             binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
 
@@ -201,10 +203,13 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             vetCategory = "government";
             companySelected = false;
             binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
-            binding.companyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            binding.recyclerviewSpecialist.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.specialistCardview.setStrokeWidth(1);
+            binding.opdCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.opdCardview.setStrokeWidth(1);
+            binding.companyCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.companyCardview.setStrokeWidth(1);
 
             mrpAmount = vetListResponse.getCategoriesList().getGovernmentMrp();
             amount = vetListResponse.getCategoriesList().getGovernmentOfferPrice();
@@ -215,9 +220,12 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             vetCategory = "family";
             companySelected = false;
             binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
-            binding.companyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            binding.recyclerviewOpd.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-            binding.recyclerviewSpecialist.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+            binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.specialistCardview.setStrokeWidth(1);
+            binding.opdCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.opdCardview.setStrokeWidth(1);
+            binding.companyCardview.setStrokeColor(getResources().getColor(R.color.grey200));
+            binding.companyCardview.setStrokeWidth(1);
             binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
 
             mrpAmount = vetListResponse.getCategoriesList().getFamilyMrp();
@@ -234,16 +242,26 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.opdCheckAllCard.setOnClickListener(v -> {
             binding.mainLayout.setVisibility(View.GONE);
             binding.vetDetailList.setVisibility(View.VISIBLE);
-            binding.vetDetailText.setText(R.string.opd_consultation);
+            binding.vetDetailText.setText(utils.getStringValue(R.string.opd_consultation));
             binding.recyclerviewOpd.setVisibility(View.VISIBLE);
             binding.recyclerviewSpecialist.setVisibility(View.GONE);
+            binding.companyRecyclerview.setVisibility(View.GONE);
         });
         binding.specialistCheckAllCard.setOnClickListener(v -> {
             binding.mainLayout.setVisibility(View.GONE);
             binding.vetDetailList.setVisibility(View.VISIBLE);
             binding.recyclerviewSpecialist.setVisibility(View.VISIBLE);
             binding.recyclerviewOpd.setVisibility(View.GONE);
-            binding.vetDetailText.setText(R.string.specialists_available);
+            binding.companyRecyclerview.setVisibility(View.GONE);
+            binding.vetDetailText.setText(utils.getStringValue(R.string.specialists_available));
+        });
+        binding.companyCheckAllCard.setOnClickListener(v -> {
+            binding.mainLayout.setVisibility(View.GONE);
+            binding.vetDetailList.setVisibility(View.VISIBLE);
+            binding.recyclerviewOpd.setVisibility(View.GONE);
+            binding.recyclerviewSpecialist.setVisibility(View.GONE);
+            binding.companyRecyclerview.setVisibility(View.VISIBLE);
+            binding.vetDetailText.setText(utils.getStringValue(R.string.company_doctor_available));
         });
         binding.opdBackButton.setOnClickListener(v -> {
             binding.mainLayout.setVisibility(View.VISIBLE);
@@ -458,6 +476,20 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             if (companyList.size() != 0) {
                 binding.companyCardview.setVisibility(View.VISIBLE);
                 companyName = companyList.get(0).getCompanyName();
+                int i=1;
+                int j=0;
+                while(j<companyList.size() && i<=3) {
+                    if (companyList.get(j).getVetProfileImage() != null) {
+                        if (i == 1)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA + specialistList.get(j).getVetProfileImage()).into(binding.companyLeftImage);
+                        if (i == 2)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA + specialistList.get(j).getVetProfileImage()).into(binding.companyCenterImage);
+                        if (i == 3)
+                            Picasso.get().load(ApiClient.BASE_URL_MEDIA + specialistList.get(j).getVetProfileImage()).into(binding.companyRightImage);
+                        i++;
+                    }
+                    j++;
+                }
                 VetListAdapter companyListAdapter = new VetListAdapter(getContext(), getActivity(), companyList);
                 binding.companyRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.companyRecyclerview.setItemViewCacheSize(companyList.size());
