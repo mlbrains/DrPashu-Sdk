@@ -309,8 +309,11 @@ public class CallFragment extends BaseFragment {
 
         binding.webView.addJavascriptInterface(new WebAppInterface(), "Android");
 
-        binding.webView.loadUrl(ApiClient.BASE_URL_CALL + screen + !callIncoming + "&paravet_call=" + callToParavet);
-        Log.e("url", ApiClient.BASE_URL_CALL + screen + !callIncoming + "&paravet_call=" + callToParavet);
+//        binding.webView.loadUrl(ApiClient.BASE_URL_CALL + screen + !callIncoming + "&paravet_call=" + callToParavet);
+//        Log.e("url", ApiClient.BASE_URL_CALL + screen + !callIncoming + "&paravet_call=" + callToParavet);
+
+        binding.webView.loadUrl(ApiClient.BASE_URL_CALL + !callIncoming);
+        Log.e("url", ApiClient.BASE_URL_CALL + !callIncoming);
     }
 
     private void sendDataToWeb(String data) {
@@ -321,6 +324,15 @@ public class CallFragment extends BaseFragment {
     private void showCallNotConnectedDialog(String message) {
         binding.webView.post(() -> {
             CallConnectFailedDialog callConnectFailedDialog = new CallConnectFailedDialog(context, activity, message);
+            callConnectFailedDialog.setCancelable(true);
+            callConnectFailedDialog.show();
+            callConnectFailedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        });
+    }
+
+    private void showIvrSelectedDialog(String message) {
+        binding.webView.post(() -> {
+            CallConnectFailedDialog callConnectFailedDialog = new CallConnectFailedDialog(context, activity, message, true, true);
             callConnectFailedDialog.setCancelable(true);
             callConnectFailedDialog.show();
             callConnectFailedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -404,12 +416,14 @@ public class CallFragment extends BaseFragment {
         public void webData(String data) throws JSONException {
             JSONObject jsonObject = new JSONObject(data);
 
-            if (jsonObject.has(WebConstants.STR_NAME)) {
+            if (jsonObject.has(WebConstants.STR_REQUEST)) {
 //                utils.shortToast(data);
                 Log.e("WebAppInterface", "WebData Received: " + data);
 
 
-                switch (jsonObject.getString(WebConstants.STR_NAME)) {
+                switch (jsonObject.getString(WebConstants.STR_REQUEST)) {
+                    case WebConstants.ACTION_CALL_INITIATED:
+                        switch (screen) {
                     case WebConstants.ACTION_START_CALL:
                         JSONObject startCallObject = new JSONObject();
                         startCallObject.put(WebConstants.STR_NAME, WebConstants.ACTION_START_CALL);
@@ -431,6 +445,23 @@ public class CallFragment extends BaseFragment {
 
                         sendDataToWeb(startCallObject.toString());
                         break;
+                    case WebConstants.ACTION_CALL_BACK:
+                        JSONObject callBackObject = new JSONObject();
+                        callBackObject.put(WebConstants.STR_NAME, WebConstants.ACTION_CALL_BACK);
+
+                        JSONObject callBackData = new JSONObject();
+                        callBackData.put(STR_USER_ID, preferenceUtils.getUserId());
+                        callBackData.put(STR_USER_NAME, preferenceUtils.getUsername());
+                        callBackData.put(STR_CALL_ID, callId);
+
+                        callBackObject.put("data", callBackData);
+                        Log.e("WebAppInterface", "WebData: Call Back- " + callBackObject);
+
+                        sendDataToWeb(callBackObject.toString());
+                        break;
+                }
+                break;
+                    case WebConstants.ACTION_CALL_RECEIVED:
                     case WebConstants.ACTION_JOIN_CALL:
                         JSONObject joinCallObject = new JSONObject();
                         joinCallObject.put(WebConstants.STR_NAME, WebConstants.ACTION_JOIN_CALL);
@@ -446,38 +477,17 @@ public class CallFragment extends BaseFragment {
 
                         sendDataToWeb(joinCallObject.toString());
                         break;
-                    case WebConstants.ACTION_CALL_BACK:
-                        JSONObject callBackObject = new JSONObject();
-                        callBackObject.put(WebConstants.STR_NAME, WebConstants.ACTION_CALL_BACK);
-
-                        JSONObject callBackData = new JSONObject();
-                        callBackData.put(STR_USER_ID, preferenceUtils.getUserId());
-                        callBackData.put(STR_USER_NAME, preferenceUtils.getUsername());
-                        callBackData.put(STR_CALL_ID, callId);
-
-                        callBackObject.put("data", callBackData);
-                        Log.e("WebAppInterface", "WebData: Call Back- " + callBackObject);
-
-                        sendDataToWeb(callBackObject.toString());
-                        break;
                     case WebConstants.ACTION_CALL_COMPLETE:
                         String callId = "";
                         boolean editPrescription = true;
                         if (jsonObject.has(STR_CALL_ID))
                             callId = jsonObject.getString(STR_CALL_ID);
                         preferenceUtils.setBlockNavigationStatus(false);
-//                        if (preferenceUtils.getUserRole() == 0 || preferenceUtils.getUserRole() == 1)
                             navigate(R.id.action_callFragment_to_callFeedbackFragment, callId);
-//                        else if (preferenceUtils.getUserRole() == 4) {
-//                            if (jsonObject.has(STR_EDIT_PRESCRIPTION))
-//                                editPrescription = jsonObject.getBoolean(STR_EDIT_PRESCRIPTION);
-//
-//                            if (editPrescription)
-//                                navigate(R.id.action_callFragment_to_prescriptionFragment, callId);
-//                            else
-//                                navigate(R.id.action_callFragment_to_callFeedbackFragment, callId);
-//                        } else
-//                            navigate(R.id.action_callFragment_to_prescriptionFragment, callId);
+                        break;
+                    case WebConstants.ACTION_CALL_IVR_SELECTED:
+                        if (jsonObject.has(STR_MESSAGE))
+                            showIvrSelectedDialog(jsonObject.get(STR_MESSAGE).toString());
                         break;
                     case WebConstants.ACTION_CALL_NO_PICKUP:
                     case WebConstants.ACTION_ANOTHER_VET_PICKUP:

@@ -743,6 +743,9 @@
     <string name="you_will_also_get_10_pashu_coins_for_each_referral">You will also get 10 Pashu coins for each referral</string>
     <string name="how_much_money_do_you_want_to_add">How much money do you want to add?</string>
     <string name="want_to_share_something">Want to share something?</string>
+    <string name="thanks_for_calling_the_mobile">Thanks for calling the mobile</string>
+    <string name="vet_offline_text">The vet is currently offline</string>
+    <string name="please_come_back_later">Please come back later</string>
 
     <string-array name="gender_list">
         <item>Male</item>

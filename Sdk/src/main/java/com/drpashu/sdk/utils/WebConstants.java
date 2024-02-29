@@ -2,6 +2,9 @@ package com.drpashu.sdk.utils;
 
 public class WebConstants {
     public static final String STR_NAME = "name";
+    public static final String STR_REQUEST = "request";
+    public static final String ACTION_CALL_INITIATED = "call_initiated";
+    public static final String ACTION_CALL_RECEIVED = "call_received";
     public static final String ACTION_START_CALL = "start_call";
     public static final String ACTION_JOIN_CALL = "join_call";
     public static final String ACTION_CALL_COMPLETE = "call_complete";
@@ -9,6 +12,7 @@ public class WebConstants {
     public static final String ACTION_CLOSE_WEB_ERROR = "close_web_error";
     public static final String ACTION_ANOTHER_VET_PICKUP = "another_vet_picked_up";
     public static final String ACTION_CALL_BACK_FAILED = "call_back_failed";
+    public static final String ACTION_CALL_IVR_SELECTED = "choosed_ivr_call";
     public static final String ACTION_CALL_BACK = "call_back";
     public static final String STR_USER_ID = "user_id";
     public static final String STR_USER_NAME = "name";

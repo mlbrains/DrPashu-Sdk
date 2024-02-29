@@ -221,6 +221,33 @@ public class Networking {
         });
     }
 
+    public void callBackUser(String callId) {
+        Call<StartCallResponse> startCallResponseCall = apiInterface.callBackUser(preferenceUtils.getUserId(), callId);
+        startCallResponseCall.enqueue(new Callback<StartCallResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<StartCallResponse> call, @NonNull Response<StartCallResponse> response) {
+                if (response.isSuccessful()) {
+                    StartCallResponse startCallResponse = response.body();
+                    if (startCallResponse.getStatus())
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.callBackUser, true, null, startCallResponse.getData());
+                    else {
+                        Toast.makeText(context, startCallResponse.getMessage() + "", Toast.LENGTH_LONG).show();
+                        networkingInterface.networkingRequest(NetworkingInterface.MethodType.callBackUser, false, null, null);
+                    }
+                } else {
+                    Toast.makeText(context, context.getResources().getString(R.string.error_call_back_user), Toast.LENGTH_SHORT).show();
+                    networkingInterface.networkingRequest(NetworkingInterface.MethodType.callBackUser, false, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<StartCallResponse> call, @NonNull Throwable t) {
+                Toast.makeText(context, context.getResources().getString(R.string.error_call_back_user), Toast.LENGTH_SHORT).show();
+                networkingInterface.networkingRequest(NetworkingInterface.MethodType.callBackUser, false, null, null);
+            }
+        });
+    }
+
     public void getCallDetail(String callId) {
         Call<CallDetailResponse> callDetailResponseCall = apiInterface.getCallDetail(preferenceUtils.getUserId(), callId);
         callDetailResponseCall.enqueue(new Callback<CallDetailResponse>() {

@@ -1,6 +1,11 @@
 package com.drpashu.sdk.fragment;
 
+import static com.drpashu.sdk.utils.Constants.PERMISSION_CAMERA;
+import static com.drpashu.sdk.utils.Constants.PERMISSION_RECORD_AUDIO;
+
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.AutoTransition;
@@ -20,20 +25,24 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.drpashu.sdk.R;
 import com.drpashu.sdk.adapter.ProductListAdapter;
 import com.drpashu.sdk.databinding.FragmentCallDetailBinding;
+import com.drpashu.sdk.dialog.CallConnectFailedDialog;
 import com.drpashu.sdk.network.ApiClient;
 import com.drpashu.sdk.network.model.response.CallDetailResponse;
 import com.ortiz.touchview.TouchImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CallDetailFragment extends BaseFragment {
     private FragmentCallDetailBinding binding;
-    private String callId = "", baseUrl = ApiClient.BASE_URL_MEDIA,screen = "";
+    private String callId = "", baseUrl = ApiClient.BASE_URL_MEDIA,screen = "",vetStatus ="";
     private byte[] prescription1Byte = null, prescription2Byte = null;
     private static final int RESULT_LOAD_PRESCRIPTION_1 = 1, RESULT_LOAD_PRESCRIPTION_2 = 2;
     private View view1;
     private ProductListAdapter productListAdapter;
+    private static final int PERMISSION_REQ_VOICE_VIDEO = 1;
+    private Boolean offlineCall = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +95,26 @@ public class CallDetailFragment extends BaseFragment {
         binding.chatIcon.setOnClickListener(v -> {
             navigateToChat(v);
         });
+
+        binding.callBackBtn.setOnClickListener(v -> {
+            if (offlineCall) {
+                showLoading();
+                networking.callBackUser(callId);
+            }
+            else {
+                if (vetStatus.equalsIgnoreCase("Online"))
+                    requestMultiplePermission(new String[]{PERMISSION_CAMERA, PERMISSION_RECORD_AUDIO}, PERMISSION_REQ_VOICE_VIDEO);
+                else
+                    showVetOfflineDialog(utils.getStringValue(R.string.vet_offline_text) + "\n" + utils.getStringValue(R.string.please_come_back_later));
+            }
+        });
+    }
+
+    private void showVetOfflineDialog(String message) {
+        CallConnectFailedDialog callConnectFailedDialog = new CallConnectFailedDialog(context, activity, message);
+        callConnectFailedDialog.setCancelable(true);
+        callConnectFailedDialog.show();
+        callConnectFailedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     private void navigateToChat(View view) {
@@ -134,27 +163,22 @@ public class CallDetailFragment extends BaseFragment {
             binding.userText.setText(callDetailResponse.getFirstName() + " " + callDetailResponse.getLastName());
             binding.dateText.setText(callDetailResponse.getDate() + " " + callDetailResponse.getTime());
 
+            vetStatus = callDetailResponse.getVetStatus() + "";
+
             if (callDetailResponse.getProfilePicture() != null) {
                 if (callDetailResponse.getProfilePicture().length() != 0)
                     Picasso.get().load(ApiClient.BASE_URL_MEDIA + callDetailResponse.getProfilePicture()).into(binding.userImg);
             }
 
-//            if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Farmer") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
-//                binding.infoIcon.setImageResource(R.drawable.call_out_miss);
-//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Farmer") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
-//                binding.infoIcon.setImageResource(R.drawable.call_out_done);
-//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Vet") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
-//                binding.infoIcon.setImageResource(R.drawable.call_in_miss);
-//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Vet") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
-//                binding.infoIcon.setImageResource(R.drawable.call_in_done);
-//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Admin") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Missed"))
-//                binding.infoIcon.setImageResource(R.drawable.call_in_miss);
-//            else if (callDetailResponse.getCallInitiated().equalsIgnoreCase("Admin") && callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed"))
-//                binding.infoIcon.setImageResource(R.drawable.call_in_done);
+            offlineCall = callDetailResponse.getCallType().equalsIgnoreCase("Offline");
 
             if (callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed")) {
-                utils.visibleView(binding.chatIcon);
-                utils.visibleView(binding.constraintCallback);
+                if (offlineCall)
+                    utils.hideView(binding.chatIcon);
+                else {
+                    utils.visibleView(binding.chatIcon);
+                    utils.visibleView(binding.constraintCallback);
+                }
                 if (callDetailResponse.getCallDuration() != null)
                     binding.dateText.setText(callDetailResponse.getDate() + " " + callDetailResponse.getTime() + " (" + callDetailResponse.getCallDuration() + ")");
                 binding.cardCallStatus.setStrokeColor(getResources().getColor(R.color.green600));
@@ -208,6 +232,13 @@ public class CallDetailFragment extends BaseFragment {
                 utils.visibleView(binding.recommendProductText);
             }
 
+            if (callDetailResponse.getFollow_up()) {
+                utils.visibleView(binding.constraintCallback);
+                utils.visibleView(binding.callBackBtn);
+            } else {
+                utils.hideView(binding.callBackBtn);
+            }
+
             binding.productRecyclerview.setLayoutManager(new GridLayoutManager(context, 2));
             productListAdapter = new ProductListAdapter(context, activity, callDetailResponse.getProducts(), false);
             binding.productRecyclerview.setAdapter(productListAdapter);
@@ -235,51 +266,17 @@ public class CallDetailFragment extends BaseFragment {
                 utils.hideView(binding.textviewSymptoms);
             }
 
-            if (callDetailResponse.getHealthVal()) {
+            if (callDetailResponse.getHealthVal() != null && callDetailResponse.getHealthVal()) {
                 if (callDetailResponse.getLotExists()) {
-//                    utils.visibleView(binding.farmDetailLayout);
-//                    utils.hideView(binding.animalTypeTitleText);
                     utils.hideView(binding.animalTypeText);
-
-//                    binding.animalText.setText(callDetailResponse.getAnimal() + "");
-//                    binding.typeText.setText(callDetailResponse.getBreed() + "");
-//                    binding.quantityText.setText(callDetailResponse.getQuantity() + "");
-//                    binding.dobText.setText(callDetailResponse.getDOB() + "");
                 } else {
-//                    utils.visibleView(binding.animalTypeTitleText);
                     utils.visibleView(binding.animalTypeText);
-//                    utils.hideView(binding.farmDetailLayout);
 
                     binding.animalTypeText.setText(callDetailResponse.getAnimal() + "");
                 }
 
-//                binding.symptomListView.setAdapter(new ArrayAdapter<>(getContext(), R.layout.symptom_list, R.id.symptom, callDetailResponse.getSymptomsList()));
-//                binding.symptomListView.setDivider(null);
-
-//                if (callDetailResponse.getAnalysisImage() != null)
-//                    Picasso.get().load(baseUrl + callDetailResponse.getAnalysisImage()).into(binding.animalImg1);
-//                else {
-//                    utils.hideView(binding.animalImgText);
-//                    utils.hideView(binding.animalImg1);
-//                    utils.hideView(binding.animalImg2);
-//                }
-
-//                if (callDetailResponse.getPostmortemImage() != null) {
-//                    utils.visibleView(binding.animalImg2);
-//                    Picasso.get().load(baseUrl + callDetailResponse.getPostmortemImage()).into(binding.animalImg2);
-//                } else
-//                    utils.hideView(binding.animalImg2);
-
             } else {
-//                utils.hideView(binding.symptomListText);
-//                utils.hideView(binding.symptomListView);
-//                utils.hideView(binding.animalImgText);
-//                utils.hideView(binding.animalImg1);
-//                utils.hideView(binding.animalImg2);
-
-//                utils.visibleView(binding.animalTypeTitleText);
                 utils.visibleView(binding.animalTypeText);
-//                utils.hideView(binding.farmDetailLayout);
                 binding.animalTypeText.setText(callDetailResponse.getAnimal() + "");
             }
             if (screen.equalsIgnoreCase("chat"))
@@ -287,5 +284,22 @@ public class CallDetailFragment extends BaseFragment {
 
         } else if (methodType == MethodType.getCallDetail && !status)
             dismissLoading();
+    }
+
+    @Override
+    public void requestMultiplePermissionResult(Boolean isGranted, String[] deniedPermissions, String[] requestedPermissionList, int action) {
+        Log.e("Permission", "ConsultDoctorFragment: Requested Permission List- " + Arrays.toString(requestedPermissionList) + ", IsGranted- " + isGranted + ", action- " + action);
+        if (action == PERMISSION_REQ_VOICE_VIDEO) {
+            if (isGranted) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("callIncoming", false);
+                bundle.putBoolean("callRedial", true);
+                bundle.putString("callInitiated", "Vet");
+                bundle.putString("screen", "call_back");
+                bundle.putString("callId", callId);
+                Navigation.findNavController(view1).navigate(R.id.action_callDetailFragment_to_callFragment, bundle);
+            } else
+                utils.shortToast(utils.getStringValue(R.string.permission_voice_video_allow));
+        }
     }
 }
