@@ -330,6 +330,15 @@ public class CallFragment extends BaseFragment {
         });
     }
 
+    private void showIvrSelectedDialog(String message) {
+        binding.webView.post(() -> {
+            CallConnectFailedDialog callConnectFailedDialog = new CallConnectFailedDialog(context, activity, message, true, true);
+            callConnectFailedDialog.setCancelable(true);
+            callConnectFailedDialog.show();
+            callConnectFailedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        });
+    }
+
     private void navigate(int id, String callId) {
         binding.webView.post(() -> {
             try {
@@ -475,6 +484,10 @@ public class CallFragment extends BaseFragment {
                             callId = jsonObject.getString(STR_CALL_ID);
                         preferenceUtils.setBlockNavigationStatus(false);
                             navigate(R.id.action_callFragment_to_callFeedbackFragment, callId);
+                        break;
+                    case WebConstants.ACTION_CALL_IVR_SELECTED:
+                        if (jsonObject.has(STR_MESSAGE))
+                            showIvrSelectedDialog(jsonObject.get(STR_MESSAGE).toString());
                         break;
                     case WebConstants.ACTION_CALL_NO_PICKUP:
                     case WebConstants.ACTION_ANOTHER_VET_PICKUP:

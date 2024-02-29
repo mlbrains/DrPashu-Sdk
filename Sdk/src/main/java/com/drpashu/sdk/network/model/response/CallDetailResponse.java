@@ -143,9 +143,17 @@ public class CallDetailResponse {
         @Expose
         private Boolean follow_up;
 
+        @SerializedName("vet_status")
+        @Expose
+        private String vetStatus;
+
         @SerializedName("products")
         @Expose
         private List<ProductListResponse.Data> products;
+
+        @SerializedName("call_type")
+        @Expose
+        private String callType;
 
         public List<ProductListResponse.Data> getProducts() {
             return products;
@@ -405,6 +413,22 @@ public class CallDetailResponse {
 
         public void setSymptoms(String symptoms) {
             this.symptoms = symptoms;
+        }
+
+        public String getCallType() {
+            return callType;
+        }
+
+        public void setCallType(String callType) {
+            this.callType = callType;
+        }
+
+        public String getVetStatus() {
+            return vetStatus;
+        }
+
+        public void setVetStatus(String vetStatus) {
+            this.vetStatus = vetStatus;
         }
     }
 }

@@ -59,6 +59,9 @@ public class CallHistoryListAdapter extends RecyclerView.Adapter<CallHistoryList
         else if (callHistoryResponseList.get(position).getCallInitiated().equalsIgnoreCase("Admin") && callHistoryResponseList.get(position).getCallStatusRes().equalsIgnoreCase("Completed"))
             holder.binding.callStatusIcon.setImageResource(R.drawable.call_in_done);
 
+        if (callHistoryResponseList.get(position).getCallType().equalsIgnoreCase("Offline"))
+            holder.binding.callStatusIcon.setImageResource(R.drawable.ic_ivr);
+
         holder.itemView.setOnClickListener(v -> callHistoryInterface.selectedCall(callHistoryResponseList.get(position).getId()));
 
         if (callHistoryResponseList.get(position).getPrescriptionUploaded())

@@ -51,6 +51,11 @@ public interface ApiInterface {
                                       @Field("call_price") String callPrice,
                                       @Field("payment_id") String paymentId);
 
+    @POST("call_back")
+    @FormUrlEncoded
+    Call<StartCallResponse> callBackUser(@Header("user-id") String user_id,
+                                         @Field("call_id") String callId);
+
     @GET("call_history")
     Call<CallHistoryListResponse> getCallHistoryList(@Header("user-id") String user_id);
 

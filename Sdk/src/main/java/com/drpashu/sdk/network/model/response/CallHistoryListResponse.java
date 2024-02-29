@@ -76,6 +76,10 @@ public class CallHistoryListResponse {
         @Expose
         private String callInitiated;
 
+        @SerializedName("call_type")
+        @Expose
+        private String callType;
+
         public Integer getId() {
             return id;
         }
@@ -143,6 +147,14 @@ public class CallHistoryListResponse {
 
         public void setCallInitiated(String callInitiated) {
             this.callInitiated = callInitiated;
+        }
+
+        public String getCallType() {
+            return callType;
+        }
+
+        public void setCallType(String callType) {
+            this.callType = callType;
         }
     }
 }

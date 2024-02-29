@@ -4,6 +4,8 @@ import static com.drpashu.sdk.utils.Constants.PERMISSION_CAMERA;
 import static com.drpashu.sdk.utils.Constants.PERMISSION_RECORD_AUDIO;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.AutoTransition;
@@ -23,6 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.drpashu.sdk.R;
 import com.drpashu.sdk.adapter.ProductListAdapter;
 import com.drpashu.sdk.databinding.FragmentCallDetailBinding;
+import com.drpashu.sdk.dialog.CallConnectFailedDialog;
 import com.drpashu.sdk.network.ApiClient;
 import com.drpashu.sdk.network.model.response.CallDetailResponse;
 import com.ortiz.touchview.TouchImageView;
@@ -33,12 +36,13 @@ import java.util.Arrays;
 
 public class CallDetailFragment extends BaseFragment {
     private FragmentCallDetailBinding binding;
-    private String callId = "", baseUrl = ApiClient.BASE_URL_MEDIA,screen = "";
+    private String callId = "", baseUrl = ApiClient.BASE_URL_MEDIA,screen = "",vetStatus ="";
     private byte[] prescription1Byte = null, prescription2Byte = null;
     private static final int RESULT_LOAD_PRESCRIPTION_1 = 1, RESULT_LOAD_PRESCRIPTION_2 = 2;
     private View view1;
     private ProductListAdapter productListAdapter;
     private static final int PERMISSION_REQ_VOICE_VIDEO = 1;
+    private Boolean offlineCall = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,8 +97,24 @@ public class CallDetailFragment extends BaseFragment {
         });
 
         binding.callBackBtn.setOnClickListener(v -> {
-                requestMultiplePermission(new String[]{PERMISSION_CAMERA, PERMISSION_RECORD_AUDIO}, PERMISSION_REQ_VOICE_VIDEO);
+            if (offlineCall) {
+                showLoading();
+                networking.callBackUser(callId);
+            }
+            else {
+                if (vetStatus.equalsIgnoreCase("Online"))
+                    requestMultiplePermission(new String[]{PERMISSION_CAMERA, PERMISSION_RECORD_AUDIO}, PERMISSION_REQ_VOICE_VIDEO);
+                else
+                    showVetOfflineDialog(utils.getStringValue(R.string.vet_offline_text) + "\n" + utils.getStringValue(R.string.please_come_back_later));
+            }
         });
+    }
+
+    private void showVetOfflineDialog(String message) {
+        CallConnectFailedDialog callConnectFailedDialog = new CallConnectFailedDialog(context, activity, message);
+        callConnectFailedDialog.setCancelable(true);
+        callConnectFailedDialog.show();
+        callConnectFailedDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     private void navigateToChat(View view) {
@@ -143,14 +163,22 @@ public class CallDetailFragment extends BaseFragment {
             binding.userText.setText(callDetailResponse.getFirstName() + " " + callDetailResponse.getLastName());
             binding.dateText.setText(callDetailResponse.getDate() + " " + callDetailResponse.getTime());
 
+            vetStatus = callDetailResponse.getVetStatus() + "";
+
             if (callDetailResponse.getProfilePicture() != null) {
                 if (callDetailResponse.getProfilePicture().length() != 0)
                     Picasso.get().load(ApiClient.BASE_URL_MEDIA + callDetailResponse.getProfilePicture()).into(binding.userImg);
             }
 
+            offlineCall = callDetailResponse.getCallType().equalsIgnoreCase("Offline");
+
             if (callDetailResponse.getCallStatusRes().equalsIgnoreCase("Completed")) {
-                utils.visibleView(binding.chatIcon);
-                utils.visibleView(binding.constraintCallback);
+                if (offlineCall)
+                    utils.hideView(binding.chatIcon);
+                else {
+                    utils.visibleView(binding.chatIcon);
+                    utils.visibleView(binding.constraintCallback);
+                }
                 if (callDetailResponse.getCallDuration() != null)
                     binding.dateText.setText(callDetailResponse.getDate() + " " + callDetailResponse.getTime() + " (" + callDetailResponse.getCallDuration() + ")");
                 binding.cardCallStatus.setStrokeColor(getResources().getColor(R.color.green600));
