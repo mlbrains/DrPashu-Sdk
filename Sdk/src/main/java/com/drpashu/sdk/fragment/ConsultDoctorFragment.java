@@ -115,6 +115,25 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
             Log.e("set screen error", e.getMessage()+"");
         }
 
+        binding.selectionBtn.setBackgroundColor(preferenceUtils.getBaseColor());
+        binding.proceedBtn.setBackgroundColor(preferenceUtils.getBaseColor());
+        binding.companyMrpText.setTextColor(preferenceUtils.getLightBaseColor());
+        binding.opdMiddleImage.setStrokeColor(preferenceUtils.getDarkBaseColor());
+        binding.opdMrpText.setTextColor(preferenceUtils.getLightBaseColor());
+        binding.opdTextCheckAll.setTextColor(preferenceUtils.getDarkBaseColor());
+        binding.specialistMiddleImage.setStrokeColor(preferenceUtils.getDarkBaseColor());
+        binding.specialistMrpText.setTextColor(preferenceUtils.getLightBaseColor());
+        binding.specialistTextCheckAll.setTextColor(preferenceUtils.getDarkBaseColor());
+        binding.governmentText.setTextColor(preferenceUtils.getDarkBaseColor());
+        binding.governmentMrpText.setBackgroundColor(preferenceUtils.getDarkBaseColor());
+        binding.governmentMrpText.setTextColor(preferenceUtils.getLightBaseColor());
+        binding.governmentPriceText.setBackgroundColor(preferenceUtils.getDarkBaseColor());
+        binding.familyText.setBackgroundColor(preferenceUtils.getDarkBaseColor());
+        binding.familyMrpText.setBackgroundColor(preferenceUtils.getDarkBaseColor());
+        binding.familyMrpText.setTextColor(preferenceUtils.getLightBaseColor());
+        binding.familyPriceText.setBackgroundColor(preferenceUtils.getDarkBaseColor());
+        binding.frameImportantNote.setBackgroundColor(preferenceUtils.getBaseColor());
+
         if (preferenceUtils.getAnimal() != null) {
             if (preferenceUtils.getAnimal().length() != 0) {
                 animalType = preferenceUtils.getAnimal();
@@ -151,7 +170,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.companyView.setOnClickListener(v -> {
             vetCategory = "company";
             companySelected = true;
-            binding.companyCardview.setStrokeColor(getResources().getColor(R.color.base));
+            binding.companyCardview.setStrokeColor(preferenceUtils.getBaseColor());
             binding.companyCardview.setStrokeWidth(3);
             binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
             binding.specialistCardview.setStrokeWidth(1);
@@ -168,7 +187,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.opdView.setOnClickListener(v -> {
             vetCategory= "OPD";
             companySelected = false;
-            binding.opdCardview.setStrokeColor(getResources().getColor(R.color.base));
+            binding.opdCardview.setStrokeColor(preferenceUtils.getBaseColor());
             binding.opdCardview.setStrokeWidth(3);
             binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
             binding.specialistCardview.setStrokeWidth(1);
@@ -185,7 +204,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.specialistView.setOnClickListener(v -> {
             vetCategory = "specialist";
             companySelected = false;
-            binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.base));
+            binding.specialistCardview.setStrokeColor(preferenceUtils.getBaseColor());
             binding.specialistCardview.setStrokeWidth(3);
             binding.opdCardview.setStrokeColor(getResources().getColor(R.color.grey200));
             binding.opdCardview.setStrokeWidth(1);
@@ -202,7 +221,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.governmentView.setOnClickListener(v -> {
             vetCategory = "government";
             companySelected = false;
-            binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
+            binding.governmentRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), preferenceUtils.getLightCardColor()));
             binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
             binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
             binding.specialistCardview.setStrokeWidth(1);
@@ -219,7 +238,7 @@ public class ConsultDoctorFragment extends BaseFragment implements NetworkingInt
         binding.familyView.setOnClickListener(v -> {
             vetCategory = "family";
             companySelected = false;
-            binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.light_card));
+            binding.familyRecyclerview.setBackgroundColor(ContextCompat.getColor(getContext(), preferenceUtils.getLightCardColor()));
             binding.specialistCardview.setStrokeColor(getResources().getColor(R.color.grey200));
             binding.specialistCardview.setStrokeWidth(1);
             binding.opdCardview.setStrokeColor(getResources().getColor(R.color.grey200));

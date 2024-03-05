@@ -7,6 +7,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,10 +26,11 @@ public class HomeActivity extends BaseActivity {
 
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(preferenceUtils.getBaseColor()));
         } catch (Exception e){
             Log.e("set toolbar error", e.getMessage()+"");
         }
-
+        getWindow().setStatusBarColor(preferenceUtils.getDarkBaseColor());
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         NavOptions navOptions = new NavOptions.Builder()

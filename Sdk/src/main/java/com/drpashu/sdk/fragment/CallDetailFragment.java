@@ -74,6 +74,11 @@ public class CallDetailFragment extends BaseFragment {
 
         showLoading();
         networking.getCallDetail(callId);
+
+        binding.textChat.setTextColor(preferenceUtils.getDarkBaseColor());
+        binding.callBackBtn.setCardBackgroundColor(preferenceUtils.getDarkBaseColor());
+        binding.updateText.setTextColor(preferenceUtils.getDarkBaseColor());
+        binding.frameImportantNote.setBackgroundColor(preferenceUtils.getBaseColor());
     }
 
     private void onClickListeners() {

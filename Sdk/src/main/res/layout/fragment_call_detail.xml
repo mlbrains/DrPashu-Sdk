@@ -275,6 +275,7 @@
                     app:strokeWidth="2dp">
 
                     <TextView
+                        android:id="@+id/text_chat"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/margin_14"
@@ -609,12 +610,10 @@
                     android:layout_height="wrap_content"
                     >
 
-                    <ImageView
+                    <View
                         android:id="@+id/frame_important_note"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/frame_blue"
-                        android:scaleType="fitXY"
+                        android:layout_width="5dp"
+                        android:layout_height="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

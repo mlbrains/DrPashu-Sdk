@@ -3,6 +3,7 @@ package com.drpashu.sdk.network;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -448,6 +449,10 @@ public class Networking {
                     if (drPashuResponse.getStatus()) {
                         preferenceUtils.setUserId(drPashuResponse.getData().getPhoneUserId());
                         preferenceUtils.setUsername(finalFirstName + " " + finalLastName);
+                        preferenceUtils.setBaseColor(Color.parseColor("#854b55"));
+                        preferenceUtils.setDarkBaseColor(Color.parseColor("#402429"));
+                        preferenceUtils.setLightBaseColor(Color.parseColor("#cba3aa"));
+                        preferenceUtils.setLightCardColor(Color.parseColor("#eee0e3"));
                         networkingInterface.networkingRequest(NetworkingInterface.MethodType.addUserFromSdk, true, null, null);
                     } else {
                         Toast.makeText(context, drPashuResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
