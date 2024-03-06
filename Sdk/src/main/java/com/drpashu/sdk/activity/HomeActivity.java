@@ -6,7 +6,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -34,6 +36,14 @@ public class HomeActivity extends BaseActivity {
         NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.nav_home, true)
                 .build();
+
+        binding.drpashuLayout.setOnClickListener(v -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.drpashu.app")));
+            } catch (ActivityNotFoundException activityNotFoundException) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.drpashu.app")));
+            }
+        });
 
         preferenceUtils.setBlockNavigationStatus(false);
         if (getIntent() != null) {

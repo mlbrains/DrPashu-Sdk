@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         binding.button.setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
             try {
-//                    jsonObject.put("api_key", "sdk_dehaat_key_0507");
-                    jsonObject.put("api_key", "graamik_2111_test");
+                    jsonObject.put("api_key", "sdk_dehaat_key_0507");
+//                    jsonObject.put("api_key", "graamik_2111_test");
                     jsonObject.put("first_name", "Sahil");
                     jsonObject.put("last_name", "Test");
                     jsonObject.put("phone_number", "+9198765543212");
@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
         binding.buttonC.setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
             try {
-//                jsonObject.put("api_key", "sdk_dehaat_key_0507");
-                jsonObject.put("api_key", "graamik_2111_test");
+                jsonObject.put("api_key", "sdk_dehaat_key_0507");
+//                jsonObject.put("api_key", "graamik_2111_test");
                 jsonObject.put("first_name", "Sahil");
                 jsonObject.put("last_name", "Test");
                 jsonObject.put("phone_number", "+9198765543212");

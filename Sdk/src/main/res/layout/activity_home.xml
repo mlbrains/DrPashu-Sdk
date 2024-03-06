@@ -10,7 +10,50 @@
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/drpashu_layout"
         app:defaultNavHost="true"
         app:navGraph="@navigation/home_navigation"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/drpashu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/extra_small_margin"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/drpashu_logo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="@dimen/extra_small_margin"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/drpashu_text"
+            android:src="@drawable/drpashu_icon"/>
+
+        <TextView
+            android:id="@+id/drpashu_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/extra_small_margin"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:text="powered by DR PASHU ↗"
+            android:textColor="@color/dark_purple"
+            android:textStyle="italic"
+            android:textSize="14sp"
+            android:drawableEnd="@drawable/info_create_post"
+            android:drawablePadding="@dimen/small_margin"
+            android:drawableTint="@color/dark_purple"
+            android:includeFontPadding="false"
+            app:layout_constraintTop_toTopOf="@id/drpashu_logo"
+            app:layout_constraintBottom_toBottomOf="@id/drpashu_logo"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/drpashu_logo"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
