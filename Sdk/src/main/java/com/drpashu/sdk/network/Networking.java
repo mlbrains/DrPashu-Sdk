@@ -449,10 +449,10 @@ public class Networking {
                     if (drPashuResponse.getStatus()) {
                         preferenceUtils.setUserId(drPashuResponse.getData().getPhoneUserId());
                         preferenceUtils.setUsername(finalFirstName + " " + finalLastName);
-                        preferenceUtils.setBaseColor(Color.parseColor("#854b55"));
-                        preferenceUtils.setDarkBaseColor(Color.parseColor("#402429"));
-                        preferenceUtils.setLightBaseColor(Color.parseColor("#cba3aa"));
-                        preferenceUtils.setLightCardColor(Color.parseColor("#eee0e3"));
+                        preferenceUtils.setBaseColor(Color.parseColor(drPashuResponse.getData().getColorSdk().getBaseColor()));
+                        preferenceUtils.setDarkBaseColor(Color.parseColor(drPashuResponse.getData().getColorSdk().getDarkBaseColor()));
+                        preferenceUtils.setLightBaseColor(Color.parseColor(drPashuResponse.getData().getColorSdk().getLightBaseColor()));
+                        preferenceUtils.setLightCardColor(Color.parseColor(drPashuResponse.getData().getColorSdk().getLightCardColor()));
                         networkingInterface.networkingRequest(NetworkingInterface.MethodType.addUserFromSdk, true, null, null);
                     } else {
                         Toast.makeText(context, drPashuResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
