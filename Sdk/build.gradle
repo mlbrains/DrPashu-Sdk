@@ -82,5 +82,5 @@ dependencies {
     implementation "com.airbnb.android:lottie:5.1.1"
 
     //Imageview zoom Library
-    implementation 'com.github.MikeOrtiz:TouchImageView:1.4.1'
+    implementation 'com.github.MikeOrtiz:TouchImageView:3.2.1'
 }
